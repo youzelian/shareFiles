@@ -1,0 +1,25 @@
+package Service;
+
+import DAO.UserDAO;
+import DTO.User;
+
+public class UserService {
+    private UserDAO userDAO = new UserDAO();
+    
+    // 增加用户信息
+    public boolean saveUser(User user) {
+        int i = userDAO.insertUser(user);
+        return i > 0 ? true : false;
+    }
+    
+    //根据姓名查找用户
+    public User checkUser(String userName) {
+        User user = userDAO.queryUserByUserName(userName);
+        if (user == null) {
+            return null;
+        }
+        else {
+            return user;
+        }
+    }
+}
