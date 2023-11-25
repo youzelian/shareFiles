@@ -14,7 +14,7 @@ import java.net.URLDecoder;
 import java.util.List;
 
 @WebFilter("/*")
-public class autoLoginFilter implements Filter {
+public class autoLoginAndCheckFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     
@@ -59,8 +59,9 @@ public class autoLoginFilter implements Filter {
             else if (autologin != null) {
                 String[] parts = autologin.split("-");
                 String username = parts[0];
+                int count = 0;
                 // 对cookie中的userName值解码
-                username = URLDecoder.decode(username, "UTF-8");
+                username = URLDecoder.decode(username, "utf-8");
                 String password = parts[1];
                 UserService userService = new UserService();
                 List<User> userList = userService.listUser();
@@ -71,14 +72,17 @@ public class autoLoginFilter implements Filter {
                         filterChain.doFilter(request, response);
                         break;
                     }
-                    // 没有则跳转到登录页面
                     else {
-                        // 转到登录页面并判断是不是越界查看
-                        if (!requestPath.equals("")) {
-                            request.setAttribute("tipsHeader", "<label style='color:red;'>请先登录!</label>");
-                        }
-                        request.getRequestDispatcher("login.jsp").forward(request, response);
+                        count++;
                     }
+                }
+                // 如果count的数等于userList的成员数量则表明没有，跳转到登录页面
+                if (count == userList.size()) {
+                    // 转到登录页面并判断是不是越界查看
+                    if (!requestPath.equals("")) {
+                        request.setAttribute("tipsHeader", "<label style='color:red;'>请先登录!</label>");
+                    }
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
             }
             else {

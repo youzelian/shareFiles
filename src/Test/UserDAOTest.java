@@ -25,6 +25,6 @@ public class UserDAOTest {
     @Test
     public void listUser() {
         List<User> userList = userDAO.listUser();
-        System.out.println(userList.get(0));
+        System.out.println(userList);
     }
 }

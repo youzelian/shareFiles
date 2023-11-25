@@ -45,7 +45,6 @@ public class UserDAO {
     public List<User> listUser() {
         List<User> userList = null;
         try {
-            // String sql = "select user_id,user_name,user_pwd,user_email,user_gender,user_tel,user_address,personal_signature,user_of_club from users";
             String sql = "select * from users";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             userList = queryRunner.query(sql, new BeanListHandler<User>(User.class, processor));

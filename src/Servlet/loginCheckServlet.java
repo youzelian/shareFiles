@@ -20,13 +20,14 @@ public class loginCheckServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
         // 1.接受用户信息
         String userName = request.getParameter("loginUserName");
         String userPwd = request.getParameter("loginPwd");
         // 2.判断用户名和密码是否符合规范
         UserService userService = new UserService();
         User user = userService.checkUser(userName);
-        boolean b1 = user == null ?  false: true;
+        boolean b1 = user == null ? false : true;
         System.out.println(b1);
         boolean b2 = userPwd.equals(user.getUserPwd());
         System.out.println(b2);

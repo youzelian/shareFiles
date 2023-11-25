@@ -20,6 +20,7 @@ public class registerCheckServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
         // 1.接受用户信息
         String userName = request.getParameter("registerUserName");
         String userPwd1 = request.getParameter("registerPwd1");

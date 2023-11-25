@@ -389,7 +389,7 @@
             <%--验证码--%>
             <img src="createCode" id="codeImg"/>
             <input type="checkbox" name="auto_login">自动登录<br>
-            <a href="#">忘记密码？</a>
+            <a href="forgetPwd.jsp">忘记密码？</a>
             <button type="button" id="loginCheck">登录</button>
         </form>
     </div>
@@ -457,7 +457,7 @@
             if (res.pwdCode == 1) {
                 $("#registerPwdTips").replaceWith("<label id='registerPwdTips' style='color:green'>√</label>");
             } else {
-                $("#registerPwdTips").replaceWith("<label id='registerPwdTips' style='color:green'>密码不一致</label>");
+                $("#registerPwdTips").replaceWith("<label id='registerPwdTips' style='color:red'>密码不一致</label>");
             }
             if (res.nameCode == 1 && res.pwdCode == 1) {
                 $("#form1").submit();
@@ -485,7 +485,7 @@
             if (res.pwdCode == 1) {
                 $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:green'>√</label>");
             } else {
-                $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:green'>密码错误!</label>");
+                $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:red'>密码错误!</label>");
             }
             if (res.nameCode == 1 && res.pwdCode == 1) {
                 $("#form2").submit();
