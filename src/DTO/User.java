@@ -9,9 +9,8 @@ public class User {
     private int userTel;
     private String userAddress;
     private String userImgPath;
-    private String personal_signature;
+    private String personalSignature;
     private String userOfClub;
-    private String userMy;
     
     @Override
     public String toString() {
@@ -24,9 +23,8 @@ public class User {
                 ", userTel=" + userTel +
                 ", userAddress='" + userAddress + '\'' +
                 ", userImgPath='" + userImgPath + '\'' +
-                ", personal_signature='" + personal_signature + '\'' +
+                ", personalSignature='" + personalSignature + '\'' +
                 ", userOfClub='" + userOfClub + '\'' +
-                ", userMy='" + userMy + '\'' +
                 '}';
     }
     
@@ -36,38 +34,6 @@ public class User {
     public User(String userName, String userPwd) {
         this.userName = userName;
         this.userPwd = userPwd;
-    }
-    
-    public String getUserImgPath() {
-        return userImgPath;
-    }
-    
-    public void setUserImgPath(String userImgPath) {
-        this.userImgPath = userImgPath;
-    }
-    
-    public String getPersonal_signature() {
-        return personal_signature;
-    }
-    
-    public void setPersonal_signature(String personal_signature) {
-        this.personal_signature = personal_signature;
-    }
-    
-    public String getUserOfClub() {
-        return userOfClub;
-    }
-    
-    public void setUserOfClub(String userOfClub) {
-        this.userOfClub = userOfClub;
-    }
-    
-    public String getUserMy() {
-        return userMy;
-    }
-    
-    public void setUserMy(String userMy) {
-        this.userMy = userMy;
     }
     
     public int getUserId() {
@@ -94,20 +60,20 @@ public class User {
         this.userPwd = userPwd;
     }
     
-    public String getUserEmail() {
-        return userEmail;
-    }
-    
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-    
     public String getUserGender() {
         return userGender;
     }
     
     public void setUserGender(String userGender) {
         this.userGender = userGender;
+    }
+    
+    public String getUserEmail() {
+        return userEmail;
+    }
+    
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
     
     public int getUserTel() {
@@ -124,5 +90,29 @@ public class User {
     
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
+    }
+    
+    public String getUserImgPath() {
+        return userImgPath;
+    }
+    
+    public void setUserImgPath(String userImgPath) {
+        this.userImgPath = userImgPath;
+    }
+    
+    public String getPersonalSignature() {
+        return personalSignature;
+    }
+    
+    public void setPersonalSignature(String personalSignature) {
+        this.personalSignature = personalSignature;
+    }
+    
+    public String getUserOfClub() {
+        return userOfClub;
+    }
+    
+    public void setUserOfClub(String userOfClub) {
+        this.userOfClub = userOfClub;
     }
 }

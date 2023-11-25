@@ -370,15 +370,15 @@
     </div>
     <!-- 登录界面 -->
     <div class="form-container sign-in-container">
-        <form action="">
+        <form action="loginServlet" id="form2" method="post">
             <h1>登录</h1>
             <div class="txtb">
-                <input type="text" name="loginUserName">
+                <input type="text" id="loginUserName" name="userName">
                 <span data-placeholder="userName"></span>
                 <label id='loginNameTips'></label>
             </div>
             <div class="txtb">
-                <input type="password" name="loginUserPwd">
+                <input type="password" id="loginPwd" name="userPwd">
                 <span data-placeholder="Password"></span>
                 <label id='loginPwdTips'></label>
             </div>
@@ -388,8 +388,9 @@
             </div>
             <%--验证码--%>
             <img src="createCode" id="codeImg"/>
+            <input type="checkbox" name="auto_login">自动登录<br>
             <a href="#">忘记密码？</a>
-            <button type="button">登录</button>
+            <button type="button" id="loginCheck">登录</button>
         </form>
     </div>
 
@@ -434,44 +435,6 @@
         $(this).attr('src', "createCode?m=" + Math.random());
     })
 
-    // 提交表单前确认注册是否符合规范
-    // function checkForm() {
-    //     var flag = 0;
-    //     // 发送ajax请求，判断用户名是否可用
-    //     var name = $("#userName").val();
-    //     var pwd1 = $("#Pwd1").val();
-    //     var pwd2 = $("#Pwd2").val();
-    //     // 参数1:请求的urL
-    //     // 参数2:传递的参数
-    //     // 参数3:回调函数
-    //     // 参数4,服务器返回的数据的格式(json,html,text,xml)
-    //     $.get("registerCheckServlet", {userName: name, Pwd1: pwd1, Pwd2: pwd2}, function (res) {
-    //         if (res.nameCode == 1) {
-    //             $("#nameTips").replaceWith("<label id='nameTips' style='color:green;float:right;bottom: 0;margin-bottom: 5px' >用户名可用!</label>");
-    //         } else {
-    //             $("#nameTips").replaceWith("<label id='nameTips' style='color:red'>用户名被占用!</label>");
-    //         }
-    //         if (res.pwdCode == 1) {
-    //             $("#pwdTips").replaceWith("<label id='pwdTips' style='color:green'>√</label>");
-    //         } else {
-    //             $("#pwdTips").replaceWith("<label id='pwdTips' style='color:red'>密码不一致</label>");
-    //         }
-    //
-    //         if (res.pwdCode === 1 && res.nameCode === 1) {
-    //             flag = 1;
-    //         }
-    //         console.log("flag" + flag);
-    //
-    //     }, "json");
-    //     console.log("flag" + flag);
-    //     $("#from1").submit();
-    //     if (flag == 1) {
-    //         setTimeout(function () {
-    //             $("#from1").submit();
-    //         }, 3000);
-    //     }
-    // }
-
     // 注册提交表单前确认是否符合规范
     $("#registerCheck").click(function () {
         var userName = $("#registerUserName").val();
@@ -489,7 +452,7 @@
             if (res.nameCode == 1) {
                 $("#registerNameTips").replaceWith("<label id='registerNameTips' style='color:green'>用户名可用!</label>");
             } else {
-                $("#registerNameTips").replaceWith("<label id='tipsLabel' style='color:red'>用户名不可用!</label>");
+                $("#registerNameTips").replaceWith("<label id='registerNameTips' style='color:red'>用户名不可用!</label>");
             }
             if (res.pwdCode == 1) {
                 $("#registerPwdTips").replaceWith("<label id='registerPwdTips' style='color:green'>√</label>");
@@ -498,6 +461,34 @@
             }
             if (res.nameCode == 1 && res.pwdCode == 1) {
                 $("#form1").submit();
+            }
+        }, "json")
+    })
+
+    // 登录提交表单前确认是否符合规范
+    $("#loginCheck").click(function () {
+        var userName = $("#loginUserName").val();
+        var pwd = $("#loginPwd").val();
+        // 参数1:请求的urL
+        // 参数2:传递的参数
+        // 参数3:回调函数
+        // 参数4,服务器返回的数据的格式(json,html,text,xml)
+        $.post("loginCheckServlet", {
+            loginUserName: userName,
+            loginPwd: pwd,
+        }, function (res) {
+            if (res.nameCode == 1) {
+                $("#loginNameTips").replaceWith("<label id='loginNameTips' style='color:green'>√</label>");
+            } else {
+                $("#loginNameTips").replaceWith("<label id='loginNameTips' style='color:red'>用户名不存在!</label>");
+            }
+            if (res.pwdCode == 1) {
+                $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:green'>√</label>");
+            } else {
+                $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:green'>密码错误!</label>");
+            }
+            if (res.nameCode == 1 && res.pwdCode == 1) {
+                $("#form2").submit();
             }
         }, "json")
     })

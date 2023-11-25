@@ -32,7 +32,7 @@ public class UserDAO {
     public User queryUserByUserName(String userName) {
         User user = new User();
         try {
-            String sql = "select user_id,user_name,user_pwd,user_email,user_gender,user_tel,user_address from users where user_name=?";
+            String sql = "select user_id,user_name,user_pwd,user_email,user_gender,user_tel,user_address,personal_signature,user_of_club from users where user_name=?";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             user = queryRunner.query(sql, new BeanHandler<User>(User.class, processor), userName);
         } catch (SQLException e) {
@@ -40,5 +40,18 @@ public class UserDAO {
         }
         return user;
     }
-    // 查找所有用户
+    
+    // 查询所有用户信息
+    public List<User> listUser() {
+        List<User> userList = null;
+        try {
+            // String sql = "select user_id,user_name,user_pwd,user_email,user_gender,user_tel,user_address,personal_signature,user_of_club from users";
+            String sql = "select * from users";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            userList = queryRunner.query(sql, new BeanListHandler<User>(User.class, processor));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
 }

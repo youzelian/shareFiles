@@ -3,6 +3,8 @@ package Service;
 import DAO.UserDAO;
 import DTO.User;
 
+import java.util.List;
+
 public class UserService {
     private UserDAO userDAO = new UserDAO();
     
@@ -21,5 +23,11 @@ public class UserService {
         else {
             return user;
         }
+    }
+    
+    // 查询所有用户
+    public List<User> listUser() {
+        List<User> userList = userDAO.listUser();
+        return userList;
     }
 }
