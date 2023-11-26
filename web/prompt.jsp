@@ -12,8 +12,8 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     String type = (String) request.getAttribute("type");
     String url = null;
-    if (type.equals("gameSave")) {
-        url = basePath + "gameSaveServlet"; //设置跳转的地址
+    if (type.equals("userUpdate")) {
+        url = basePath + "index.jsp"; //设置跳转的地址
     }
     else if (type.equals("userSave")) {
         url = basePath + "login.jsp"; //设置跳转的地址

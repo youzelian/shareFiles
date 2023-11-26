@@ -14,6 +14,12 @@ public class UserService {
         return i > 0 ? true : false;
     }
     
+    // 修改用户数据
+    public boolean updateUser(User user) {
+        int i = userDAO.updateUser(user);
+        return i > 0 ? true : false;
+    }
+    
     //根据姓名查找用户
     public User checkUser(String userName) {
         User user = userDAO.queryUserByUserName(userName);

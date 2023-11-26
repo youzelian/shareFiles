@@ -17,6 +17,14 @@ public class UserDAOTest {
     }
     
     @Test
+    public void updateUser() {
+        User user = userDAO.queryUserByUserName("张三");
+        user.setUserGender("男");
+        int i = userDAO.updateUser(user);
+        System.out.println(i);
+    }
+    
+    @Test
     public void queryUserByUserName() {
         User user = userDAO.queryUserByUserName("张三");
         System.out.println(user);

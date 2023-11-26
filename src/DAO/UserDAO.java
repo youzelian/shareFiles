@@ -27,12 +27,26 @@ public class UserDAO {
     }
     
     // 删除用户信息
-    // 修改用户信息
+    // 根据用户名修改用户信息
+    public int updateUser(User user) {
+        int i = 0;
+        try {
+            String sql = "update  users set user_name=?,user_gender=?,user_email=?,user_tel=?,user_img_path=?,user_address=?,personal_signature=?,pwd_req=?,pwd_req_answer=? where user_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            Object[] params = {user.getUserName(), user.getUserGender(), user.getUserEmail(), user.getUserTel(), user.getUserImgPath(), user.getUserAddress(), user.getPersonalSignature(), user.getPwdReq(), user.getPwdReqAnswer(), user.getUserId()};
+            i = queryRunner.update(sql, params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
+    }
+    
     // 根据用户名查找用户信息
     public User queryUserByUserName(String userName) {
         User user = new User();
         try {
-            String sql = "select user_id,user_name,user_pwd,user_email,user_gender,user_tel,user_address,personal_signature,user_of_club from users where user_name=?";
+            // String sql = "select user_id,user_name,user_pwd,user_gender,user_email,user_tel,userImgPath,user_address,personal_signature,user_of_club,pwd_req,pwd_req_answer from users where user_name=?";
+            String sql = "select * from users where user_name=?";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             user = queryRunner.query(sql, new BeanHandler<User>(User.class, processor), userName);
         } catch (SQLException e) {

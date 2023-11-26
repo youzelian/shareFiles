@@ -22,4 +22,11 @@ public class UserServiceTest {
         List<User> userList = userService.listUser();
         System.out.println(userList);
     }
+    
+    @Test
+    public void updateUser() {
+        User user = userService.checkUser("张三");
+        boolean b = userService.updateUser(user);
+        System.out.println(b);
+    }
 }

@@ -6,11 +6,34 @@ public class User {
     private String userPwd;
     private String userGender;
     private String userEmail;
-    private int userTel;
+    private String userTel;
     private String userAddress;
     private String userImgPath;
     private String personalSignature;
     private String userOfClub;
+    private String pwdReq;
+    private String pwdReqAnswer;
+    
+    public User() {
+    }
+    
+    public User(String userName, String userPwd) {
+        this.userName = userName;
+        this.userPwd = userPwd;
+    }
+    
+    public User(int userId, String userName, String userGender, String userEmail, String userTel, String userAddress, String userImgPath, String personalSignature, String pwdReq, String pwdReqAnswer) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userGender = userGender;
+        this.userEmail = userEmail;
+        this.userTel = userTel;
+        this.userAddress = userAddress;
+        this.userImgPath = userImgPath;
+        this.personalSignature = personalSignature;
+        this.pwdReq = pwdReq;
+        this.pwdReqAnswer = pwdReqAnswer;
+    }
     
     @Override
     public String toString() {
@@ -20,20 +43,14 @@ public class User {
                 ", userPwd='" + userPwd + '\'' +
                 ", userGender='" + userGender + '\'' +
                 ", userEmail='" + userEmail + '\'' +
-                ", userTel=" + userTel +
+                ", userTel='" + userTel + '\'' +
                 ", userAddress='" + userAddress + '\'' +
                 ", userImgPath='" + userImgPath + '\'' +
                 ", personalSignature='" + personalSignature + '\'' +
                 ", userOfClub='" + userOfClub + '\'' +
+                ", pwdReq='" + pwdReq + '\'' +
+                ", pwdReqAnswer='" + pwdReqAnswer + '\'' +
                 '}';
-    }
-    
-    public User() {
-    }
-    
-    public User(String userName, String userPwd) {
-        this.userName = userName;
-        this.userPwd = userPwd;
     }
     
     public int getUserId() {
@@ -76,11 +93,11 @@ public class User {
         this.userEmail = userEmail;
     }
     
-    public int getUserTel() {
+    public String getUserTel() {
         return userTel;
     }
     
-    public void setUserTel(int userTel) {
+    public void setUserTel(String userTel) {
         this.userTel = userTel;
     }
     
@@ -114,5 +131,21 @@ public class User {
     
     public void setUserOfClub(String userOfClub) {
         this.userOfClub = userOfClub;
+    }
+    
+    public String getPwdReq() {
+        return pwdReq;
+    }
+    
+    public void setPwdReq(String pwdReq) {
+        this.pwdReq = pwdReq;
+    }
+    
+    public String getPwdReqAnswer() {
+        return pwdReqAnswer;
+    }
+    
+    public void setPwdReqAnswer(String pwdReqAnswer) {
+        this.pwdReqAnswer = pwdReqAnswer;
     }
 }
