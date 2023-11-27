@@ -15,7 +15,7 @@
     if (type.equals("userUpdate")) {
         url = basePath + "index.jsp"; //设置跳转的地址
     }
-    else if (type.equals("userSave")) {
+    else if (type.equals("userSave") || type.equals("forgetPwd")) {
         url = basePath + "login.jsp"; //设置跳转的地址
     }
 %>

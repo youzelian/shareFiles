@@ -20,6 +20,12 @@ public class UserService {
         return i > 0 ? true : false;
     }
     
+    // 修改用户密码
+    public boolean modifyUserPwd(User user) {
+        int i = userDAO.changeUserPwd(user);
+        return i > 0 ? true : false;
+    }
+    
     //根据姓名查找用户
     public User checkUser(String userName) {
         User user = userDAO.queryUserByUserName(userName);

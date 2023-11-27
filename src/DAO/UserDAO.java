@@ -41,6 +41,19 @@ public class UserDAO {
         return i;
     }
     
+    // 修改用户密码
+    public int changeUserPwd(User user) {
+        int i = 0;
+        try {
+            String sql = "update users set user_pwd=? where user_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            i = queryRunner.update(sql, user.getUserPwd(), user.getUserId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
+    }
+    
     // 根据用户名查找用户信息
     public User queryUserByUserName(String userName) {
         User user = new User();
