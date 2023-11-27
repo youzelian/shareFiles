@@ -1,4 +1,4 @@
-<%--
+<%@ page import="DTO.User" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2023/11/14 0014
@@ -11,8 +11,9 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     String type = (String) request.getAttribute("type");
+    User user = (User) request.getAttribute("user");
     String url = null;
-    if (type.equals("userUpdate")) {
+    if (type.equals("userUpdate") || type.equals("forgetPwdFail")) {
         url = basePath + "index.jsp"; //设置跳转的地址
     }
     else if (type.equals("userSave") || type.equals("forgetPwd")) {
