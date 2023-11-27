@@ -31,6 +31,7 @@ public class loginServlet extends HttpServlet {
             cookie.setMaxAge(60 * 60);
             //发送cookie
             response.addCookie(cookie);
+            request.setAttribute("cookieName", cookie.getName());
         }
         UserService userService = new UserService();
         User user = userService.checkUser(userName);

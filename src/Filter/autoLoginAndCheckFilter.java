@@ -66,7 +66,7 @@ public class autoLoginAndCheckFilter implements Filter {
                 UserService userService = new UserService();
                 List<User> userList = userService.listUser();
                 for (User users : userList) {
-                    // 如果cookie值在数据库有对应的值则放行
+                    // 如果cookie值在数据库有对应的值则放行并存入session
                     if (users.getUserName().equals(username) && users.getUserPwd().equals(password)) {
                         request.getSession().setAttribute("user", new User(username, password));
                         filterChain.doFilter(request, response);
@@ -85,6 +85,7 @@ public class autoLoginAndCheckFilter implements Filter {
                     request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
             }
+            // session没有并且cookie也没有则直接跳转到login.jsp
             else {
                 // 转到登录页面并判断是不是越界查看
                 if (!requestPath.equals("")) {
