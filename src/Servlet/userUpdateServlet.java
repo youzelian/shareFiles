@@ -62,7 +62,7 @@ public class userUpdateServlet extends HttpServlet {
         user = new User(userId, userName, userGender, userEmail, userTel, userAddress, "userImg/" + userImgPath, personalSignature, pwdQuestion, pwdQuestionAnswer);
         boolean b = userService.updateUser(user);
         
-        // 4.跳转到提示页面然后跳转登录页面，并显示提示信息
+        // 4.跳转到提示页面然后跳转主页面，并显示提示信息
         String tips = b ? "<label style='color:green'>更新成功!</label>" : "<label style='color:red'>更新失败!</label>";
         String type = "userUpdate";
         String address = "主页面";

@@ -177,7 +177,7 @@
             <fieldset style="height: 80px;">
                 <label class="row">头像</label>
                 <img src="${user.userImgPath}" alt="" id="edit-avatar">
-                <input type="file" name="userImg" id="" style="float: left;">
+                <input type="file" name="userImg" style="float: left;">
             </fieldset>
         </div>
         <!-- 昵称 -->
@@ -283,6 +283,5 @@
         $("#man").prop('checked', false);
         $("#woman").prop('checked', true);
     }
-
 </script>
 </html>

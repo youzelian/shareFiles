@@ -8,10 +8,18 @@ public class File {
     private int fileVote;
     private int fileCollect;
     private int fileDownloadAmount;
-    private int fileOfClub;
+    private String fileOfClub;
     private String fileIntroduction;
     
     public File() {
+    }
+    
+    public File(String fileName, String fileType, String fileDownloadLink, String fileOfClub, String fileIntroduction) {
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.fileDownloadLink = fileDownloadLink;
+        this.fileOfClub = fileOfClub;
+        this.fileIntroduction = fileIntroduction;
     }
     
     public int getFileId() {
@@ -70,11 +78,11 @@ public class File {
         this.fileDownloadAmount = fileDownloadAmount;
     }
     
-    public int getFileOfClub() {
+    public String getFileOfClub() {
         return fileOfClub;
     }
     
-    public void setFileOfClub(int fileOfClub) {
+    public void setFileOfClub(String fileOfClub) {
         this.fileOfClub = fileOfClub;
     }
     

@@ -45,8 +45,8 @@
                 <option value="出生地">出生地</option>
             </select>
             <input type="text" name="pwdReqAnswer" placeholder="请填写密保答案"><br>
-            <input type="text" name="newPwd1" placeholder="请输入新密码"><br>
-            <input type="text" name="newPwd2" placeholder="再次确认新密码"><br>
+            <input type="password" name="newPwd1" placeholder="请输入新密码"><br>
+            <input type="password" name="newPwd2" placeholder="再次确认新密码"><br>
             <label id="tips"></label>
             <input type="submit" name="" value="提交"><br>
         </form>

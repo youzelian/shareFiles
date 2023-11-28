@@ -14,6 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="JS/jquery-3.7.1.js" charset="utf-8"></script>
     <style>
         * {
             margin: 0;
@@ -138,14 +139,14 @@
 <body>
 <div class="main">
     <div class="content">
-        <form action="" method="" class="gen-form">
+        <form action="fileSaveServlet" method="post" enctype="multipart/form-data" class="gen-form">
             <!-- 文件名 -->
             <div class="form-field">
                 <fieldset>
                     <label>文件名</label>
                     <div class="inputWrapper">
                         <div class="inputInner">
-                            <input type="text" placeholder="填写文件名称">
+                            <input type="text" placeholder="填写文件名称" name="fileName">
                         </div>
                     </div>
                 </fieldset>
@@ -154,19 +155,31 @@
             <div class="form-field">
                 <fieldset>
                     <label>文件类型</label>
-                    <select name="fileType" id="file-type">
+                    <select id="file-type" name="fileType">
                         <!--selected设置默认选中-->
                         <option value="图片" selected="selected">图片</option>
                         <option value="视频">视频</option>
                         <option value="exe文件">exe文件</option>
                         <option value="apk文件">apk文件</option>
                         <option value="pdf文件">pdf文件</option>
+                        <option value="ppt文件">ppt文件</option>
                         <option value="word文件">word文件</option>
                         <option value="压缩包">压缩包</option>
                     </select>
+                    <%--                    <div class="inputWrapper">--%>
+                    <%--                        <div class="inputInner">--%>
+                    <%--                            <input type="text" placeholder="选择文件类型">--%>
+                    <%--                        </div>--%>
+                    <%--                    </div>--%>
+                </fieldset>
+            </div>
+            <!-- 文件描述 -->
+            <div class="form-field">
+                <fieldset>
+                    <label>文件描述</label>
                     <div class="inputWrapper">
                         <div class="inputInner">
-                            <input type="text" placeholder="选择文件类型">
+                            <input type="text" placeholder="描述" name="fileIntroduction">
                         </div>
                     </div>
                 </fieldset>
@@ -177,7 +190,7 @@
                     <label>俱乐部</label>
                     <div class="inputWrapper">
                         <div class="inputInner">
-                            <input type="text" placeholder="投入到哪个俱乐部">
+                            <input type="text" placeholder="投入到哪个俱乐部" name="fileOfClub">
                         </div>
                     </div>
                 </fieldset>
@@ -188,7 +201,7 @@
                     <label>文件选择</label>
                     <div class="inputWrapper" style="border: none;">
                         <div class="inputInner">
-                            <input type="file">
+                            <input type="file" name="file" id="upload_file">
                         </div>
                     </div>
                 </fieldset>
@@ -226,5 +239,15 @@
     </div>
 </div>
 </body>
-
+<script>
+    // 上传文件前判断是否有文件
+    $("#submit-file").click(function () {
+        if ($("#upload_file").val() == "") {
+            alert("请选择文件后上传！");
+            return false;
+        } else {
+            return true;
+        }
+    })
+</script>
 </html>

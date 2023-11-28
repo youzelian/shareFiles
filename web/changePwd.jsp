@@ -37,9 +37,9 @@
                 String userName = request.getParameter("userName");
             %>
             <input type="text" name="userName" placeholder="用户名" value="<%=userName%>" hidden><br>
-            <input type="text" name="oldPwd" placeholder="请输入旧密码"><br>
-            <input type="text" name="newPwd1" placeholder="请输入新密码"><br>
-            <input type="text" name="newPwd2" placeholder="再次确认新密码"><br>
+            <input type="password" name="oldPwd" placeholder="请输入旧密码"><br>
+            <input type="password" name="newPwd1" placeholder="请输入新密码"><br>
+            <input type="password" name="newPwd2" placeholder="再次确认新密码"><br>
             <label id="tips"></label>
             <input type="submit" name="" value="提交"><br>
         </form>
