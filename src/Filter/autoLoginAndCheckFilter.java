@@ -39,25 +39,27 @@ public class autoLoginAndCheckFilter implements Filter {
             /*****获得session值和cookie值*****/
             // 获得session
             HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
+            // User user = (User) session.getAttribute("user");
+            // 获得session中存入的sessionAuto值
+            String sessionAuto = (String) session.getAttribute("sessionAuto");
             // 获得cookie
             Cookie[] cookies = request.getCookies();
-            String autologin = null;
+            String cookieAuto = null;
             for (int i = 0; cookies != null && i < cookies.length; i++) {
-                if ("autologin".equals(cookies[i].getName())) {// 找到了指定的cookie
-                    autologin = cookies[i].getValue();
+                if ("cookieAuto".equals(cookies[i].getName())) {// 找到了指定的cookie
+                    cookieAuto = cookies[i].getValue();
                     break;
                 }
             }
             /*****获得session值和cookie值*****/
             
-            // 判断session中是否有信息
-            if (user != null) {
+            // 判断sessionAuto中是否有信息
+            if (sessionAuto != null) {
                 filterChain.doFilter(request, response);
             }
-            // 如果session中没有信息，则判断cookie中有没有信息，有信息再判断在数据库是否有对应信息有则存入session并放行，没有则跳转到登录页面，cookie没有则直接跳转到登录页面
-            else if (autologin != null) {
-                String[] parts = autologin.split("-");
+            // 如果session中没有sessionAuto信息，则判断cookie中有没有信息，有信息再判断在数据库是否有对应信息有则存入session并放行，没有则跳转到登录页面，cookie没有则直接跳转到登录页面
+            else if (cookieAuto != null) {
+                String[] parts = cookieAuto.split("-");
                 String username = parts[0];
                 int count = 0;
                 // 对cookie中的userName值解码
@@ -66,9 +68,10 @@ public class autoLoginAndCheckFilter implements Filter {
                 UserService userService = new UserService();
                 List<User> userList = userService.listUser();
                 for (User users : userList) {
-                    // 如果cookie值在数据库有对应的值则放行并存入session
+                    // 如果cookie值在数据库有对应的值则放行并将sessionAuto存入session
                     if (users.getUserName().equals(username) && users.getUserPwd().equals(password)) {
-                        request.getSession().setAttribute("user", new User(username, password));
+                        // request.getSession().setAttribute("user", new User(username, password));
+                        session.setAttribute("sessionAuto", "yes");
                         filterChain.doFilter(request, response);
                         break;
                     }

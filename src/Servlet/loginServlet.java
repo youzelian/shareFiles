@@ -26,7 +26,7 @@ public class loginServlet extends HttpServlet {
         if (auto_login != null) {
             //编码是为了在cookie中存储汉字
             String usernameCode = URLEncoder.encode(userName, "UTF-8");
-            Cookie cookie = new Cookie("autologin", usernameCode + '-' + userPwd);
+            Cookie cookie = new Cookie("cookieAuto", usernameCode + '-' + userPwd);
             //设置持久化时间
             cookie.setMaxAge(60 * 60);
             //发送cookie
@@ -36,6 +36,9 @@ public class loginServlet extends HttpServlet {
         UserService userService = new UserService();
         User user = userService.checkUser(userName);
         request.setAttribute("user", user);
+        // 将user存入session中
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 }

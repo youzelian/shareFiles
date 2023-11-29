@@ -41,7 +41,9 @@ public class userUpdateServlet extends HttpServlet {
         User user = userService.checkUser(userName);
         // 获得原头像路径
         String userImgPath = user.getUserImgPath();
-        userImgPath = userImgPath.substring(userImgPath.lastIndexOf("/") + 1);
+        if (userImgPath != null) {
+            userImgPath = userImgPath.substring(userImgPath.lastIndexOf("/") + 1);
+        }
         // 如果更新照片则对照片进行重新赋名
         Part userImg = request.getPart("userImg");
         String FileName = userImg.getSubmittedFileName();

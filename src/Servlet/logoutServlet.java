@@ -16,9 +16,11 @@ public class logoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
+        // 删除sessionAuto标记
+        session.removeAttribute("sessionAuto");
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
-            if ("autologin".equals(cookie.getName())) {
+            if ("cookieAuto".equals(cookie.getName())) {
                 cookie.setMaxAge(0);
                 response.addCookie(cookie);
             }
