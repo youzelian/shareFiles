@@ -46,9 +46,9 @@
             <ul style="list-style:none">
                 <li><a href="myFiles.jsp">我的文件夹</a></li>
                 <li><a href="addFiles.jsp">添加文件</a></li>
-                <li><a href="transferServlet?userName=${user.userName}&&type=ownPage.jsp">我的信息</a></li>
-                <li><a href="changePwd.jsp?userName=${user.userName}">修改密码</a></li>
-                <li><a href="logoutServlet?cookie=${cookieName}">登出</a></li>
+                <li><a href="ownPage.jsp">我的信息</a></li>
+                <li><a href="changePwd.jsp">修改密码</a></li>
+                <li><a href="logoutServlet">登出</a></li>
             </ul>
         </td>
         <!-- <td>

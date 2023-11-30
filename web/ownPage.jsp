@@ -1,4 +1,4 @@
-<%--
+<%@ page import="DTO.User" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2023/11/22 0022
@@ -173,10 +173,13 @@
 <div class="main">
     <form action="userUpdateServlet" method="post" enctype="multipart/form-data" class="gen-form">
         <!-- 头像 -->
+        <%
+            User user = (User) session.getAttribute("user");
+        %>
         <div class="form-field">
             <fieldset style="height: 80px;">
                 <label class="row">头像</label>
-                <img src="${user.userImgPath}" alt="" id="edit-avatar">
+                <img src="<%=user.getUserImgPath()%>" alt="" id="edit-avatar">
                 <input type="file" name="userImg" style="float: left;">
             </fieldset>
         </div>
@@ -186,7 +189,7 @@
                 <label class="row">昵称</label>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="${user.userName}" name="userName">
+                        <input type="text" value="<%=user.getUserName()%>" name="userName">
                     </div>
                 </div>
             </fieldset>
@@ -207,7 +210,7 @@
                 <label class="row">邮箱</label>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="${user.userEmail}" name="userEmail">
+                        <input type="text" value="<%=user.getUserEmail()%>" name="userEmail">
                     </div>
                 </div>
             </fieldset>
@@ -218,7 +221,7 @@
                 <label class="row">联系电话</label>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="${user.userTel}" name="userTel">
+                        <input type="text" value="<%=user.getUserTel()%>" name="userTel">
                     </div>
                 </div>
             </fieldset>
@@ -229,7 +232,7 @@
                 <label class="row">地址</label>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="${user.userAddress}" name="userAddress">
+                        <input type="text" value="<%=user.getUserAddress()%>}" name="userAddress">
                     </div>
                 </div>
             </fieldset>
@@ -249,7 +252,7 @@
                 </select>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="${user.pwdReqAnswer}" name="pwdQuestionAnswer"
+                        <input type="text" value="<%=user.getPwdReqAnswer()%>" name="pwdQuestionAnswer"
                                placeholder="设置密保才能修改密码">
                     </div>
                 </div>
@@ -260,7 +263,7 @@
             <fieldset style="height: 120px;">
                 <label class="row">个性签名</label>
                 <textarea name="personalSignature" id="personal_signature" cols="30" rows="10"
-                          placeholder="定义个性签名">${user.personalSignature}</textarea>
+                          placeholder="定义个性签名"><%=user.getPersonalSignature()%></textarea>
             </fieldset>
         </div>
         <!-- 提交按钮 -->
@@ -275,8 +278,8 @@
 
 </body>
 <script>
-    <%--要使用${}必须加一个""才是定义的字符串--%>
-    if ("${user.userGender}" == "男") {
+    <%--要使用${}或者<%=%>必须加一个""才是定义的字符串--%>
+    if ("<%=user.getUserGender()%>" == "男") {
         $("#man").prop('checked', true);
         $("#woman").prop('checked', false);
     } else {

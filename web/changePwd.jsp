@@ -1,4 +1,4 @@
-<%--
+<%@ page import="DTO.User" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2023/11/27 0027
@@ -34,9 +34,8 @@
     <div class="body">
         <form action="changePwdServlet" method="post">
             <%
-                String userName = request.getParameter("userName");
+                User user = (User) session.getAttribute("user");
             %>
-            <input type="text" name="userName" placeholder="用户名" value="<%=userName%>" hidden><br>
             <input type="password" name="oldPwd" placeholder="请输入旧密码"><br>
             <input type="password" name="newPwd1" placeholder="请输入新密码"><br>
             <input type="password" name="newPwd2" placeholder="再次确认新密码"><br>

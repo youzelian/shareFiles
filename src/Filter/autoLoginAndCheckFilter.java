@@ -39,7 +39,9 @@ public class autoLoginAndCheckFilter implements Filter {
             /*****获得session值和cookie值*****/
             // 获得session
             HttpSession session = request.getSession();
-            // User user = (User) session.getAttribute("user");
+            User user = (User) session.getAttribute("user");
+            String id = session.getId();
+            System.out.println(user);
             // 获得session中存入的sessionAuto值
             String sessionAuto = (String) session.getAttribute("sessionAuto");
             // 获得cookie

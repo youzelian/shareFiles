@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "changePwdServlet", urlPatterns = "/changePwdServlet")
@@ -21,13 +22,13 @@ public class changePwdServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 1.从前端接收请求
         request.setCharacterEncoding("utf-8");
-        String userName = request.getParameter("userName");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         String oldPwd = request.getParameter("oldPwd");
         String newPwd1 = request.getParameter("newPwd1");
         String newPwd2 = request.getParameter("newPwd2");
         // 2.从数据库中取出数据并比较旧密码
         UserService userService = new UserService();
-        User user = userService.checkUser(userName);
         String type = null;
         String address = null;
         if (user.getUserPwd().equals(oldPwd) && newPwd1.equals(newPwd2)) {
