@@ -12,12 +12,17 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     String type = (String) request.getAttribute("type");
     User user = (User) request.getAttribute("user");
+    String fId = (String) request.getAttribute("fId");
     String url = null;
     if (type.equals("userUpdate") || type.equals("forgetPwdFail") || type.equals("fileSave")) {
         url = basePath + "index.jsp"; //设置跳转的地址
     }
     else if (type.equals("userSave") || type.equals("forgetPwd")) {
         url = basePath + "login.jsp"; //设置跳转的地址
+    }
+    else if (type.equals("commentSave") || type.equals("commentDelete")) {
+        url = basePath + "transferServlet?fileId=" + fId; //设置跳转的地址
+        System.out.println(url);
     }
 %>
 <html lang="en">

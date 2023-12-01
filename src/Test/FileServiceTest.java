@@ -14,4 +14,16 @@ public class FileServiceTest {
         boolean b = fileService.saveFile(new File("动漫图片", "图片", "xxx", "1", "动漫图片"));
         System.out.println(b);
     }
+    
+    @Test
+    public void checkFile() {
+        File file = fileService.checkFile(1);
+        System.out.println(file);
+    }
+    
+    @Test
+    public void interact() {
+        int i = fileService.interact(new File(1, 2, 1, 1));
+        System.out.println(i);
+    }
 }

@@ -38,8 +38,6 @@ public class loginServlet extends HttpServlet {
         // 将user存入session中
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        String id = session.getId();
-        System.out.println(user);
         request.setAttribute("user", user);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }

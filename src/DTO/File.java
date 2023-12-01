@@ -22,6 +22,28 @@ public class File {
         this.fileIntroduction = fileIntroduction;
     }
     
+    public File(int fileId, int fileVote, int fileCollect, int fileDownloadAmount) {
+        this.fileId = fileId;
+        this.fileVote = fileVote;
+        this.fileCollect = fileCollect;
+        this.fileDownloadAmount = fileDownloadAmount;
+    }
+    
+    @Override
+    public String toString() {
+        return "File{" +
+                "fileId=" + fileId +
+                ", fileName='" + fileName + '\'' +
+                ", fileType='" + fileType + '\'' +
+                ", fileDownloadLink='" + fileDownloadLink + '\'' +
+                ", fileVote=" + fileVote +
+                ", fileCollect=" + fileCollect +
+                ", fileDownloadAmount=" + fileDownloadAmount +
+                ", fileOfClub='" + fileOfClub + '\'' +
+                ", fileIntroduction='" + fileIntroduction + '\'' +
+                '}';
+    }
+    
     public int getFileId() {
         return fileId;
     }

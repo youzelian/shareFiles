@@ -210,7 +210,7 @@
                 <label class="row">邮箱</label>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="<%=user.getUserEmail()%>" name="userEmail">
+                        <input type="text" value="<%=user.getUserEmail()%>" name="userEmail" placeholder="请输入邮箱">
                     </div>
                 </div>
             </fieldset>
@@ -232,7 +232,7 @@
                 <label class="row">地址</label>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="<%=user.getUserAddress()%>}" name="userAddress">
+                        <input type="text" value="<%=user.getUserAddress()%>" name="userAddress">
                     </div>
                 </div>
             </fieldset>

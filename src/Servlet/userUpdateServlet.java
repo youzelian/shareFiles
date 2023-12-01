@@ -6,10 +6,7 @@ import Service.UserService;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -63,8 +60,13 @@ public class userUpdateServlet extends HttpServlet {
         int userId = user.getUserId();
         user = new User(userId, userName, userGender, userEmail, userTel, userAddress, "userImg/" + userImgPath, personalSignature, pwdQuestion, pwdQuestionAnswer);
         boolean b = userService.updateUser(user);
+        // 4.每次更新user数据，重新更新session中的user值
+        HttpSession session = request.getSession();
+        // 利用checkUser重新获得user，因为上面传递数据到数据中的数据不完整，没有用户密码，所以需要重新抓取
+        User user1 = userService.checkUser(userName);
+        session.setAttribute("user", user1);
         
-        // 4.跳转到提示页面然后跳转主页面，并显示提示信息
+        // 5.跳转到提示页面然后跳转主页面，并显示提示信息
         String tips = b ? "<label style='color:green'>更新成功!</label>" : "<label style='color:red'>更新失败!</label>";
         String type = "userUpdate";
         String address = "主页面";

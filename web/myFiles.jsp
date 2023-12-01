@@ -104,21 +104,21 @@
         <th>隶属于俱乐部</th>
         <th>介绍</th>
     </tr>
-    <c:forEach items="${bookPageHelper.list}" var="book">
-        <tr>
-            <td>${file.fileId}</td>
-            <td>${file.fileName}</td>
-            <td>${file.fileType}</td>
-            <th><a href="${file.fileDownloadLink}" class="styled-link">下载地址</a></th>
-            <td>${file.fileVote}</td>
-            <td>${file.fileCollect}</td>
-            <td>${file.fileDownloadAmount}</td>
-            <td>${file.fileOfClub}</td>
-            <th>
-                <p>${file.fileIntroduction}</p>
-            </th>
-        </tr>
-    </c:forEach>
+    <%--    <c:forEach items="${bookPageHelper.list}" var="book">--%>
+    <tr>
+        <td><a href="transferServlet?fileId=3">3</a></td>
+        <td>${file.fileName}</td>
+        <td>${file.fileType}</td>
+        <th><a href="${file.fileDownloadLink}" class="styled-link">下载地址</a></th>
+        <td>${file.fileVote}</td>
+        <td>${file.fileCollect}</td>
+        <td>${file.fileDownloadAmount}</td>
+        <td>${file.fileOfClub}</td>
+        <th>
+            <p>${file.fileIntroduction}</p>
+        </th>
+    </tr>
+    <%--    </c:forEach>--%>
     <!-- <%--显示分页效果及页码切换--%> -->
     <tr height="50">
         <td colspan="9" align="center">

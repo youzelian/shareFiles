@@ -40,8 +40,6 @@ public class autoLoginAndCheckFilter implements Filter {
             // 获得session
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
-            String id = session.getId();
-            System.out.println(user);
             // 获得session中存入的sessionAuto值
             String sessionAuto = (String) session.getAttribute("sessionAuto");
             // 获得cookie
@@ -72,7 +70,12 @@ public class autoLoginAndCheckFilter implements Filter {
                 for (User users : userList) {
                     // 如果cookie值在数据库有对应的值则放行并将sessionAuto存入session
                     if (users.getUserName().equals(username) && users.getUserPwd().equals(password)) {
-                        // request.getSession().setAttribute("user", new User(username, password));
+                        // 此处是为了些项目而写的重新将user写入session（因为重新部署或重新启动session都会丢失)
+                        // ？？？？？？？？？？
+                        // 保存user值到session中
+                        User user1 = userService.checkUser(username);
+                        request.getSession().setAttribute("user", user1);
+                        // ？？？？？？？？？？
                         session.setAttribute("sessionAuto", "yes");
                         filterChain.doFilter(request, response);
                         break;
