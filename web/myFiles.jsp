@@ -104,43 +104,44 @@
         <th>隶属于俱乐部</th>
         <th>介绍</th>
     </tr>
-    <%--    <c:forEach items="${bookPageHelper.list}" var="book">--%>
-    <tr>
-        <td><a href="transferServlet?fileId=3">3</a></td>
-        <td>${file.fileName}</td>
-        <td>${file.fileType}</td>
-        <th><a href="${file.fileDownloadLink}" class="styled-link">下载地址</a></th>
-        <td>${file.fileVote}</td>
-        <td>${file.fileCollect}</td>
-        <td>${file.fileDownloadAmount}</td>
-        <td>${file.fileOfClub}</td>
-        <th>
-            <p>${file.fileIntroduction}</p>
-        </th>
-    </tr>
-    <%--    </c:forEach>--%>
+    <c:forEach items="${user_FilePageHelper.list}" var="User_File">
+        <tr>
+            <td><a href="transferServlet?fileId=${User_File.fId}">${User_File.fId}</a></td>
+            <td>${User_File.fileName}</td>
+            <td>${User_File.fileType}</td>
+            <th><a href="${User_File.fileDownloadLink}" class="styled-link" download="${User_File.fileDownloadLink}">下载地址</a>
+            </th>
+            <td>${User_File.fileVote}</td>
+            <td>${User_File.fileCollect}</td>
+            <td>${User_File.fileDownloadAmount}</td>
+            <td>${User_File.fileOfClub}</td>
+            <th>
+                <p>${User_File.fileIntroduction}</p>
+            </th>
+        </tr>
+    </c:forEach>
     <!-- <%--显示分页效果及页码切换--%> -->
     <tr height="50">
         <td colspan="9" align="center">
             <!-- <%--显示首页，上一页，如果当前页是第一页则不显示超链接--%> -->
-            <c:if test="${filePageHelper.pageNum== 1}">
+            <c:if test="${user_FilePageHelper.pageNum== 1}">
                 <label style="color:gray;">首页</label>
                 <label style="color:gray;">上一页</label>
             </c:if>
-            <c:if test="${filePageHelper.pageNum> 1}">
-                <a href="FileListServlet?pageNum=1">首页</a>
-                <a href="FileListServlet?pageNum=${filePageHelper.pageNum - 1}">上一页</a>
+            <c:if test="${user_FilePageHelper.pageNum> 1}">
+                <a href="myFilesListServlet?pageNum=1">首页</a>
+                <a href="myFilesListServlet?pageNum=${user_FilePageHelper.pageNum - 1}">上一页</a>
             </c:if>
 
             <!-- <%--显示页码和总页数--%> -->
-            当前第${bookPageHelper.pageNum}页/共${bookPageHelper.pageCount}页
+            当前第${user_FilePageHelper.pageNum}页/共${user_FilePageHelper.pageCount}页
 
             <!-- <%--显示下一页和尾页--%> -->
-            <c:if test="${filePageHelper.pageNum < filePageHelper.pageCount}">
-                <a href="FileListServlet?pageNum=${filePageHelper.pageNum + 1}">下一页</a>
-                <a href="FileListServlet?pageNum=${filePageHelper.pageCount}">尾页</a>
+            <c:if test="${user_FilePageHelper.pageNum < user_FilePageHelper.pageCount}">
+                <a href="myFilesListServlet?pageNum=${user_FilePageHelper.pageNum + 1}">下一页</a>
+                <a href="myFilesListServlet?pageNum=${user_FilePageHelper.pageCount}">尾页</a>
             </c:if>
-            <c:if test="${filePageHelper.pageNum == filePageHelper.pageCount}">
+            <c:if test="${user_FilePageHelper.pageNum == user_FilePageHelper.pageCount}">
                 <label style="color:gray;">下一页</label>
                 <label style="color:gray;">尾页</label>
             </c:if>

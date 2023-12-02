@@ -4,9 +4,12 @@ import DTO.File;
 import DTO.User_File;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import utils.DruidUtils;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class User_FileDAO {
     BeanProcessor bean = new GenerousBeanProcessor();
@@ -50,5 +53,31 @@ public class User_FileDAO {
             e.printStackTrace();
         }
         return user_file;
+    }
+    
+    // 查询用户收藏的文件
+    public List<User_File> listUser_File(int start, int limit) {
+        List<User_File> user_fileList = null;
+        try {
+            String sql = "select  * from user_file inner join files on user_file.f_id=files.file_id where u_id=7 limit ?,?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            user_fileList = queryRunner.query(sql, new BeanListHandler<User_File>(User_File.class, processor), start, limit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user_fileList;
+    }
+    
+    // 查询用户收藏的文件的总记录数
+    public Long selectUser_FileCount(int uId) {
+        long count = 0;
+        try {
+            String sql = "select count(1) from user_file where u_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            count = queryRunner.query(sql, new ScalarHandler<Long>(), uId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 }

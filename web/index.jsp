@@ -44,7 +44,7 @@
             </ul>
             订单管理
             <ul style="list-style:none">
-                <li><a href="myFiles.jsp">我的文件夹</a></li>
+                <li><a href="myFilesListServlet">我的文件夹</a></li>
                 <li><a href="addFiles.jsp">添加文件</a></li>
                 <li><a href="ownPage.jsp">我的信息</a></li>
                 <li><a href="changePwd.jsp">修改密码</a></li>
