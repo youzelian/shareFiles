@@ -6,6 +6,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import utils.DruidUtils;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class FileService {
     private FileDAO fileDAO = new FileDAO();
@@ -26,5 +27,11 @@ public class FileService {
     public int interact(File file) {
         int i = fileDAO.interact(file);
         return i;
+    }
+    
+    // 查找所有文件信息
+    public List<File> listFile() {
+        List<File> fileList = fileDAO.listFile();
+        return fileList;
     }
 }

@@ -1,6 +1,8 @@
 package Servlet;
 
+import DAO.File_ClubDAO;
 import DTO.File;
+import DTO.File_Club;
 import DTO.User;
 import Service.FileService;
 import Service.UserService;
@@ -30,7 +32,7 @@ public class fileSaveServlet extends HttpServlet {
         String fileNme = request.getParameter("fileName");
         String fileType = request.getParameter("fileType");
         String fileIntroduction = request.getParameter("fileIntroduction");
-        String fileOfClub = request.getParameter("fileOfClub");
+        int fileOfClub = Integer.parseInt(request.getParameter("fileOfClub"));
         
         // 2.接受并保存文件
         // 2.1重新赋名
@@ -84,6 +86,8 @@ public class fileSaveServlet extends HttpServlet {
         FileService fileService = new FileService();
         String fileDownloadLink = "files/" + dir.substring(dir.lastIndexOf("\\") + 1) + "/" + filePath;
         boolean b = fileService.saveFile(new File(fileNme, fileType, fileDownloadLink, fileOfClub, fileIntroduction));
+        // File_ClubDAO file_clubDAO = new File_ClubDAO();
+        // file_clubDAO.insertFile_Club(new File_Club())
         
         // 4.跳转到提示页面然后跳转主页面，并显示提示信息
         String tips = b ? "<label style='color:green'>上传成功!</label>" : "<label style='color:red'>上传失败!</label>";

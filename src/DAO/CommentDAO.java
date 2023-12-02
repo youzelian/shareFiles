@@ -16,9 +16,9 @@ public class CommentDAO {
     public int insertComment(Comment comment) {
         int i = 0;
         try {
-            String sql = "insert into comments(comment_id,f_id,u_id,comment_content) values(?,?,?,?)";
+            String sql = "insert into comments(f_id,u_id,comment_content) values(?,?,?)";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            Object[] params = {comment.getCommentId(), comment.getfId(), comment.getuId(), comment.getCommentContent()};
+            Object[] params = {comment.getfId(), comment.getuId(), comment.getCommentContent()};
             i = queryRunner.update(sql, params);
         } catch (SQLException e) {
             e.printStackTrace();

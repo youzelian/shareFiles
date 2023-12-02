@@ -33,7 +33,7 @@ public class User_FileService {
         // 1.查询当前页面信息
         int start = (pageNum - 1) * pageSize;
         int limit = pageSize;
-        List<User_File> user_fileList = user_fileDAO.listUser_File(start, limit);
+        List<User_File> user_fileList = user_fileDAO.listUser_File(uId, start, limit);
         // 2.查询并计算图书总页数
         // a.查询总记录数
         Long count = user_fileDAO.selectUser_FileCount(uId);

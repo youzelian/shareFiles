@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -84,7 +85,7 @@
             background: transparent;
         }
 
-        #file-type {
+        #file-type, #club-type {
             float: left;
             height: 33px;
             line-height: 30px;
@@ -188,11 +189,18 @@
             <div class="form-field">
                 <fieldset>
                     <label>俱乐部</label>
-                    <div class="inputWrapper">
-                        <div class="inputInner">
-                            <input type="text" placeholder="投入到哪个俱乐部" name="fileOfClub">
-                        </div>
-                    </div>
+                    <select id="club-type" name="fileOfClub">
+                        <!--selected设置默认选中-->
+
+                        <c:forEach items="${clubList}" var="club">
+                            <option value="${club.clubName}" selected="selected">${club.clubName}</option>
+                        </c:forEach>
+                    </select>
+                    <%--                    <div class="inputWrapper">--%>
+                    <%--                        <div class="inputInner">--%>
+                    <%--                            <input type="text" placeholder="投入到哪个俱乐部" name="fileOfClub">--%>
+                    <%--                        </div>--%>
+                    <%--                    </div>--%>
                 </fieldset>
             </div>
             <!-- 提交文件 -->
@@ -218,6 +226,7 @@
     <div class="sidebar">
         <div class="out-table">
             <table>
+
                 <thead>
                 <tr>
                     <th>俱乐部名</th>
@@ -225,14 +234,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>${club.clubName}</td>
-                    <td>${club.numbers}</td>
-                </tr>
-                <tr>
-                    <td>${club.clubName}</td>
-                    <td>${club.numbers}</td>
-                </tr>
+                <c:forEach items="${clubList}" var="club">
+                    <tr>
+                        <td>${club.clubName}</td>
+                        <td>${club.clubNumbers}</td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>

@@ -1,7 +1,9 @@
 package DTO;
 
-public class File {
-    private int fileId;
+public class File_Club {
+    private int fcId;
+    private int fId;
+    private int cId;
     private String fileName;
     private String fileType;
     private String fileDownloadLink;
@@ -10,46 +12,56 @@ public class File {
     private int fileDownloadAmount;
     private int fileOfClub;
     private String fileIntroduction;
+    private String clubName;
     
-    public File() {
+    public File_Club() {
     }
     
-    public File(String fileName, String fileType, String fileDownloadLink, int fileOfClub, String fileIntroduction) {
-        this.fileName = fileName;
-        this.fileType = fileType;
-        this.fileDownloadLink = fileDownloadLink;
-        this.fileOfClub = fileOfClub;
-        this.fileIntroduction = fileIntroduction;
-    }
-    
-    public File(int fileId, int fileVote, int fileCollect, int fileDownloadAmount) {
-        this.fileId = fileId;
-        this.fileVote = fileVote;
-        this.fileCollect = fileCollect;
-        this.fileDownloadAmount = fileDownloadAmount;
+    public File_Club(int fId, int cId) {
+        this.fId = fId;
+        this.cId = cId;
     }
     
     @Override
     public String toString() {
-        return "File{" +
-                "fileId=" + fileId +
+        return "File_Club{" +
+                "fcId=" + fcId +
+                ", fId=" + fId +
+                ", cId=" + cId +
                 ", fileName='" + fileName + '\'' +
                 ", fileType='" + fileType + '\'' +
                 ", fileDownloadLink='" + fileDownloadLink + '\'' +
                 ", fileVote=" + fileVote +
                 ", fileCollect=" + fileCollect +
                 ", fileDownloadAmount=" + fileDownloadAmount +
-                ", fileOfClub='" + fileOfClub + '\'' +
+                ", fileOfClub=" + fileOfClub +
                 ", fileIntroduction='" + fileIntroduction + '\'' +
+                ", clubName='" + clubName + '\'' +
                 '}';
     }
     
-    public int getFileId() {
-        return fileId;
+    public int getFcId() {
+        return fcId;
     }
     
-    public void setFileId(int fileId) {
-        this.fileId = fileId;
+    public void setFcId(int fcId) {
+        this.fcId = fcId;
+    }
+    
+    public int getfId() {
+        return fId;
+    }
+    
+    public void setfId(int fId) {
+        this.fId = fId;
+    }
+    
+    public int getcId() {
+        return cId;
+    }
+    
+    public void setcId(int cId) {
+        this.cId = cId;
     }
     
     public String getFileName() {
@@ -114,5 +126,13 @@ public class File {
     
     public void setFileIntroduction(String fileIntroduction) {
         this.fileIntroduction = fileIntroduction;
+    }
+    
+    public String getClubName() {
+        return clubName;
+    }
+    
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
     }
 }

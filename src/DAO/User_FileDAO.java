@@ -56,12 +56,12 @@ public class User_FileDAO {
     }
     
     // 查询用户收藏的文件
-    public List<User_File> listUser_File(int start, int limit) {
+    public List<User_File> listUser_File(int uId, int start, int limit) {
         List<User_File> user_fileList = null;
         try {
-            String sql = "select  * from user_file inner join files on user_file.f_id=files.file_id where u_id=7 limit ?,?";
+            String sql = "select  * from user_file inner join files on user_file.f_id=files.file_id where user_file.u_id=? limit ?,?";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            user_fileList = queryRunner.query(sql, new BeanListHandler<User_File>(User_File.class, processor), start, limit);
+            user_fileList = queryRunner.query(sql, new BeanListHandler<User_File>(User_File.class, processor), uId, start, limit);
         } catch (SQLException e) {
             e.printStackTrace();
         }

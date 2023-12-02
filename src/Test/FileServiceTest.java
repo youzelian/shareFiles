@@ -4,6 +4,8 @@ import DTO.File;
 import Service.FileService;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class FileServiceTest {
@@ -11,7 +13,7 @@ public class FileServiceTest {
     
     @Test
     public void saveFile() {
-        boolean b = fileService.saveFile(new File("动漫图片", "图片", "xxx", "1", "动漫图片"));
+        boolean b = fileService.saveFile(new File("动漫图片", "图片", "xxx", 1, "动漫图片"));
         System.out.println(b);
     }
     
@@ -25,5 +27,11 @@ public class FileServiceTest {
     public void interact() {
         int i = fileService.interact(new File(1, 2, 1, 1));
         System.out.println(i);
+    }
+    
+    @Test
+    public void listFile() {
+        List<File> fileList = fileService.listFile();
+        System.out.println(fileList);
     }
 }

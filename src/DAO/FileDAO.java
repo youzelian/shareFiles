@@ -4,9 +4,11 @@ import DTO.File;
 import DTO.User;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import utils.DruidUtils;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class FileDAO {
     BeanProcessor bean = new GenerousBeanProcessor();
@@ -54,4 +56,15 @@ public class FileDAO {
     }
     
     // 查找所有文件信息
+    public List<File> listFile() {
+        List<File> fileList = null;
+        try {
+            String sql = "select * from files";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            fileList = queryRunner.query(sql, new BeanListHandler<File>(File.class, processor));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fileList;
+    }
 }
