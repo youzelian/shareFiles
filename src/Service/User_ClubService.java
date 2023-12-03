@@ -9,9 +9,9 @@ public class User_ClubService {
     private User_ClubDAO user_clubDAO = new User_ClubDAO();
     
     // 增加用户与俱乐部的关联信息
-    public int insertUser_Club(User_Club user_club) {
+    public boolean insertUser_Club(User_Club user_club) {
         int i = user_clubDAO.insertUser_Club(user_club);
-        return i;
+        return i > 0 ? true : false;
     }
     
     // 根据用户id和俱乐部id查看已有关联信息

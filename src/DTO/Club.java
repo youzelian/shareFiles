@@ -5,6 +5,7 @@ public class Club {
     private String clubName;
     private String clubIntroduction;
     private int clubNumbers;
+    private Long clubHasFiles;
     
     public Club() {
     }
@@ -21,6 +22,7 @@ public class Club {
                 ", clubName='" + clubName + '\'' +
                 ", clubIntroduction='" + clubIntroduction + '\'' +
                 ", clubNumbers=" + clubNumbers +
+                ", clubHasFiles=" + clubHasFiles +
                 '}';
     }
     
@@ -54,5 +56,13 @@ public class Club {
     
     public void setClubNumbers(int clubNumbers) {
         this.clubNumbers = clubNumbers;
+    }
+    
+    public Long getClubHasFiles() {
+        return clubHasFiles;
+    }
+    
+    public void setClubHasFiles(Long clubHasFiles) {
+        this.clubHasFiles = clubHasFiles;
     }
 }

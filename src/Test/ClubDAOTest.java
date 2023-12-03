@@ -18,8 +18,26 @@ public class ClubDAOTest {
     }
     
     @Test
+    public void checkClub() {
+        Club club = clubDAO.checkClub(1);
+        System.out.println(club);
+    }
+    
+    @Test
     public void listClub() {
         List<Club> clubList = clubDAO.listClub();
         System.out.println(clubList);
     }
+    
+    @Test
+    public void selectClubHasFilesCount() {
+        Long count = clubDAO.selectClubHasFilesCount(3);
+        System.out.println(count);
+    }
+    
+    // @Test
+    // public void selectAllVotes() {
+    //     Long count = clubDAO.selectAllVotes(1);
+    //     System.out.println(count);
+    // }
 }

@@ -2,7 +2,9 @@ package DAO;
 
 import DTO.Club;
 import org.apache.commons.dbutils.*;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import utils.DruidUtils;
 
 import java.sql.SQLException;
@@ -25,11 +27,24 @@ public class ClubDAO {
         return i;
     }
     
+    // 根据俱乐部Id查询俱乐部
+    public Club checkClub(int clubId) {
+        Club club = null;
+        try {
+            String sql = "select * from clubs where club_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            club = queryRunner.query(sql, new BeanHandler<Club>(Club.class, processor), clubId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return club;
+    }
+    
     // 查询所有俱乐部
     public List<Club> listClub() {
         List<Club> clubList = null;
         try {
-            String sql = "select * from clubs";
+            String sql = "select * from clubs ";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             clubList = queryRunner.query(sql, new BeanListHandler<Club>(Club.class, processor));
         } catch (SQLException e) {
@@ -37,4 +52,30 @@ public class ClubDAO {
         }
         return clubList;
     }
+    
+    // 查询俱乐部所拥有的文件数
+    public Long selectClubHasFilesCount(int clubId) {
+        long count = 0;
+        try {
+            String sql = "select count(1) from clubs inner join file_club on clubs.club_id=file_club.c_id where clubs.club_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            count = queryRunner.query(sql, new ScalarHandler<Long>(), clubId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+    
+    // // 查询俱乐部所拥有的所有文件的所有点赞数
+    // public Long selectAllVotes(int clubId) {
+    //     long count = 0;
+    //     try {
+    //         String sql = "select sum(file_vote) from files where file_of_club=?";
+    //         QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+    //         count = queryRunner.query(sql, new ScalarHandler<Long>(), clubId);
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //     }
+    //     return count;
+    // }
 }

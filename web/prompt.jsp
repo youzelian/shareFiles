@@ -14,7 +14,7 @@
     User user = (User) request.getAttribute("user");
     String fId = (String) request.getAttribute("fId");
     String url = null;
-    if (type.equals("userUpdate") || type.equals("forgetPwdFail") || type.equals("fileSave")) {
+    if (type.equals("userUpdate") || type.equals("forgetPwdFail")) {
         url = basePath + "index.jsp"; //设置跳转的地址
     }
     else if (type.equals("userSave") || type.equals("forgetPwd")) {
@@ -22,7 +22,13 @@
     }
     else if (type.equals("commentSave") || type.equals("commentDelete")) {
         url = basePath + "transferServlet?fileId=" + fId; //设置跳转的地址
-        System.out.println(url);
+    }
+    else if (type.equals("user_clubSave")) {
+        url = basePath + "clubListServlet?web=clubListFiles.jsp"; //设置跳转的地址
+    }
+    else if (type.equals("fileSave")) {
+        // 所有文件上传后都要进行俱乐部关联操作
+        url = basePath + "file_clubSaveServlet"; //设置跳转的地址
     }
 %>
 <html lang="en">

@@ -18,8 +18,20 @@ public class ClubServiceTest {
     }
     
     @Test
+    public void checkClub() {
+        Club club = clubService.checkClub(1);
+        System.out.println(club);
+    }
+    
+    @Test
     public void listClub() {
         List<Club> clubList = clubService.listClub();
         System.out.println(clubList);
     }
+    
+    // @Test
+    // public void selectClubHasFilesCount() {
+    //     Long count = clubService.selectClubHasFilesCount(3);
+    //     System.out.println(count);
+    // }
 }

@@ -24,7 +24,7 @@ public class File_ClubServiceTest {
     
     @Test
     public void listFile_ClubByPage() {
-        pageHelper<File_Club> file_ClubPageHelper = file_clubService.listFile_ClubByPage(1, 1, 3);
+        pageHelper<File_Club> file_ClubPageHelper = file_clubService.listFile_ClubByPage(1, 1, 10);
         System.out.println(file_ClubPageHelper.list);
     }
 }

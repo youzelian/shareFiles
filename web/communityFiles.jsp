@@ -134,7 +134,7 @@
 </div>
 </body>
 <script>
-    <%-    <%--%>
+    <%--    <%--%>
     <%--        String searchContent = request.getParameter("searchContent");--%>
     <%--    %>--%>
     <%--    $("#search").click(function () {--%>

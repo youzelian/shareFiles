@@ -40,12 +40,13 @@
             <ul style="list-style:none">
                 <!--  target="mainFrame" -->
                 <li><a href="communityListServlet">社区文件夹</a></li>
-                <li><a href="myClubsListServlet">社团文件夹</a></li>
+                <li><a href="clubListServlet?web=clubListFiles.jsp">社团文件夹</a></li>
+                <li><a href="myClubsListServlet">我的社团文件夹</a></li>
             </ul>
             订单管理
             <ul style="list-style:none">
                 <li><a href="myFilesListServlet">我的文件夹</a></li>
-                <li><a href="clubListServlet">添加文件</a></li>
+                <li><a href="clubListServlet?web=addFiles.jsp">添加文件</a></li>
                 <li><a href="ownPage.jsp">我的信息</a></li>
                 <li><a href="changePwd.jsp">修改密码</a></li>
                 <li><a href="logoutServlet">登出</a></li>

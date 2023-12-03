@@ -20,10 +20,10 @@ public class clubListServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String web = request.getParameter("web");
         ClubService clubService = new ClubService();
         List<Club> clubList = clubService.listClub();
         request.setAttribute("clubList", clubList);
-        System.out.println(clubList.get(0));
-        request.getRequestDispatcher("addFiles.jsp").forward(request, response);
+        request.getRequestDispatcher(web).forward(request, response);
     }
 }

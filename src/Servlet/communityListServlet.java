@@ -41,18 +41,19 @@ public class communityListServlet extends HttpServlet {
             // 否则进行列出全部文件
             fileList = fileService.listFile();
         }
-        
-        // 1.在列出所有俱乐部文件前，先对所有文件进行俱乐部关联
         List<Club> clubList = clubService.listClub();
-        for (Club club : clubList) {
-            for (File file : fileList) {
-                // 关联前进行查询是否已经关联了
-                File_Club file_club = file_clubService.checkFile_Club(file.getFileId(), club.getClubId());
-                if (file.getFileOfClub() == club.getClubId() && file_club == null) {
-                    file_clubService.insertFile_Club(new File_Club(file.getFileId(), club.getClubId()));
-                }
-            }
-        }
+        
+        // 提取下列代码至file_clubSaveServlet,进行代码的优化
+        // // 1.在列出所有俱乐部文件前，先对所有文件进行俱乐部关联
+        // for (Club club : clubList) {
+        //     for (File file : fileList) {
+        //         // 关联前进行查询是否已经关联了
+        //         File_Club file_club = file_clubService.checkFile_Club(file.getFileId(), club.getClubId());
+        //         if (file.getFileOfClub() == club.getClubId() && file_club == null) {
+        //             file_clubService.insertFile_Club(new File_Club(file.getFileId(), club.getClubId()));
+        //         }
+        //     }
+        // }
         
         // 2.得到所有俱乐部的所有文件||得到模糊查询的文件
         for (Club club : clubList) {
@@ -63,14 +64,15 @@ public class communityListServlet extends HttpServlet {
             
             // 2.2.定义pageSize
             int pageSize = 10;
+            pageHelper<File_Club> file_ClubPageHelper = null;
             // 这个循环是为了模糊查询而写，如果是模糊查询，查询出来的fileList不是全部的，只查询clubId和模糊查询的文件的clubOfClub符合的file_ClubPageHelper;如果不是模糊查询，是全部文件，则下列判断都会符合，会查询出来所有文件
             for (File file : fileList) {
                 if (file.getFileOfClub() == clubId) {
-                    // 2.3.调用File_Club查询文件信息并存储到List中
-                    pageHelper<File_Club> file_ClubPageHelper = file_clubService.listFile_ClubByPage(clubId, pageNum, pageSize);
-                    pages.add(file_ClubPageHelper);
+                    // 2.3.调用File_ClubService查询文件信息并存储到List中
+                    file_ClubPageHelper = file_clubService.listFile_ClubByPage(clubId, pageNum, pageSize);
                 }
             }
+            pages.add(file_ClubPageHelper);
         }
         
         // 3.转发到communityFiles.jsp
