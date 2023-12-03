@@ -4,6 +4,8 @@ import DAO.FileDAO;
 import DTO.File;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class FileDAOTest {
@@ -19,5 +21,11 @@ public class FileDAOTest {
     public void interact() {
         int i = fileDAO.interact(new File(1, 1, 1, 1));
         System.out.println(i);
+    }
+    
+    @Test
+    public void fuzzyQueryFileByFileName() {
+        List<File> fileList = fileDAO.fuzzyQueryFileByFileName("笑");
+        System.out.println(fileList);
     }
 }

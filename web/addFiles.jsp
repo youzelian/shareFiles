@@ -191,9 +191,8 @@
                     <label>俱乐部</label>
                     <select id="club-type" name="fileOfClub">
                         <!--selected设置默认选中-->
-
                         <c:forEach items="${clubList}" var="club">
-                            <option value="${club.clubName}" selected="selected">${club.clubName}</option>
+                            <option value="${club.clubId}" selected="selected">${club.clubName}</option>
                         </c:forEach>
                     </select>
                     <%--                    <div class="inputWrapper">--%>

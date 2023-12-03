@@ -23,6 +23,12 @@ public class FileService {
         return file;
     }
     
+    // 根据文件名模糊查询文件
+    public List<File> fuzzyQueryFileByFileName(String fileName) {
+        List<File> fileList = fileDAO.fuzzyQueryFileByFileName(fileName);
+        return fileList;
+    }
+    
     // 互动：点赞收藏下载
     public int interact(File file) {
         int i = fileDAO.interact(file);

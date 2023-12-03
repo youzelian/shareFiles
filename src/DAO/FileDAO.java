@@ -41,6 +41,19 @@ public class FileDAO {
         return file;
     }
     
+    // 根据文件名模糊查询文件
+    public List<File> fuzzyQueryFileByFileName(String fileName) {
+        List<File> fileList = null;
+        try {
+            String sql = "select * from files where file_name like ?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            fileList = queryRunner.query(sql, new BeanListHandler<File>(File.class, processor), "%" + fileName + "%");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fileList;
+    }
+    
     // 互动：点赞收藏下载
     public int interact(File file) {
         int i = 0;

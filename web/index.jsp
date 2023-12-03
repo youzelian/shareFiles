@@ -39,7 +39,7 @@
             图书信息管理
             <ul style="list-style:none">
                 <!--  target="mainFrame" -->
-                <li><a href="communityFiles.jsp">社区文件夹</a></li>
+                <li><a href="communityListServlet">社区文件夹</a></li>
                 <li><a href="myClubsListServlet">社团文件夹</a></li>
             </ul>
             订单管理
