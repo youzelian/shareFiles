@@ -40,6 +40,19 @@ public class ClubDAO {
         return club;
     }
     
+    // 根据俱乐部名查询俱乐部
+    public Club selectRepeatedName(String clubName) {
+        Club club = null;
+        try {
+            String sql = "select * from clubs where club_name=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            club = queryRunner.query(sql, new BeanHandler<Club>(Club.class, processor), clubName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return club;
+    }
+    
     // 查询所有俱乐部
     public List<Club> listClub() {
         List<Club> clubList = null;

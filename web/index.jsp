@@ -46,6 +46,7 @@
             订单管理
             <ul style="list-style:none">
                 <li><a href="myFilesListServlet">我的文件夹</a></li>
+                <li><a href="addClubs.jsp">创建俱乐部</a></li>
                 <li><a href="clubListServlet?web=addFiles.jsp">添加文件</a></li>
                 <li><a href="ownPage.jsp">我的信息</a></li>
                 <li><a href="changePwd.jsp">修改密码</a></li>

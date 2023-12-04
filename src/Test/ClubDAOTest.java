@@ -24,6 +24,12 @@ public class ClubDAOTest {
     }
     
     @Test
+    public void selectRepeatedName() {
+        Club club = clubDAO.selectRepeatedName("穿衣搭配");
+        System.out.println(club);
+    }
+    
+    @Test
     public void listClub() {
         List<Club> clubList = clubDAO.listClub();
         System.out.println(clubList);

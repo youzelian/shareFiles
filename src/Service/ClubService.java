@@ -2,6 +2,7 @@ package Service;
 
 import DAO.ClubDAO;
 import DTO.Club;
+import DTO.User;
 
 import java.util.List;
 
@@ -9,14 +10,20 @@ public class ClubService {
     private ClubDAO clubDAO = new ClubDAO();
     
     // 增加俱乐部
-    public int insertClub(Club club) {
+    public boolean insertClub(Club club) {
         int i = clubDAO.insertClub(club);
-        return i;
+        return i > 0 ? true : false;
     }
     
     // 根据俱乐部Id查询俱乐部
     public Club checkClub(int clubId) {
         Club club = clubDAO.checkClub(clubId);
+        return club;
+    }
+    
+    // 根据俱乐部名查询俱乐部
+    public Club selectRepeatedName(String clubName) {
+        Club club = clubDAO.selectRepeatedName(clubName);
         return club;
     }
     

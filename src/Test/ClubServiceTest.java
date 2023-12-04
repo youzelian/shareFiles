@@ -13,13 +13,19 @@ public class ClubServiceTest {
     
     @Test
     public void insertClub() {
-        int i = clubService.insertClub(new Club("搞笑图片，快乐源泉", "让快乐占据大脑"));
+        boolean i = clubService.insertClub(new Club("搞笑图片，快乐源泉", "让快乐占据大脑"));
         System.out.println(i);
     }
     
     @Test
     public void checkClub() {
         Club club = clubService.checkClub(1);
+        System.out.println(club);
+    }
+    
+    @Test
+    public void selectRepeatedName() {
+        Club club = clubService.selectRepeatedName("穿衣搭配");
         System.out.println(club);
     }
     

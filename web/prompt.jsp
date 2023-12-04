@@ -14,7 +14,7 @@
     User user = (User) request.getAttribute("user");
     String fId = (String) request.getAttribute("fId");
     String url = null;
-    if (type.equals("userUpdate") || type.equals("forgetPwdFail")) {
+    if (type.equals("userUpdate") || type.equals("forgetPwdFail") || type.equals("clubSave")) {
         url = basePath + "index.jsp"; //设置跳转的地址
     }
     else if (type.equals("userSave") || type.equals("forgetPwd")) {
