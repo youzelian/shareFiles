@@ -405,7 +405,7 @@
                 <p class="desc">
                     选择你最喜欢的<span>鲜花</span>
                 </p>
-                <img src="imgs/1.jpg" alt="" class="flower">
+                <img src="images/flower1.jpg" alt="" class="flower">
                 <p class="account">已有账号？</p>
                 <p>请使用您的账号进行登录</p>
                 <button class="ghost" id="signIn">登录</button>
@@ -419,7 +419,7 @@
                 <p class="desc">
                     选择你最喜欢的<span>鲜花</span>
                 </p>
-                <img src="imgs/2.jpg" alt="" class="flower">
+                <img src="images/flower2.jpg" alt="" class="flower">
                 <p class="account">没有账号?</p>
                 <p>立即注册加入我们，和我们一起开始旅程吧</p>
                 <button class="ghost" id="signUp">注册</button>
