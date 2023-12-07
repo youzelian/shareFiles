@@ -86,7 +86,6 @@
                     </tr>
                 </table>
                 <a href="user_clubSaveServlet?clubId=${club.clubId}">点击加入</a>
-                
                 <a href="eachClubServlet?clubId=${club.clubId}">点击进入</a>
             </div>
         </c:forEach>

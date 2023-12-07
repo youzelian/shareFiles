@@ -56,7 +56,7 @@ public class UserDAO {
     
     // 根据用户名查找用户信息
     public User queryUserByUserName(String userName) {
-        User user = new User();
+        User user = null;
         try {
             // String sql = "select user_id,user_name,user_pwd,user_gender,user_email,user_tel,userImgPath,user_address,personal_signature,user_of_club,pwd_req,pwd_req_answer from users where user_name=?";
             String sql = "select * from users where user_name=?";

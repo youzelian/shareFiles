@@ -37,6 +37,22 @@ public class loginServlet extends HttpServlet {
         User user = userService.checkUser(userName);
         // 将user存入session中
         HttpSession session = request.getSession();
+        if (user.getUserGender() == null) {
+            user.setUserGender("");
+        }
+        if (user.getUserEmail() == null) {
+            user.setUserEmail("");
+        }
+        if (user.getUserTel() == null) {
+            user.setUserTel("");
+        }
+        if (user.getUserAddress() == null) {
+            user.setUserAddress("");
+        }
+        if (user.getPwdReqAnswer() == null) {
+            user.setPwdReqAnswer("");
+        }
+        user.setPersonalSignature("");
         session.setAttribute("user", user);
         request.setAttribute("user", user);
         request.getRequestDispatcher("index.jsp").forward(request, response);

@@ -24,7 +24,6 @@
 
         /* body 样式 */
         body {
-            font-family: Arial;
             margin: 0;
         }
 
@@ -124,7 +123,7 @@
             height: 50px;
             line-height: 50px;
             text-decoration: none;
-            color: pink;
+            color: black;
             font-size: 1.2em;
             text-align: center;
             /* 设置超链接的背景色 */
@@ -142,7 +141,7 @@
             /* 设置鼠标悬停时超链接的背景色 */
             background-color: #FFD700;
             /* 在鼠标悬停时旋转超链接 */
-            transform: rotate(360deg);
+            /*transform: rotate(360deg);*/
         }
 
         /* 主要的内容区域 */
@@ -152,6 +151,10 @@
             flex: 70%;
             background-color: white;
             padding: 20px;
+        }
+
+        .main h5 {
+            font-size: 1em;
         }
 
         #bg {
@@ -220,14 +223,14 @@
         社区
         <ul style="list-style:none">
             <li><a href="communityListServlet" title="点击查看详情">动态广场</a></li>
-            <li><a href="clubListServlet?web=clubListFiles.jsp">俱乐部</a></li>
+            <li><a href="clubListServlet?web=club.jsp">俱乐部</a></li>
         </ul>
         我的
         <ul style="list-style:none">
             <li><a href="myFilesListServlet">我的文件夹</a></li>
             <li><a href="myClubsListServlet">我的俱乐部</a></li>
-            <li><a href="clubListServlet?web=addFiles.jsp">上传文件</a></li>
-            <li><a href="addClubs.jsp">创建俱乐部</a></li>
+            <li><a href="clubListServlet?web=addFile.jsp">上传文件</a></li>
+            <li><a href="addClub.jsp">创建俱乐部</a></li>
             <li><a href="changePwd.jsp">修改密码</a></li>
         </ul>
     </div>
@@ -299,7 +302,7 @@
     // 如果该用户没有头像则赋予一个初始头像
     var src = $("#headImg")[0].src;
     console.log(src);
-    if (src == "http://localhost:8080/shareFiles/") {
+    if (src == "http://localhost:8080/shareFiles/null") {
         console.log("成功")
         $("#headImg").attr('src', "http://localhost:8080/shareFiles/images/flower1.jpg");
     }

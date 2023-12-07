@@ -29,10 +29,16 @@ public class user_clubSaveServlet extends HttpServlet {
         User_ClubService user_clubService = new User_ClubService();
         ClubService clubService = new ClubService();
         Club club = clubService.checkClub(clubId);
+        boolean b = false;
         // 社团俱乐部人数加1
         club.setClubNumbers(club.getClubNumbers() + 1);
+        clubService.updateClub(club);
         // 进行用户和俱乐部关联操作
-        boolean b = user_clubService.insertUser_Club(new User_Club(user.getUserId(), clubId));
+        User_Club user_club = user_clubService.checkUser_Club(user.getUserId(), clubId);
+        // 判断是否已经关联了
+        if (user_club == null) {
+            b = user_clubService.insertUser_Club(new User_Club(user.getUserId(), clubId));
+        }
         // 跳转到提示页面然后跳转至社团文件夹，并显示提示信息
         String tips = b ? "<label style='color:green'>加入成功!</label>" : "<label style='color:red'>加入失败!</label>";
         String type = "user_clubSave";

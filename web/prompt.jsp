@@ -18,13 +18,13 @@
         url = basePath + "index.jsp"; //设置跳转的地址
     }
     else if (type.equals("userSave") || type.equals("forgetPwd")) {
-        url = basePath + "login.jsp"; //设置跳转的地址
+        url = basePath + "LoginRegistrationPage.jsp"; //设置跳转的地址
     }
     else if (type.equals("commentSave") || type.equals("commentDelete")) {
         url = basePath + "transferServlet?fileId=" + fId; //设置跳转的地址
     }
     else if (type.equals("user_clubSave")) {
-        url = basePath + "clubListServlet?web=clubListFiles.jsp"; //设置跳转的地址
+        url = basePath + "clubListServlet?web=club.jsp"; //设置跳转的地址
     }
     else if (type.equals("fileSave")) {
         // 所有文件上传后都要进行俱乐部关联操作

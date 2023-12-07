@@ -13,7 +13,7 @@ public class User_ClubDAOTest {
     
     @Test
     public void insertUser_Club() {
-        int i = user_clubDAO.insertUser_Club(new User_Club(8, 2));
+        int i = user_clubDAO.insertUser_Club(new User_Club(1, 1));
         System.out.println(i);
     }
     

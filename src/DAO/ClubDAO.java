@@ -1,6 +1,7 @@
 package DAO;
 
 import DTO.Club;
+import DTO.User;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -21,6 +22,19 @@ public class ClubDAO {
             String sql = "insert into clubs(club_name,club_introduction) values(?,?)";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             i = queryRunner.update(sql, club.getClubName(), club.getClubIntroduction());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
+    }
+    
+    public int updateClub(Club club) {
+        int i = 0;
+        try {
+            String sql = "update  clubs set club_numbers=? where club_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            Object[] params = {club.getClubNumbers(), club.getClubId()};
+            i = queryRunner.update(sql, params);
         } catch (SQLException e) {
             e.printStackTrace();
         }

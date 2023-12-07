@@ -15,6 +15,11 @@ public class ClubService {
         return i > 0 ? true : false;
     }
     
+    public boolean updateClub(Club club) {
+        int i = clubDAO.updateClub(club);
+        return i > 0 ? true : false;
+    }
+    
     // 根据俱乐部Id查询俱乐部
     public Club checkClub(int clubId) {
         Club club = clubDAO.checkClub(clubId);

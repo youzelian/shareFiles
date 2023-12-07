@@ -383,8 +383,9 @@
                 <label id='loginPwdTips'></label>
             </div>
             <div class="txtb">
-                <input type="text" name="inputCode">
+                <input type="text" name="inputVCode" id="inputVCode">
                 <span data-placeholder="验证码"></span>
+                <label id='loginVCodeTips'></label>
             </div>
             <%--验证码--%>
             <img src="createCode" id="codeImg"/>
@@ -469,6 +470,7 @@
     $("#loginCheck").click(function () {
         var userName = $("#loginUserName").val();
         var pwd = $("#loginPwd").val();
+        var vCode = $("#inputVCode").val();
         // 参数1:请求的urL
         // 参数2:传递的参数
         // 参数3:回调函数
@@ -476,6 +478,7 @@
         $.post("loginCheckServlet", {
             loginUserName: userName,
             loginPwd: pwd,
+            inputVCode: vCode
         }, function (res) {
             if (res.nameCode == 1) {
                 $("#loginNameTips").replaceWith("<label id='loginNameTips' style='color:green'>√</label>");
@@ -487,7 +490,12 @@
             } else {
                 $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:red'>密码错误!</label>");
             }
-            if (res.nameCode == 1 && res.pwdCode == 1) {
+            if (res.vCode == 1) {
+                $("#loginVCodeTips").replaceWith("<label id='loginVCodeTips' style='color:green'>√</label>");
+            } else {
+                $("#loginVCodeTips").replaceWith("<label id='loginVCodeTips' style='color:red'>验证码错误!</label>");
+            }
+            if (res.nameCode == 1 && res.pwdCode == 1 && res.vCode == 1) {
                 $("#form2").submit();
             }
         }, "json")

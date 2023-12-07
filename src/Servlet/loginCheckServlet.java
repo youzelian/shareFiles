@@ -24,28 +24,37 @@ public class loginCheckServlet extends HttpServlet {
         // 1.接受用户信息
         String userName = request.getParameter("loginUserName");
         String userPwd = request.getParameter("loginPwd");
+        String inputVCode = request.getParameter("inputVCode");
         // 2.判断用户名和密码是否符合规范
         UserService userService = new UserService();
         User user = userService.checkUser(userName);
         boolean b1 = user == null ? false : true;
-        System.out.println(b1);
         boolean b2 = userPwd.equals(user.getUserPwd());
-        System.out.println(b2);
+        // 3.从session中得到验证码并判断验证码是否一致
+        // 验证码非空的判断且验证码不区分大小写
+        String codes = (String) request.getSession().getAttribute("codes");
+        boolean b3 = !inputVCode.isEmpty() && inputVCode.equalsIgnoreCase(codes);
         String jsonStr;
-        if (b1 == true && b2 == true) {
-            jsonStr = "{\"nameCode\":1,\"pwdCode\":1}";
-        }
-        else if (b1 == true && b2 == false) {
-            jsonStr = "{\"nameCode\":1,\"pwdCode\":0}";
-        }
-        else if (b1 == false && b2 == true) {
-            jsonStr = "{\"nameCode\":0,\"pwdCode\":1}";
+        if (b1) {
+            jsonStr = "{\"nameCode\":1,";
         }
         else {
-            jsonStr = "{\"nameCode\":0,\"pwdCode\":0}";
+            jsonStr = "{\"nameCode\":0,";
+        }
+        if (b2) {
+            jsonStr += "\"pwdCode\":1,";
+        }
+        else {
+            jsonStr += "\"pwdCode\":0,";
+        }
+        if (b3) {
+            jsonStr += "\"vCode\":1}";
+        }
+        else {
+            jsonStr += "\"vCode\":0}";
         }
         System.out.println(jsonStr);
-        // 3.响应ajax请求给出提示信息
+        // 4.响应ajax请求给出提示信息
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();

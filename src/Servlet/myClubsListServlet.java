@@ -52,7 +52,7 @@ public class myClubsListServlet extends HttpServlet {
         //     }
         // }
         
-        // 3.得到所有俱乐部的所有文件
+        // 3.得到用户关注的所有俱乐部的所有文件
         for (User_Club user_club : user_clubList) {
             int cId = user_club.getcId();
             // 3.1.接收客户端传递的页码(如果客户端没有传递页码，则默认页码为1，如果传递了则使用客户端传递的页码)
@@ -66,8 +66,8 @@ public class myClubsListServlet extends HttpServlet {
             pageHelper<File_Club> file_ClubPageHelper = file_clubService.listFile_ClubByPage(cId, pageNum, pageSize);
             pages.add(file_ClubPageHelper);
         }
-        // 4.转发到clubFiles.jsp
+        // 4.转发到myClubs.jsp
         request.setAttribute("pages", pages);
-        request.getRequestDispatcher("clubFiles.jsp").forward(request, response);
+        request.getRequestDispatcher("myClubs.jsp").forward(request, response);
     }
 }

@@ -77,6 +77,6 @@ public class communityListServlet extends HttpServlet {
         
         // 3.转发到communityFiles.jsp
         request.setAttribute("pages", pages);
-        request.getRequestDispatcher("communityFiles.jsp").forward(request, response);
+        request.getRequestDispatcher("community.jsp").forward(request, response);
     }
 }

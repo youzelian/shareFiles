@@ -18,6 +18,14 @@ public class ClubServiceTest {
     }
     
     @Test
+    public void updateClub() {
+        Club club = clubService.checkClub(1);
+        club.setClubNumbers(1);
+        boolean b = clubService.updateClub(club);
+        System.out.println(b);
+    }
+    
+    @Test
     public void checkClub() {
         Club club = clubService.checkClub(1);
         System.out.println(club);

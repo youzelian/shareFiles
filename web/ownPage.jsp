@@ -210,7 +210,8 @@
                 <label class="row">邮箱</label>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="<%=user.getUserEmail()%>" name="userEmail" placeholder="请输入邮箱">
+                        <input type="text" value="<%=user.getUserEmail()%>" name="userEmail" placeholder="请输入邮箱"
+                               id="userEmail">
                     </div>
                 </div>
             </fieldset>
@@ -221,7 +222,7 @@
                 <label class="row">联系电话</label>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="<%=user.getUserTel()%>" name="userTel">
+                        <input type="text" value="<%=user.getUserTel()%>" name="userTel" id="userTel">
                     </div>
                 </div>
             </fieldset>
@@ -232,7 +233,7 @@
                 <label class="row">地址</label>
                 <div class="inputWrapper">
                     <div class="inputInner">
-                        <input type="text" value="<%=user.getUserAddress()%>" name="userAddress">
+                        <input type="text" value="<%=user.getUserAddress()%>" name="userAddress" id="userAddress">
                     </div>
                 </div>
             </fieldset>
@@ -253,7 +254,7 @@
                 <div class="inputWrapper">
                     <div class="inputInner">
                         <input type="text" value="<%=user.getPwdReqAnswer()%>" name="pwdQuestionAnswer"
-                               placeholder="设置密保才能修改密码">
+                               placeholder="设置密保才能修改密码" id="pwdQuestionAnswer">
                     </div>
                 </div>
             </fieldset>
@@ -279,7 +280,7 @@
 </body>
 <script>
     <%--要使用${}或者<%=%>必须加一个""才是定义的字符串--%>
-    if ("<%=user.getUserGender()%>" == "男") {
+    if ("<%=user.getUserGender()%>" == "男" || "<%=user.getUserGender()%>" == "") {
         $("#man").prop('checked', true);
         $("#woman").prop('checked', false);
     } else {

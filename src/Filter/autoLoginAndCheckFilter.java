@@ -90,7 +90,7 @@ public class autoLoginAndCheckFilter implements Filter {
                     if (!requestPath.equals("")) {
                         request.setAttribute("tipsHeader", "<label style='color:red;'>请先登录!</label>");
                     }
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                    request.getRequestDispatcher("LoginRegistrationPage.jsp").forward(request, response);
                 }
             }
             // session没有并且cookie也没有则直接跳转到login.jsp
@@ -99,7 +99,7 @@ public class autoLoginAndCheckFilter implements Filter {
                 if (!requestPath.equals("")) {
                     request.setAttribute("tipsHeader", "<label style='color:red;'>请先登录!</label>");
                 }
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("LoginRegistrationPage.jsp").forward(request, response);
             }
         }
         // b.非受限资源直接放行
