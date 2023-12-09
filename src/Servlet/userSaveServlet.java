@@ -25,7 +25,6 @@ public class userSaveServlet extends HttpServlet {
         String userPwd = request.getParameter("userPwd");
         // 2.传递数据到数据库中
         User user = new User(userName, userPwd);
-        System.out.println(user);
         UserService userService = new UserService();
         boolean b = userService.saveUser(user);
         User user1 = userService.checkUser(userName);

@@ -29,7 +29,11 @@ public class loginCheckServlet extends HttpServlet {
         UserService userService = new UserService();
         User user = userService.checkUser(userName);
         boolean b1 = user == null ? false : true;
-        boolean b2 = userPwd.equals(user.getUserPwd());
+        boolean b2 = false;
+        // 如果找到用户则判断面
+        if (b1) {
+            b2 = userPwd.equals(user.getUserPwd());
+        }
         // 3.从session中得到验证码并判断验证码是否一致
         // 验证码非空的判断且验证码不区分大小写
         String codes = (String) request.getSession().getAttribute("codes");

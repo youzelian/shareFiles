@@ -37,6 +37,7 @@ public class loginServlet extends HttpServlet {
         User user = userService.checkUser(userName);
         // 将user存入session中
         HttpSession session = request.getSession();
+        // 设置null值为空值
         if (user.getUserGender() == null) {
             user.setUserGender("");
         }
@@ -52,7 +53,9 @@ public class loginServlet extends HttpServlet {
         if (user.getPwdReqAnswer() == null) {
             user.setPwdReqAnswer("");
         }
-        user.setPersonalSignature("");
+        if (user.getPersonalSignature() == null) {
+            user.setPersonalSignature("");
+        }
         session.setAttribute("user", user);
         request.setAttribute("user", user);
         request.getRequestDispatcher("index.jsp").forward(request, response);

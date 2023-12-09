@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -7,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,37 +21,17 @@
             padding: 0;
         }
 
-        .main {
-            width: 1200px;
-            height: 1000px;
-            margin: 0 auto;
-        }
-
-        .file-introduction {
-            width: 1000px;
+        .club-introduction {
+            width: 1300px;
             margin: 25px auto;
-            height: 200px;
-            border-bottom: 1px solid #dedede;
         }
 
-        .file-introduction h1 {
+        .club-introduction h1 {
             text-align: center;
+            margin-bottom: 30px;
         }
 
-        .message {
-            width: 1000px;
-            height: 70px;
-        }
-
-        .message td {
-            padding: 10px 10px 10px 0px;
-        }
-
-        .message a {
-            float: right;
-        }
-
-        .news_info {
+        .introduction {
             color: #898a8b;
             font-size: 18px;
             line-height: 30px;
@@ -68,28 +48,33 @@
             -webkit-line-clamp: 2;
             /*  从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式） */
         }
+
+        .club {
+            width: 400px;
+            /* border-bottom: 1px solid #dedede; */
+            border: 1px solid pink;
+            display: inline-block;
+            margin: 10px 10px;
+        }
     </style>
 </head>
 
 <body>
-<div class="main">
-    <div class="file-introduction">
-        <c:forEach items="${clubList}" var="club">
+<div class="club-introduction">
+    <h1>欢迎来到俱乐部</h1>
+    <c:forEach items="${clubList}" var="club">
+        <div class="club">
             <h1>${club.clubName}</h1>
             <h3>俱乐部介绍</h3>
-            <p class="news_info">${club.clubIntroduction}</p>
+            <p class="introduction">${club.clubIntroduction}</p>
             <div class="message">
-                <table>
-                    <tr>
-                        <td>俱乐部人数${club.clubNumbers}</td>
-                        <td>俱乐部文件数${club.clubHasFiles}</td>
-                    </tr>
-                </table>
-                <a href="user_clubSaveServlet?clubId=${club.clubId}">点击加入</a>
+                <p>俱乐部人数${club.clubNumbers}</p>
+                <p>俱乐部文件数${club.clubHasFiles}</p>
                 <a href="eachClubServlet?clubId=${club.clubId}">点击进入</a>
+                <a href="user_clubSaveServlet?clubId=${club.clubId}">点击加入</a>
             </div>
-        </c:forEach>
-    </div>
+        </div>
+    </c:forEach>
 </div>
 </body>
 

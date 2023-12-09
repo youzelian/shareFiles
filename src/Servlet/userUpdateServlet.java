@@ -44,7 +44,6 @@ public class userUpdateServlet extends HttpServlet {
         // 如果更新照片则对照片进行重新赋名
         Part userImg = request.getPart("userImg");
         String FileName = userImg.getSubmittedFileName();
-        System.out.println(FileName);
         if (!FileName.equals("")) {
             String ext = FileName.substring(FileName.lastIndexOf("."));
             // b.使用随机数重新赋名

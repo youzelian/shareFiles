@@ -29,9 +29,7 @@ public class registerCheckServlet extends HttpServlet {
         UserService userService = new UserService();
         User user = userService.checkUser(userName);
         boolean b1 = user == null ? true : false;
-        System.out.println(b1);
         boolean b2 = userPwd1.equals(userPwd2);
-        System.out.println(b2);
         String jsonStr;
         if (b1 == true && b2 == true) {
             jsonStr = "{\"nameCode\":1,\"pwdCode\":1}";
@@ -45,7 +43,6 @@ public class registerCheckServlet extends HttpServlet {
         else {
             jsonStr = "{\"nameCode\":0,\"pwdCode\":0}";
         }
-        System.out.println(jsonStr);
         // 3.响应ajax请求给出提示信息
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("utf-8");

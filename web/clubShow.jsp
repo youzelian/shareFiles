@@ -32,7 +32,6 @@
             width: 1000px;
             margin: 25px auto;
             height: 200px;
-            border-bottom: 1px solid #dedede;
         }
 
         .file-introduction h1 {
@@ -69,27 +68,33 @@
             -webkit-line-clamp: 2;
             /*  从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式） */
         }
+
+        .file {
+            border-bottom: 1px solid #dedede;
+        }
     </style>
 </head>
 
 <body>
 <div class="main">
     <div class="file-introduction">
-        <h1>${clubName}</h1>
+        <h1 style="margin-bottom: 20px">${clubName}</h1>
         <c:forEach items="${file_ClubPageHelper.list}" var="File_Club">
-            <h1>${File_Club.fileName}</h1>
-            <h3>文件介绍</h3>
-            <p class="news_info">${File_Club.fileIntroduction}</p>
-            <div class="message">
-                <table>
-                    <tr>
-                        <td>点赞数${File_Club.fileVote}</td>
-                        <td>收藏数${File_Club.fileCollect}</td>
-                        <td>下载数${File_Club.fileDownloadAmount}</td>
-                        <td>所属俱乐部:${File_Club.clubName},俱乐部编号:${File_Club.cId}</td>
-                    </tr>
-                </table>
-                <a href="transferServlet?fileId=${File_Club.fId}">点击进入</a>
+            <div class="file">
+                <h2>${File_Club.fileName}</h2>
+                <h3>文件介绍</h3>
+                <p class="news_info">${File_Club.fileIntroduction}</p>
+                <div class="message">
+                    <table>
+                        <tr>
+                            <td>点赞数${File_Club.fileVote}</td>
+                            <td>收藏数${File_Club.fileCollect}</td>
+                            <td>下载数${File_Club.fileDownloadAmount}</td>
+                            <td>所属俱乐部:${File_Club.clubName},俱乐部编号:${File_Club.cId}</td>
+                        </tr>
+                    </table>
+                    <a href="transferServlet?fileId=${File_Club.fId}">点击进入</a>
+                </div>
             </div>
         </c:forEach>
     </div>

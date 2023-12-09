@@ -480,6 +480,7 @@
             loginPwd: pwd,
             inputVCode: vCode
         }, function (res) {
+            console.log("xxx");
             if (res.nameCode == 1) {
                 $("#loginNameTips").replaceWith("<label id='loginNameTips' style='color:green'>√</label>");
             } else {
@@ -487,7 +488,7 @@
             }
             if (res.pwdCode == 1) {
                 $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:green'>√</label>");
-            } else {
+            } else if (res.nameCode == 1) {
                 $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:red'>密码错误!</label>");
             }
             if (res.vCode == 1) {
