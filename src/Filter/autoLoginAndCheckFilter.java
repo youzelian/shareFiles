@@ -17,11 +17,11 @@ import java.util.List;
 public class autoLoginAndCheckFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-    
     }
     
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        // 1.判断前准备
         // a.将ServletRequest转换成HttpServletRequest
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -110,6 +110,5 @@ public class autoLoginAndCheckFilter implements Filter {
     
     @Override
     public void destroy() {
-    
     }
 }

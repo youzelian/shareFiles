@@ -204,7 +204,7 @@
 </div>
 
 <div class="navbar">
-    <a href="#"><img src="images/text-image.jpg" title="点击进入我的Github"></a>
+    <a href="https://github.com/youzelian/shareFiles"><img src="images/text-image.jpg" title="点击进入我的Github"></a>
     <div class="right">
         <%
             User user = (User) session.getAttribute("user");
