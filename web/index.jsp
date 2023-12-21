@@ -212,7 +212,7 @@
         <a href="ownPage.jsp" class="headA"><img src="<%=user.getUserImgPath()%>" title="点击进入我的主页" class="headImg"
                                                  id="headImg"></a>
         <!-- 用户名 -->
-        <span>用户名</span>
+        <span><%=user.getUserName()%></span>
         <!-- 登出 -->
         <a href="logoutServlet">登出</a>
     </div>
