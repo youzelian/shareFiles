@@ -37,25 +37,25 @@ public class loginServlet extends HttpServlet {
         User user = userService.checkUser(userName);
         // 将user存入session中
         HttpSession session = request.getSession();
-        // // 设置null值为空值
-        // if (user.getUserGender() == null) {
-        //     user.setUserGender("");
-        // }
-        // if (user.getUserEmail() == null) {
-        //     user.setUserEmail("");
-        // }
-        // if (user.getUserTel() == null) {
-        //     user.setUserTel("");
-        // }
-        // if (user.getUserAddress() == null) {
-        //     user.setUserAddress("");
-        // }
-        // if (user.getPwdReqAnswer() == null) {
-        //     user.setPwdReqAnswer("");
-        // }
-        // if (user.getPersonalSignature() == null) {
-        //     user.setPersonalSignature("");
-        // }
+        // 设置null值为空值
+        if (user.getUserGender() == null) {
+            user.setUserGender("");
+        }
+        if (user.getUserEmail() == null) {
+            user.setUserEmail("");
+        }
+        if (user.getUserTel() == null) {
+            user.setUserTel("");
+        }
+        if (user.getUserAddress() == null) {
+            user.setUserAddress("");
+        }
+        if (user.getPwdReqAnswer() == null) {
+            user.setPwdReqAnswer("");
+        }
+        if (user.getPersonalSignature() == null) {
+            user.setPersonalSignature("");
+        }
         session.setAttribute("user", user);
         session.setAttribute("tempLogin", "yes");
         response.sendRedirect("index.jsp");

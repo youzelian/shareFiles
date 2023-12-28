@@ -301,9 +301,7 @@
 <script>
     // 如果该用户没有头像则赋予一个初始头像
     var src = $("#headImg")[0].src;
-    console.log(src);
-    if (src == "http://localhost:8080/shareFiles/null") {
-        console.log("成功")
+    if (src == "http://localhost:8080/shareFiles/userImg/null" || src == "http://localhost:8080/shareFiles/null") {
         $("#headImg").attr('src', "http://localhost:8080/shareFiles/images/flower1.jpg");
     }
     Pic2.innerHTML = Pic1.innerHTML;//复制一组图片，但被隐藏
