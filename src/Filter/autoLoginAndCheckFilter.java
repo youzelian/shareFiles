@@ -31,17 +31,15 @@ public class autoLoginAndCheckFilter implements Filter {
         String requestPath = uri.substring(uri.lastIndexOf("/") + 1);
         // 2.判断：如果请求路径是非受限资源则直接放行，如果是受限资源则需要验证用户是否登录
         // a.受限资源判断
-        if ("".equals(requestPath) || "index".equals(requestPath)) {
+        if ("".equals(requestPath) || "index.jsp".equals(requestPath)) {
             //进入if代码，表示此请求是受限资源，需要验证用户是否登录
-            //3.判断session中是否有用户信息，如果有则表示用户已经登录--放行，session没有再判断cookie，cookie有则放行并存入session
+            //3.判断session中是否有一次性登录标记，如果有则表示用户已经登录--放行，session没有再判断cookie，cookie有则放行并存入session
             //如果都没有则表示用户未登录，发送到登录页面，提示请先登录
             
-            /*****获得session值和cookie值*****/
-            // 获得session
+            /*****获得session中的值和cookie中的值*****/
+            // 获得session中存入的tempLogin值
             HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
-            // 获得session中存入的sessionAuto值
-            String sessionAuto = (String) session.getAttribute("sessionAuto");
+            String tempLogin = (String) session.getAttribute("tempLogin");
             // 获得cookie
             Cookie[] cookies = request.getCookies();
             String cookieAuto = null;
@@ -51,13 +49,15 @@ public class autoLoginAndCheckFilter implements Filter {
                     break;
                 }
             }
-            /*****获得session值和cookie值*****/
+            /*****获得session中的值和cookie中的值*****/
             
-            // 判断sessionAuto中是否有信息
-            if (sessionAuto != null) {
+            // 判断tempLogin中是否有信息,只允许一次登录，登录完销毁，再次访问主页需要填写账号密码
+            if (tempLogin != null) {
+                // 销毁一次性登录标记tempLogin
+                session.removeAttribute("tempLogin");
                 filterChain.doFilter(request, response);
             }
-            // 如果session中没有sessionAuto信息，则判断cookie中有没有信息，有信息再判断在数据库是否有对应信息有则存入session并放行，没有则跳转到登录页面，cookie没有则直接跳转到登录页面
+            // 如果session中没有tempLogin信息，则判断cookie中有没有信息，有信息再判断在数据库是否有对应信息有则存入session并放行，没有则跳转到登录页面;cookie没有则直接跳转到登录页面
             else if (cookieAuto != null) {
                 String[] parts = cookieAuto.split("-");
                 String username = parts[0];
@@ -70,11 +70,11 @@ public class autoLoginAndCheckFilter implements Filter {
                 for (User users : userList) {
                     // 如果cookie值在数据库有对应的值则放行并将sessionAuto存入session
                     if (users.getUserName().equals(username) && users.getUserPwd().equals(password)) {
-                        // 此处是为了些项目而写的重新将user写入session（因为重新部署或重新启动session都会丢失)
+                        // 此处是为了写项目而写的，重新将user写入session（因为重新部署或重新启动session都会丢失)
                         // ？？？？？？？？？？
                         // 保存user值到session中
-                        User user1 = userService.checkUser(username);
-                        request.getSession().setAttribute("user", user1);
+                        User user = userService.checkUser(username);
+                        request.getSession().setAttribute("user", user);
                         // ？？？？？？？？？？
                         session.setAttribute("sessionAuto", "yes");
                         filterChain.doFilter(request, response);
@@ -93,7 +93,7 @@ public class autoLoginAndCheckFilter implements Filter {
                     request.getRequestDispatcher("LoginRegistrationPage.jsp").forward(request, response);
                 }
             }
-            // session没有并且cookie也没有则直接跳转到login.jsp
+            // session没有tempLogin并且cookie也没有cookieAuto则直接跳转到login.jsp
             else {
                 // 转到登录页面并判断是不是越界查看
                 if (!requestPath.equals("")) {
