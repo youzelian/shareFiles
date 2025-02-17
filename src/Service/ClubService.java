@@ -15,6 +15,7 @@ public class ClubService {
         return i > 0 ? true : false;
     }
     
+    // 更新俱乐部信息
     public boolean updateClub(Club club) {
         int i = clubDAO.updateClub(club);
         return i > 0 ? true : false;
