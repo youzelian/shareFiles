@@ -1,6 +1,7 @@
 package DAO;
 
 import DTO.File;
+import DTO.File_Club;
 import DTO.User;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -79,5 +80,18 @@ public class FileDAO {
             e.printStackTrace();
         }
         return fileList;
+    }
+
+    // 分页查询所有的文件（联合查询，clubs和files通过file_club联合）
+    public List<File> listAllFilesByPage(int start, int limit) {
+        List<File> fileAll = null;
+        try {
+            String sql = "select  * from file_club inner join files inner join clubs on file_club.f_id=files.file_id and file_club.c_id=clubs.club_id ORDER BY fc_id limit ?,?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            fileAll = queryRunner.query(sql, new BeanListHandler<File>(File.class, processor), start, limit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fileAll;
     }
 }

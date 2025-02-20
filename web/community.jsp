@@ -112,24 +112,46 @@
         </form>
     </div>
     <div class="file-introduction" id="filesContent">
-        <c:forEach items="${pages}" var="file_ClubPageHelper">
-            <c:forEach items="${file_ClubPageHelper.list}" var="File_Club">
-                <h1>${File_Club.fileName}</h1>
-                <h3>文件介绍</h3>
-                <p class="news_info">${File_Club.fileIntroduction}</p>
-                <div class="message">
-                    <table>
-                        <tr>
-                            <td>点赞数${File_Club.fileVote}</td>
-                            <td>收藏数${File_Club.fileCollect}</td>
-                            <td>下载数${File_Club.fileDownloadAmount}</td>
-                            <td>所属俱乐部:${File_Club.clubName},俱乐部编号:${File_Club.cId}</td>
-                        </tr>
-                    </table>
-                    <a href="transferServlet?fileId=${File_Club.fId}">点击进入</a>
-                </div>
-            </c:forEach>
+        <c:forEach items="${pages.list}" var="file">
+            <h1>${file.fileName}</h1>
+            <h3>文件介绍</h3>
+            <p class="news_info">${file.fileIntroduction}</p>
+            <div class="message">
+                <table>
+                    <tr>
+                        <td>点赞数${file.fileVote}</td>
+                        <td>收藏数${file.fileCollect}</td>
+                        <td>下载数${file.fileDownloadAmount}</td>
+                        <td>所属俱乐部:${file.clubName},俱乐部编号:${file.clubId}</td>
+                    </tr>
+                </table>
+                <a href="transferServlet?fileId=${file.fileId}">点击进入</a>
+            </div>
         </c:forEach>
+    </div>
+    <div>
+        <!-- <%--显示首页，上一页，如果当前页是第一页则不显示超链接--%> -->
+        <c:if test="${pages.pageNum== 1}">
+            <label style="color:gray;">首页</label>
+            <label style="color:gray;">上一页</label>
+        </c:if>
+        <c:if test="${pages.pageNum> 1}">
+            <a href="communityListServlet?pageNum=1">首页</a>
+            <a href="communityListServlet?pageNum=${pages.pageNum - 1}">上一页</a>
+        </c:if>
+
+        <!-- <%--显示页码和总页数--%> -->
+        当前第${pages.pageNum}页/共${pages.pageCount}页
+
+        <!-- <%--显示下一页和尾页--%> -->
+        <c:if test="${pages.pageNum < pages.pageCount}">
+            <a href="communityListServlet?pageNum=${pages.pageNum + 1}">下一页</a>
+            <a href="communityListServlet?pageNum=${pages.pageCount}">尾页</a>
+        </c:if>
+        <c:if test="${pages.pageNum == pages.pageCount}">
+            <label style="color:gray;">下一页</label>
+            <label style="color:gray;">尾页</label>
+        </c:if>
     </div>
 </div>
 </body>
