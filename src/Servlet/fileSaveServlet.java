@@ -1,11 +1,7 @@
 package Servlet;
 
-import DAO.File_ClubDAO;
 import DTO.File;
-import DTO.File_Club;
-import DTO.User;
 import Service.FileService;
-import Service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -24,7 +20,7 @@ public class fileSaveServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 1.接受请求
@@ -33,7 +29,7 @@ public class fileSaveServlet extends HttpServlet {
         String fileType = request.getParameter("fileType");
         String fileIntroduction = request.getParameter("fileIntroduction");
         int fileOfClub = Integer.parseInt(request.getParameter("fileOfClub"));
-        
+
         // 2.接受并保存文件
         // 2.1重新赋名
         // a.获取后缀名
@@ -78,17 +74,23 @@ public class fileSaveServlet extends HttpServlet {
                 dir = getServletContext().getRealPath("/files/packages");
                 break;
         }
-        String savePath = dir + "\\" + filePath;
+        String savePath = dir + "/" + filePath;
         // 2.3保存文件
         file.write(savePath);
-        
         // 3.传递数据到数据库中
         FileService fileService = new FileService();
+
+        // 此处是Windows中取dir中的文件类型；表示一个反斜杠是 "\\"
         String fileDownloadLink = "files/" + dir.substring(dir.lastIndexOf("\\") + 1) + "/" + filePath;
+
+        // 此处是Linux取文件类型 ,只需要一个正斜杠表示 "/"
+        // String fileDownloadLink = dir.substring(dir.lastIndexOf("/", dir.lastIndexOf("/") - 1) + 1) + "/" + filePath;
+
         boolean b = fileService.saveFile(new File(fileNme, fileType, fileDownloadLink, fileOfClub, fileIntroduction));
+
         // File_ClubDAO file_clubDAO = new File_ClubDAO();
         // file_clubDAO.insertFile_Club(new File_Club())
-        
+
         // 4.跳转到提示页面然后跳转主页面，并显示提示信息
         String tips = b ? "<label style='color:green'>上传成功!</label>" : "<label style='color:red'>上传失败!</label>";
         String type = "fileSave";

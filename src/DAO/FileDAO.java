@@ -13,7 +13,7 @@ import java.util.List;
 public class FileDAO {
     BeanProcessor bean = new GenerousBeanProcessor();
     RowProcessor processor = new BasicRowProcessor(bean);
-    
+
     // 增加文件信息
     public int insertFile(File file) {
         int i = 0;
@@ -27,7 +27,7 @@ public class FileDAO {
         }
         return i;
     }
-    
+
     // 根据文件id查询文件
     public File selectFileById(int fileId) {
         File file = null;
@@ -40,7 +40,7 @@ public class FileDAO {
         }
         return file;
     }
-    
+
     // 根据文件名模糊查询文件
     public List<File> fuzzyQueryFileByFileName(String fileName) {
         List<File> fileList = null;
@@ -53,7 +53,7 @@ public class FileDAO {
         }
         return fileList;
     }
-    
+
     // 互动：点赞收藏下载
     public int interact(File file) {
         int i = 0;
@@ -67,7 +67,7 @@ public class FileDAO {
         }
         return i;
     }
-    
+
     // 查找所有文件信息
     public List<File> listFile() {
         List<File> fileList = null;

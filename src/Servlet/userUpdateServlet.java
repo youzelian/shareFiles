@@ -17,7 +17,7 @@ public class userUpdateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 1.接受请求
@@ -30,7 +30,7 @@ public class userUpdateServlet extends HttpServlet {
         String pwdQuestion = request.getParameter("pwdQuestion");
         String pwdQuestionAnswer = request.getParameter("pwdQuestionAnswer");
         String personalSignature = request.getParameter("personalSignature");
-        
+
         // 2.接受并保存图书的封面图片
         // 2.1重新赋名
         // a.获取后缀名
@@ -48,13 +48,17 @@ public class userUpdateServlet extends HttpServlet {
             String ext = FileName.substring(FileName.lastIndexOf("."));
             // b.使用随机数重新赋名
             userImgPath = UUID.randomUUID().toString() + ext;
-            // 2.2获取userImg目录在服务器上的路径
-            String dir = getServletContext().getRealPath("/userImg");
-            String savePath = dir + "\\" + userImgPath;
+
+            // 2.2.1获取Windows中userImg目录在服务器上的路径
+            // String dir = getServletContext().getRealPath("/userImg");
+            // String savePath = dir + "\\" + userImgPath;
+
+            // 2.2.2获取Linux中userImg目录在服务器上的路径
+            String dir = getServletContext().getRealPath("userImg");
+            String savePath = dir + "/" + userImgPath;
             // 2.3保存图片
             userImg.write(savePath);
         }
-        
         // 3.传递数据到数据库中
         int userId = user.getUserId();
         user = new User(userId, userName, userGender, userEmail, userTel, userAddress, "userImg/" + userImgPath, personalSignature, pwdQuestion, pwdQuestionAnswer);
@@ -64,7 +68,6 @@ public class userUpdateServlet extends HttpServlet {
         // 利用checkUser重新获得user，因为上面传递数据到数据中的数据不完整，没有用户密码，所以需要重新抓取
         User user1 = userService.checkUser(userName);
         session.setAttribute("user", user1);
-        
         // 5.跳转到提示页面然后跳转主页面，并显示提示信息
         String tips = b ? "<label style='color:green'>更新成功!</label>" : "<label style='color:red'>更新失败!</label>";
         String type = "userUpdate";

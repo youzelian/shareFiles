@@ -22,5 +22,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.5.93" level="application_server_libraries" />
     <orderEntry type="library" name="commons-dbutils-1.8.1" level="project" />
     <orderEntry type="library" name="jackson-annotations-2.15.2" level="project" />
+    <orderEntry type="library" name="jackson-annotations-2.15.2" level="project" />
   </component>
 </module>
