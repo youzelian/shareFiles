@@ -1,7 +1,6 @@
 package DAO;
 
 import DTO.Club;
-import DTO.User;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -14,20 +13,20 @@ import java.util.List;
 public class ClubDAO {
     BeanProcessor bean = new GenerousBeanProcessor();
     RowProcessor processor = new BasicRowProcessor(bean);
-    
+
     // 增加俱乐部
     public int insertClub(Club club) {
         int i = 0;
         try {
-            String sql = "insert into clubs(club_name,club_introduction) values(?,?)";
+            String sql = "insert into clubs(club_name,club_introduction,club_img_path,club_membership) values(?,?,?,?)";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            i = queryRunner.update(sql, club.getClubName(), club.getClubIntroduction());
+            i = queryRunner.update(sql, club.getClubName(), club.getClubIntroduction(), club.getClubImgPath(), club.getClubMembership());
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return i;
     }
-    
+
     public int updateClub(Club club) {
         int i = 0;
         try {
@@ -40,7 +39,7 @@ public class ClubDAO {
         }
         return i;
     }
-    
+
     // 根据俱乐部Id查询俱乐部
     public Club checkClub(int clubId) {
         Club club = null;
@@ -53,7 +52,7 @@ public class ClubDAO {
         }
         return club;
     }
-    
+
     // 根据俱乐部名查询俱乐部
     public Club selectRepeatedName(String clubName) {
         Club club = null;
@@ -66,7 +65,7 @@ public class ClubDAO {
         }
         return club;
     }
-    
+
     // 查询所有俱乐部
     public List<Club> listClub() {
         List<Club> clubList = null;
@@ -79,7 +78,7 @@ public class ClubDAO {
         }
         return clubList;
     }
-    
+
     // 查询俱乐部所拥有的文件数
     public Long selectClubHasFilesCount(int clubId) {
         long count = 0;
@@ -92,7 +91,7 @@ public class ClubDAO {
         }
         return count;
     }
-    
+
     // // 查询俱乐部所拥有的所有文件的所有点赞数
     // public Long selectAllVotes(int clubId) {
     //     long count = 0;

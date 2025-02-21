@@ -223,7 +223,7 @@
         社区
         <ul style="list-style:none">
             <li><a href="communityListServlet" title="点击查看详情">动态广场</a></li>
-            <li><a href="clubListServlet?web=club.jsp">俱乐部</a></li>
+            <li><a href="clubListServlet?web=club.jsp">俱乐部广场</a></li>
         </ul>
         我的
         <ul style="list-style:none">

@@ -48,13 +48,10 @@ public class userUpdateServlet extends HttpServlet {
             String ext = FileName.substring(FileName.lastIndexOf("."));
             // b.使用随机数重新赋名
             userImgPath = UUID.randomUUID().toString() + ext;
-
-            // 2.2.1获取Windows中userImg目录在服务器上的路径
-            // String dir = getServletContext().getRealPath("/userImg");
-            // String savePath = dir + "\\" + userImgPath;
-
-            // 2.2.2获取Linux中userImg目录在服务器上的路径
             String dir = getServletContext().getRealPath("userImg");
+            // 2.2.1Windows中文件路径是以'\'隔开，在字符串中表达则写两个，即'\\'
+            // String savePath = dir + "\\" + userImgPath;
+            // 2.2.2Linux中文件路径是以'/'隔开，在字符串中表达只需写一个，即'/'
             String savePath = dir + "/" + userImgPath;
             // 2.3保存图片
             userImg.write(savePath);

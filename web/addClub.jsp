@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2023/12/4 0004
-  Time: 15:47
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,10 +37,13 @@
             margin: 5px auto;
         }
 
-        .content .clubName {
+        .clubName, .clubMembership {
             margin-bottom: 10px;
-            width: 361px;
-            padding: 5px;
+            width: 355px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(241, 241, 241, .98);
+            border: 0;
         }
 
         p span {
@@ -65,7 +61,7 @@
         }
 
         .submit {
-            margin-bottom: 10px;
+            margin: 20px 0 0 0;
             width: 375px;
             height: 35px;
             padding: 5px;
@@ -79,8 +75,56 @@
 
         .submit:hover {
             color: white;
-            /* font-weight: 550; */
-            /* transform: scale(1.05); */
+        }
+
+        .upload-label {
+            display: inline-block;
+            width: 80px; /* 设置宽度为正方形 */
+            height: 80px; /* 设置高度为正方形 */
+            background-color: rgba(241, 241, 241, .98); /* hui白色背景 */
+            border-radius: 10px; /* 圆角 */
+            font-size: 14px;
+            font-weight: 300;
+            color: #555; /* 文字颜色 */
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid #ddd; /* 边框 */
+            transition: background-color 0.3s, border-color 0.3s;
+            position: relative; /* 为了定位加号 */
+        }
+
+        .upload-label:hover {
+            background-color: #f0f0f0; /* 鼠标悬停时背景色 */
+            border-color: #bbb;
+        }
+
+        .upload-label:active {
+            background-color: #e0e0e0; /* 点击时背景色 */
+            border-color: #999;
+        }
+
+        .upload-label::before {
+            content: "+"; /* 加号 */
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px; /* 调整加号大小 */
+            color: #d9d9db; /* 加号颜色 */
+        }
+
+        .upload-label span {
+            display: block; /* 文字放在加号下面 */
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            width: 50px;
+        }
+
+        .photo {
+            text-align: center;
         }
     </style>
 </head>
@@ -89,10 +133,18 @@
 <div class="main">
     <h1>创建俱乐部</h1>
     <div class="content">
-        <form action="clubSaveServlet">
+        <form action="clubSaveServlet" method="post" enctype="multipart/form-data">
+            <div class="photo">
+                <input type="file" name="clubImg" id="clubImg" style="display: none;"/>
+                <label for="clubImg" class="upload-label" id="submit-photo"><span>添加头像</span></label>
+                <%--<img src="" alt="">--%>
+            </div>
             <p>俱乐部名称<span> *</span></p>
             <input type="text" name="clubName" class="clubName" placeholder="主体清晰,一秒get~">
-            <p>俱乐部介绍<span> *</span></p>
+            <p>成员称号<span> *</span></p>
+            <input type="text" name="clubMembership" class="clubMembership"
+                   placeholder="取一个我们才懂的称号๑乛◡乛๑">
+            <p>俱乐部简介<span> *</span></p>
             <textarea name="clubIntroduction" cols="30" rows="10" class="introduce"
                       placeholder="给你的俱乐部做个自我介绍,让大家能够了解俱乐部的宗旨，引导俱乐部成员一起分享~"></textarea>
             <input type="submit" value="立即创建" class="submit">
@@ -100,5 +152,25 @@
     </div>
 </div>
 </body>
+<script>
+    // 上传文件前判断是否有文件
+    $("#submit-photo").click(function () {
+        if ($("#upload_file").val() == "") {
+            alert("请选择文件后上传！");
+            return false;
+        } else {
+            return true;
+        }
+    })
 
+    // // 上传俱乐部头像后预览
+    // function previewAvatar(event) {
+    //     var file = event.target.files[0];
+    //     var reader = new FileReader();
+    //     reader.onload = function (e) {
+    //         document.querySelector('.photo img').src = e.target.result;
+    //     };
+    //     reader.readAsDataURL(file);
+    // }
+</script>
 </html>
