@@ -81,7 +81,7 @@
             display: inline-block;
             width: 80px; /* 设置宽度为正方形 */
             height: 80px; /* 设置高度为正方形 */
-            background-color: rgba(241, 241, 241, .98); /* hui白色背景 */
+            background-color: rgba(241, 241, 241, .98); /* 灰白色背景 */
             border-radius: 10px; /* 圆角 */
             font-size: 14px;
             font-weight: 300;
@@ -125,6 +125,32 @@
 
         .photo {
             text-align: center;
+            position: relative; /* 确保预览图片能覆盖上传按钮 */
+        }
+
+        .preview-img {
+            display: none; /* 初始隐藏预览图片 */
+            width: 80px; /* 与 upload-label 相同大小 */
+            height: 80px; /* 与 upload-label 相同大小 */
+            border-radius: 10px; /* 与 upload-label 相同圆角 */
+            object-fit: cover; /* 保持图片比例填充 */
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -40px;
+            z-index: 1; /* 确保预览图片在 upload-label 之上 */
+            cursor: pointer; /* 添加指针样式，表示可点击 */
+        }
+
+        /* 隐藏上传按钮的加号和文字，但保留点击功能 */
+        .upload-label.preview-active {
+            background-color: transparent;
+            border-color: transparent;
+        }
+
+        .upload-label.preview-active::before,
+        .upload-label.preview-active span {
+            display: none; /* 隐藏加号和文字 */
         }
     </style>
 </head>
@@ -133,10 +159,12 @@
 <div class="main">
     <h1>创建俱乐部</h1>
     <div class="content">
-        <form action="clubSaveServlet" method="post" enctype="multipart/form-data">
+        <form action="clubSaveServlet" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
             <div class="photo">
-                <input type="file" name="clubImg" id="clubImg" style="display: none;"/>
+                <input type="file" name="clubImg" id="clubImg" style="display: none;" accept="image/*"
+                       onchange="previewAvatar(this)"/>
                 <label for="clubImg" class="upload-label" id="submit-photo"><span>添加头像</span></label>
+                <img class="preview-img" id="preview" alt="预览头像">
             </div>
             <p>俱乐部名称<span> *</span></p>
             <input type="text" name="clubName" class="clubName" placeholder="主体清晰,一秒get~">
@@ -152,24 +180,43 @@
 </div>
 </body>
 <script>
-    // // 上传文件前判断是否有文件
-    // $("#submit-photo").click(function () {
-    //     if ($("#upload_file").val() == "") {
-    //         alert("请选择文件后上传！");
-    //         return false;
-    //     } else {
-    //         return true;
-    //     }
-    // })
+    // 上传俱乐部头像后预览
+    function previewAvatar(input) {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                let previewImg = document.getElementById('preview');
+                let uploadLabel = document.getElementById('submit-photo');
+                previewImg.src = e.target.result;
+                previewImg.style.display = 'block'; // 显示预览图片
+                // 添加类以隐藏加号和文字，但保留点击功能
+                uploadLabel.classList.add('preview-active');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
-    // // 上传俱乐部头像后预览
-    // function previewAvatar(event) {
-    //     var file = event.target.files[0];
-    //     var reader = new FileReader();
-    //     reader.onload = function (e) {
-    //         document.querySelector('.photo img').src = e.target.result;
-    //     };
-    //     reader.readAsDataURL(file);
-    // }
+    // 允许点击预览图片重新上传
+    document.getElementById('preview').addEventListener('click', function () {
+        let previewImg = this;
+        let uploadLabel = document.getElementById('submit-photo');
+        // 清除当前预览图片
+        previewImg.style.display = 'none';
+        previewImg.src = ''; // 清空图片源
+        // 移除隐藏类，恢复上传按钮的加号和文字
+        uploadLabel.classList.remove('preview-active');
+        // 触发文件选择对话框
+        document.getElementById('clubImg').click();
+    });
+
+    // 表单提交验证
+    function validateForm() {
+        let previewImg = document.getElementById('preview');
+        if (previewImg.style.display === 'none' || previewImg.src === '') {
+            alert('请选择头像');
+            return false; // 阻止表单提交
+        }
+        return true; // 允许表单提交
+    }
 </script>
 </html>
