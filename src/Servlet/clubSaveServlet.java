@@ -42,12 +42,14 @@ public class clubSaveServlet extends HttpServlet {
             String clubImgPath = UUID.randomUUID() + ext;
             // 2.获取clubImg文件的路径
             String dir = getServletContext().getRealPath("clubImg");
-            // a. windows路径是用\隔开，正则表达式中'\'是用两个'\'表示
             String savePath = dir + "\\" + clubImgPath;
-            // b. linux路径是用/隔开，正则表达式中'/'是用一个'/'表示
             // String savePath = dir + "/" + clubImgPath;
             // 3.保存文件
             clubImg.write(savePath);
+            // a. windows路径是用\隔开，正则表达式中'\'是用两个'\'表示
+            clubImgPath = dir.substring(dir.lastIndexOf("\\") + 1) + "/" + clubImgPath;
+            // b. linux路径是用/隔开，正则表达式中'/'是用一个'/'表示
+            //  clubImgPath = dir.substring(dir.lastIndexOf("/", dir.lastIndexOf("/") - 1) + 1) + "/" + clubImgPath;
             b = clubService.insertClub(new Club(clubName, clubIntroduction, clubImgPath, clubMembership));
         }
         // // 用户创建俱乐部的同时加入俱乐部

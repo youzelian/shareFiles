@@ -34,6 +34,9 @@ public class File_ClubService {
         Long count = file_clubDAO.selectFile_ClubCount(cId);
         // b.根据总记录数和每页条数，计算总页数
         long pageCount = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
+        if (pageCount == 0) {
+            pageCount = 1;
+        }
         // 3. 将分页数据都放在一个pageHelper对象中
         pageHelper<File_Club> file_ClubPageHelper = new pageHelper<File_Club>(file_clubList, pageNum, (int) pageCount);
         return file_ClubPageHelper;

@@ -27,6 +27,7 @@ public class ClubDAO {
         return i;
     }
 
+    // 更新俱乐部信息
     public int updateClub(Club club) {
         int i = 0;
         try {
