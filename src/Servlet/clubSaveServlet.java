@@ -20,6 +20,8 @@ public class clubSaveServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1.接受请求
+        request.setCharacterEncoding("utf-8");
         String clubName = request.getParameter("clubName");
         String clubIntroduction = request.getParameter("clubIntroduction");
         String clubMembership = request.getParameter("clubMembership");

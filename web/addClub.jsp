@@ -137,7 +137,6 @@
             <div class="photo">
                 <input type="file" name="clubImg" id="clubImg" style="display: none;"/>
                 <label for="clubImg" class="upload-label" id="submit-photo"><span>添加头像</span></label>
-                <%--<img src="" alt="">--%>
             </div>
             <p>俱乐部名称<span> *</span></p>
             <input type="text" name="clubName" class="clubName" placeholder="主体清晰,一秒get~">
@@ -153,15 +152,15 @@
 </div>
 </body>
 <script>
-    // 上传文件前判断是否有文件
-    $("#submit-photo").click(function () {
-        if ($("#upload_file").val() == "") {
-            alert("请选择文件后上传！");
-            return false;
-        } else {
-            return true;
-        }
-    })
+    // // 上传文件前判断是否有文件
+    // $("#submit-photo").click(function () {
+    //     if ($("#upload_file").val() == "") {
+    //         alert("请选择文件后上传！");
+    //         return false;
+    //     } else {
+    //         return true;
+    //     }
+    // })
 
     // // 上传俱乐部头像后预览
     // function previewAvatar(event) {

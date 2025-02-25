@@ -42,7 +42,12 @@ public class communityListServlet extends HttpServlet {
             // 如果是搜索传递，进行模糊搜索后将值替换pages中的list值，并通过传递fileList的个数更新pageCount(即总页数)
             fileList = fileService.fuzzyQueryFileByFileName(searchContent);
             pages.setList(fileList);
-            pages.setPageCount(fileList.size() / pageSize + 1);
+            // int pageCount = fileList.size() % pageSize == 0 ? fileList.size() / pageSize : fileList.size() / pageSize + 1;
+            int pageCount = (fileList.size() + pageSize + 1) / pageSize;
+            if (pageCount == 0) {
+                pageCount = 1;
+            }
+            pages.setPageCount(pageCount);
         }
         request.setAttribute("pages", pages);
         request.getRequestDispatcher("community.jsp").forward(request, response);

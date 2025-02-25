@@ -53,7 +53,11 @@ public class FileService {
         List<File> fileAll = fileDAO.listAllFilesByPage(start, limit);
         // 2.算出所有文件对应的总页数
         long count = fileDAO.listFile().size();
-        long pageCount = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
+        // long pageCount = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
+        long pageCount = (count + pageSize + 1) / pageSize;
+        if (pageCount == 0) {
+            pageCount = 1;
+        }
         // 3.将所有数据放入pageHelper对象中
         pageHelper<File> filePageHelper = new pageHelper<File>(fileAll, pageNum, (int) pageCount);
         return filePageHelper;
