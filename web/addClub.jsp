@@ -167,13 +167,14 @@
                 <img class="preview-img" id="preview" alt="预览头像">
             </div>
             <p>俱乐部名称<span> *</span></p>
-            <input type="text" name="clubName" class="clubName" placeholder="主体清晰,一秒get~">
+            <input type="text" name="clubName" class="clubName" placeholder="主体清晰,一秒get~" required>
             <p>成员称号<span> *</span></p>
             <input type="text" name="clubMembership" class="clubMembership"
-                   placeholder="取一个我们才懂的称号๑乛◡乛๑">
+                   placeholder="取一个我们才懂的称号๑乛◡乛๑" required>
             <p>俱乐部简介<span> *</span></p>
             <textarea name="clubIntroduction" cols="30" rows="10" class="introduce"
-                      placeholder="给你的俱乐部做个自我介绍,让大家能够了解俱乐部的宗旨，引导俱乐部成员一起分享~"></textarea>
+                      placeholder="给你的俱乐部做个自我介绍,让大家能够了解俱乐部的宗旨，引导俱乐部成员一起分享~"
+                      required></textarea>
             <input type="submit" value="立即创建" class="submit">
         </form>
     </div>

@@ -26,7 +26,8 @@ public class fileSaveServlet extends HttpServlet {
         // 1.接受请求
         request.setCharacterEncoding("utf-8");
         String fileNme = request.getParameter("fileName");
-        String fileType = request.getParameter("fileType");
+        // String fileType = request.getParameter("fileType");
+        String fileType = "图片";
         String fileIntroduction = request.getParameter("fileIntroduction");
         int fileOfClub = Integer.parseInt(request.getParameter("fileOfClub"));
 
@@ -46,6 +47,7 @@ public class fileSaveServlet extends HttpServlet {
             case ".jpeg":
             case ".BMP":
             case ".GIF":
+            case ".webp":
                 dir = getServletContext().getRealPath("/files/picture");
                 break;
             case ".MP4":

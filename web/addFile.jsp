@@ -9,130 +9,174 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>上传文件</title>
     <script src="JS/jquery-3.7.1.js" charset="utf-8"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
-            outline: none;
-            word-wrap: break-word;
-            font-family: 微软雅黑;
-            font-size: 14px;
-            color: #444;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html {
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            min-height: 100vh; /* 背景充满视口 */
+        }
+
+        body {
+            color: #333;
+            line-height: 1.6;
+            height: auto; /* 自适应高度，避免滚动条 */
         }
 
         .main {
-            position: relative;
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto; /* 减少外边距 */
+            gap: 30px;
+            padding: 0 20px;
         }
 
         .content {
-            border: 1px solid pink;
-            margin: 0 auto;
-            width: 700px;
-            height: 600px;
-        }
-
-        .gen-form {
-            margin-top: 30px;
-            /* border: 1px solid greenyellow; */
-        }
-
-        .form-field {
-            height: 32px;
-            padding: 8px 0;
-            border-bottom: 1px solid #dedede;
-        }
-
-        .form-field fieldset {
-            border: 0;
-        }
-
-        .form-field label {
-            width: 100px;
-            height: 21px;
-            float: left;
-            margin-right: 30px;
-            margin-top: 5px;
-            margin-left: 3px;
-            cursor: pointer;
-        }
-
-        .form-field .inputWrapper {
-            width: 310px;
-            float: left;
-            border: 1.2px solid #d8d8d8;
-        }
-
-        .form-field .inputInner {
-            width: 302px;
-            margin-left: 8px;
-        }
-
-        .form-field .inputInner input {
-            width: 302px;
-            border: 0px;
-            font-size: 14px;
-            line-height: 18px;
-            height: 30px;
-            color: #404040;
-            border: none;
-            background: transparent;
-        }
-
-        #file-type, #club-type {
-            float: left;
-            height: 33px;
-            line-height: 30px;
-            margin-right: 20px;
-        }
-
-        #submit-file {
-            float: left;
-            width: 94px;
-            height: 32px;
-            line-height: 28px;
-            font-size: 16px;
-            color: #fff;
-            border-radius: 3px;
-            cursor: pointer;
-            text-shadow: none;
-            text-decoration: none;
-            text-align: center;
-            font-size: 14px;
-            border-radius: 18px;
-            background-color: #00c7e1;
-            box-shadow: 0 2px 4px 0 rgba(0, 188, 212, .28);
-            border: solid 3px rgba(255, 255, 255, .4);
+            flex: 2;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .sidebar {
-            border: 1px solid rgba(30, 30, 224, 0.742);
-            width: 300px;
-            height: 800px;
-            position: absolute;
-            right: 0;
-            top: 0;
+            flex: 1;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            max-height: 400px;
+            overflow-y: auto;
         }
 
-        .out-table {
-            width: 270px;
-            margin: 10px auto;
-            border: 1px solid red;
+        .gen-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .file_title, .file_content, .file_club, .file_file, .file_submit {
+            border: none;
+            padding: 0;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: #2c3e50;
+        }
+
+        input[type="text"], textarea, select, input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus, input[type="file"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            outline: none;
+        }
+
+        textarea {
+            resize: none;
+            min-height: 120px;
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        input[type="submit"]:hover {
+            background: linear-gradient(90deg, #2980b9, #1f6391);
+            transform: translateY(-2px);
+        }
+
+        input[type="submit"]:active {
+            transform: translateY(1px);
+        }
+
+        .back-button {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            background: linear-gradient(90deg, #bdc3c7, #95a5a6);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(90deg, #95a5a6, #7f8c8d);
+            transform: translateY(-2px);
+        }
+
+        .back-button:active {
+            transform: translateY(1px);
         }
 
         table {
-            margin: 0 auto;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
         }
 
-        td,
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
         th {
-            padding: 10px 10px;
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fbfc;
+        }
+
+        tr:hover {
+            background-color: #eef2f5;
+        }
+
+        @media (max-width: 768px) {
+            .main {
+                flex-direction: column;
+                margin: 20px auto;
+            }
+
+            .content, .sidebar {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -141,119 +185,72 @@
 <div class="main">
     <div class="content">
         <form action="fileSaveServlet" method="post" enctype="multipart/form-data" class="gen-form">
-            <!-- 文件名 -->
-            <div class="form-field">
-                <fieldset>
-                    <label>文件名</label>
-                    <div class="inputWrapper">
-                        <div class="inputInner">
-                            <input type="text" placeholder="填写文件名称" name="fileName">
-                        </div>
-                    </div>
-                </fieldset>
+            <!-- 标题 -->
+            <div class="file_title">
+                <label>标题</label>
+                <input type="text" placeholder="请填写标题" name="fileName" required>
             </div>
-            <!-- 文件类型 -->
-            <div class="form-field">
-                <fieldset>
-                    <label>文件类型</label>
-                    <select id="file-type" name="fileType">
-                        <!--selected设置默认选中-->
-                        <option value="图片" selected="selected">图片</option>
-                        <option value="视频">视频</option>
-                        <option value="exe文件">exe文件</option>
-                        <option value="apk文件">apk文件</option>
-                        <option value="pdf文件">pdf文件</option>
-                        <option value="ppt文件">ppt文件</option>
-                        <option value="word文件">word文件</option>
-                        <option value="压缩包">压缩包</option>
-                    </select>
-                    <%--                    <div class="inputWrapper">--%>
-                    <%--                        <div class="inputInner">--%>
-                    <%--                            <input type="text" placeholder="选择文件类型">--%>
-                    <%--                        </div>--%>
-                    <%--                    </div>--%>
-                </fieldset>
+
+            <!-- 正文 -->
+            <div class="file_content">
+                <label>文件描述</label>
+                <textarea name="fileIntroduction" placeholder="请输入文件描述" rows="5" required></textarea>
             </div>
-            <!-- 文件描述 -->
-            <div class="form-field">
-                <fieldset>
-                    <label>文件描述</label>
-                    <div class="inputWrapper">
-                        <div class="inputInner">
-                            <input type="text" placeholder="描述" name="fileIntroduction">
-                        </div>
-                    </div>
-                </fieldset>
+
+            <!-- 俱乐部 -->
+            <div class="file_club">
+                <label>俱乐部</label>
+                <select name="fileOfClub" required>
+                    <option value="" disabled selected>请选择俱乐部</option>
+                    <c:forEach items="${clubList}" var="club">
+                        <option value="${club.clubId}">${club.clubName}</option>
+                    </c:forEach>
+                </select>
             </div>
-            <!-- 选择你的俱乐部 -->
-            <div class="form-field">
-                <fieldset>
-                    <label>俱乐部</label>
-                    <select id="club-type" name="fileOfClub">
-                        <!--selected设置默认选中-->
-                        <c:forEach items="${clubList}" var="club">
-                            <option value="${club.clubId}" selected="selected">${club.clubName}</option>
-                        </c:forEach>
-                    </select>
-                    <%--                    <div class="inputWrapper">--%>
-                    <%--                        <div class="inputInner">--%>
-                    <%--                            <input type="text" placeholder="投入到哪个俱乐部" name="fileOfClub">--%>
-                    <%--                        </div>--%>
-                    <%--                    </div>--%>
-                </fieldset>
+
+            <!-- 文件 -->
+            <div class="file_file">
+                <label>文件选择</label>
+                <input type="file" name="file" required>
             </div>
-            <!-- 提交文件 -->
-            <div class="form-field">
-                <fieldset>
-                    <label>文件选择</label>
-                    <div class="inputWrapper" style="border: none;">
-                        <div class="inputInner">
-                            <input type="file" name="file" id="upload_file">
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
+
             <!-- 提交按钮 -->
-            <div class="form-field" style="border: 0px;">
-                <fieldset>
-                    <label></label>
-                    <input type="submit" value="提交文件" id="submit-file">
-                </fieldset>
+            <div class="file_submit">
+                <input type="submit" value="提交文件">
+                <a href="index.jsp" class="back-button">返回</a>
             </div>
         </form>
     </div>
-    <div class="sidebar">
-        <div class="out-table">
-            <table>
 
-                <thead>
+    <div class="sidebar">
+        <table>
+            <thead>
+            <tr>
+                <th>俱乐部名</th>
+                <th>俱乐部人数</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${clubList}" var="club">
                 <tr>
-                    <th>俱乐部名</th>
-                    <th>俱乐部人数</th>
+                    <td>${club.clubName}</td>
+                    <td>${club.clubNumbers}</td>
                 </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${clubList}" var="club">
-                    <tr>
-                        <td>${club.clubName}</td>
-                        <td>${club.clubNumbers}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
+            </c:forEach>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>
 <script>
-    // 上传文件前判断是否有文件
-    $("#submit-file").click(function () {
-        if ($("#upload_file").val() == "") {
-            alert("请选择文件后上传！");
-            return false;
-        } else {
-            return true;
-        }
-    })
+    $(document).ready(function () {
+        $("input[type='submit']").click(function (e) {
+            if ($("input[type='file']").val() === "") {
+                alert("请选择文件后上传！");
+                e.preventDefault();
+                return false;
+            }
+        });
+    });
 </script>
 </html>
