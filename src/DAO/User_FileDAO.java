@@ -14,7 +14,7 @@ import java.util.List;
 public class User_FileDAO {
     BeanProcessor bean = new GenerousBeanProcessor();
     RowProcessor processor = new BasicRowProcessor(bean);
-    
+
     // 增加文件与用户的关联信息
     public int insertUser_File(User_File user_file) {
         int i = 0;
@@ -28,7 +28,7 @@ public class User_FileDAO {
         }
         return i;
     }
-    
+
     // 根据文件id和用户id删除已有关联信息
     public int deleteUser_File(int uId, int fId) {
         int i = 0;
@@ -41,7 +41,7 @@ public class User_FileDAO {
         }
         return i;
     }
-    
+
     // 根据文件id和用户id查看已有关联信息
     public User_File checkUser_File(int uId, int fId) {
         User_File user_file = null;
@@ -54,12 +54,12 @@ public class User_FileDAO {
         }
         return user_file;
     }
-    
+
     // 查询用户收藏的文件
     public List<User_File> listUser_File(int uId, int start, int limit) {
         List<User_File> user_fileList = null;
         try {
-            String sql = "select  * from user_file inner join files on user_file.f_id=files.file_id where user_file.u_id=? limit ?,?";
+            String sql = "select  * from user_file inner join files inner join clubs on user_file.f_id=files.file_id and files.file_of_club=clubs.club_id where user_file.u_id=? limit ?,?";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             user_fileList = queryRunner.query(sql, new BeanListHandler<User_File>(User_File.class, processor), uId, start, limit);
         } catch (SQLException e) {
@@ -67,7 +67,7 @@ public class User_FileDAO {
         }
         return user_fileList;
     }
-    
+
     // 查询用户收藏的文件的总记录数
     public Long selectUser_FileCount(int uId) {
         long count = 0;

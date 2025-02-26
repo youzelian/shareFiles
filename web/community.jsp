@@ -327,7 +327,7 @@
                             <td>👍 ${file.fileVote}</td>
                             <td>⭐ ${file.fileCollect}</td>
                             <td>📥 ${file.fileDownloadAmount}</td>
-                            <td>🏆 所属俱乐部: ${file.clubName} (${file.clubId})</td>
+                            <td>🏆 所属俱乐部: ${file.clubName}</td>
                         </tr>
                     </table>
                     <a href="transferServlet?fileId=${file.fileId}">点击进入</a>

@@ -117,6 +117,32 @@
         #submit:hover {
             background-color: #00a8c6;
         }
+
+        .back-button {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            background: linear-gradient(90deg, #bdc3c7, #95a5a6);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(90deg, #95a5a6, #7f8c8d);
+        }
+
+        .back-button:active {
+            transform: translateY(1px);
+        }
+
+        a:hover {
+            color: white;
+        }
     </style>
 </head>
 
@@ -209,6 +235,7 @@
             <!-- 提交按钮 -->
             <div class="form-field">
                 <button type="submit" id="submit">更新信息</button>
+                <a href="index.jsp" class="back-button">取消</a>
             </div>
         </form>
     </div>

@@ -1,12 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>创建俱乐部</title>
+    <link rel="stylesheet" href="fonts/font_back/iconfont.css">
     <style>
         * {
             margin: 0;
@@ -21,16 +21,48 @@
         .main {
             width: 1000px;
             margin: 0 auto;
+            background: #fff;
+            border-radius: 12px; /* 整体内容区域加圆角 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 添加阴影 */
         }
 
-        .main h1 {
+        /* 顶部导航栏样式 */
+        .header {
+            width: 100%;
+            background-color: #8bcfff; /* 浅蓝色，与 submit 按钮颜色一致 */
+            border-radius: 12px 12px 0 0; /* 顶部圆角 */
+            padding: 10px 0;
+            position: relative; /* 为了绝对定位返回按钮和标题 */
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            text-decoration: none;
+            color: #fff;
+            font-size: 20px; /* 增大图标大小 */
+            padding: 5px 15px; /* 增加内边距 */
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #e9f7fe; /* 悬停时颜色稍亮 */
+        }
+
+        .header h1 {
             text-align: center;
-            margin: 15px auto;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
         }
 
         .content {
             width: 375px;
             margin: 0 auto;
+            padding: 20px; /* 增加内容区域内边距 */
         }
 
         .content p {
@@ -157,7 +189,10 @@
 
 <body>
 <div class="main">
-    <h1>创建俱乐部</h1>
+    <div class="header">
+        <a href="index.jsp" class="back-button iconfont">&#xe789; 关闭</a>
+        <h1>创建俱乐部</h1>
+    </div>
     <div class="content">
         <form action="clubSaveServlet" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
             <div class="photo">

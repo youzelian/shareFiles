@@ -20,22 +20,22 @@ public class myFilesListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //1.接收客户端传递的页码(如果客户端没有传递页码，则默认页码为1，如果传递了则使用客户端传递的页码)
+        // 1.接收客户端传递的页码(如果客户端没有传递页码，则默认页码为1，如果传递了则使用客户端传递的页码)
         String num = request.getParameter("pageNum");
         int pageNum = num == null ? 1 : Integer.parseInt(num);
-        
+
         // 2.定义pageSize
-        int pageSize = 10;
-        
+        int pageSize = 5;
+
         // 3.调用User_FileService查询用户收藏的文件信息
         User_FileService user_fileService = new User_FileService();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         pageHelper<User_File> user_FilePageHelper = user_fileService.listUser_FileByPage(pageNum, pageSize, user.getUserId());
-        
+
         // 4.将查询到的文件信息转发到myFiles.jsp
         request.setAttribute("user_FilePageHelper", user_FilePageHelper);
         request.getRequestDispatcher("myFiles.jsp").forward(request, response);

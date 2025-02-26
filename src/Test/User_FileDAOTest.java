@@ -35,7 +35,7 @@ public class User_FileDAOTest {
     // 查询用户收藏的文件
     @Test
     public void listUser_File() {
-        List<User_File> user_fileList = user_fileDAO.listUser_File(7, 0, 3);
+        List<User_File> user_fileList = user_fileDAO.listUser_File(1, 0, 5);
         System.out.println(user_fileList);
     }
 
