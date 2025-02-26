@@ -13,116 +13,150 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Arial', 'PingFang SC', sans-serif; /* 添加中文字体支持 */
         }
 
         body {
-            background: linear-gradient(135deg, #f0f4f8, #d9e2ec); /* 与 addFile.jsp 一致的渐变背景 */
-            padding-top: 40px;
-            height: auto;
+            background: linear-gradient(135deg, #e9f1f6, #c8d8e4); /* 更柔和的渐变 */
+            padding-top: 50px;
+            min-height: 100vh;
             color: #333;
+            overflow-x: hidden; /* 防止水平溢出 */
         }
 
         .club-introduction {
             width: 90%;
-            max-width: 1200px;
+            max-width: 1280px; /* 更宽的容器 */
             margin: 0 auto;
             text-align: center;
-            padding-bottom: 60px; /* 增加底部留白 */
-            position: relative; /* 使返回按钮定位的父级 */
+            padding-bottom: 80px;
+            position: relative;
+            animation: fadeIn 0.8s ease-in-out; /* 页面加载动画 */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .club-introduction h1 {
-            font-size: 36px; /* 标题更大 */
-            color: #2c3e50; /* 深色标题 */
-            margin-bottom: 40px;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加微妙阴影 */
+            font-size: 40px;
+            color: #1e2a38; /* 更深沉的标题色 */
+            margin-bottom: 50px;
+            font-weight: 800;
+            letter-spacing: 1px; /* 增加字符间距 */
+            background: linear-gradient(90deg, #3498db, #2ecc71); /* 渐变文字 */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
         }
 
-        /* 返回按钮样式 */
+        /* 返回按钮 */
         .back {
-            position: absolute; /* 绝对定位 */
-            top: 0; /* 顶部对齐 */
-            left: 0; /* 左边对齐 */
-            margin: 10px; /* 外边距 */
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
 
         .back a {
-            display: inline-block;
-            padding: 8px 12px; /* 调整内边距 */
-            background: linear-gradient(90deg, #3498db, #2980b9); /* 与页面蓝色主题一致的渐变 */
+            display: flex;
+            align-items: center;
+            padding: 8px 14px;
+            background: linear-gradient(45deg, #3498db, #2ecc71); /* 更活泼的渐变 */
             color: white;
             text-decoration: none;
-            border-radius: 8px; /* 圆角与卡片一致 */
-            font-size: 16px; /* 字体大小 */
-            transition: background 0.3s ease, transform 0.2s ease; /* 动画效果 */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 微妙阴影 */
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
         }
 
         .back a:hover {
-            background: linear-gradient(90deg, #2980b9, #1f6391); /* 悬停时渐变变化 */
+            background: linear-gradient(45deg, #2980b9, #27ae60);
+            transform: scale(1.05); /* 轻微放大 */
         }
 
         .back a:active {
-            transform: translateY(1px); /* 点击时下沉 */
+            transform: scale(0.95); /* 点击缩小 */
         }
 
         .back .iconfont {
-            font-size: 18px; /* 调整图标大小 */
-            vertical-align: middle; /* 图标垂直居中 */
+            font-size: 20px;
+            margin-right: 5px; /* 图标与文字间距 */
         }
 
         .club-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* 卡片稍宽 */
-            gap: 25px; /* 增加间距 */
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); /* 卡片更宽松 */
+            gap: 30px;
             justify-items: center;
+            padding: 0 20px; /* 增加两侧内边距 */
         }
 
         .club-card {
             width: 100%;
             background: #fff;
-            padding: 25px;
-            border-radius: 12px; /* 更大圆角 */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* 更柔和阴影 */
-            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 5s ease; /* 保持你的淡入时间 */
-            opacity: 1;
-            border: 1px solid #dfe6e9; /* 添加细边框 */
+            padding: 30px;
+            border-radius: 16px; /* 更圆润 */
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(223, 230, 233, 0.5);
+            position: relative;
+            overflow: hidden; /* 防止内容溢出 */
+        }
+
+        .club-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2ecc71); /* 卡片顶部装饰线 */
         }
 
         .club-card.hidden {
             opacity: 0;
+            transform: translateY(20px); /* 初始偏移 */
             visibility: hidden;
             height: 0;
             margin: 0;
             overflow: hidden;
-            transition: height 0s, opacity 5s ease; /* 保持你的淡入时间 */
+            transition: opacity 0.5s ease, transform 0.5s ease, height 0s 0.5s;
         }
 
         .club-card.visible {
             opacity: 1;
+            transform: translateY(0);
             visibility: visible;
             height: auto;
-            margin-bottom: 25px; /* 一致间距 */
+            margin-bottom: 30px;
         }
 
         .club-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* 悬停时阴影更明显 */
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
         }
 
         .club-card h2 {
-            font-size: 26px; /* 标题稍大 */
-            color: #2c3e50; /* 深色标题 */
-            margin-bottom: 15px;
-            font-weight: 600;
+            font-size: 28px;
+            color: #1e2a38;
+            margin-bottom: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .club-card .introduction {
             font-size: 16px;
-            color: #666;
-            line-height: 1.6; /* 更舒适的行距 */
+            color: #555;
+            line-height: 1.7;
             margin-bottom: 20px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -133,57 +167,70 @@
 
         .club-card .members {
             font-size: 14px;
-            color: #7f8c8d; /* 柔和灰色 */
-            margin-bottom: 15px;
+            color: #95a5a6;
+            margin-bottom: 20px;
+            font-style: italic; /* 增加趣味性 */
         }
 
         .club-card .message {
-            margin-top: 20px;
+            margin-top: 25px;
             display: flex;
             flex-direction: column;
-            gap: 10px; /* 按钮和文本间距 */
+            gap: 12px;
         }
 
         .club-card .message p {
             font-size: 14px;
-            color: #888;
+            color: #777;
         }
 
         .club-card .message a {
-            display: inline-block;
-            padding: 10px 20px; /* 按钮更大 */
-            background: linear-gradient(90deg, #3498db, #2980b9); /* 渐变按钮 */
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
             color: white;
             text-decoration: none;
-            border-radius: 8px; /* 更大圆角 */
-            transition: background 0.3s ease, transform 0.2s ease;
-            font-size: 14px;
-            text-align: center;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
         }
 
         .club-card .message a:hover {
-            background: linear-gradient(90deg, #2980b9, #1f6391);
+            background: linear-gradient(45deg, #2980b9, #27ae60);
+            transform: scale(1.03);
         }
 
         .club-card .message a:active {
-            transform: translateY(1px); /* 点击时下沉 */
+            transform: scale(0.97);
         }
 
         @media (max-width: 768px) {
             .club-list {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 移动端稍窄 */
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
             }
 
             .club-introduction h1 {
-                font-size: 28px; /* 移动端标题缩小 */
+                font-size: 32px;
             }
 
-            .back {
-                margin: 5px; /* 移动端缩小外边距 */
+            .club-card {
+                padding: 25px;
             }
 
             .back a {
-                padding: 6px 10px; /* 移动端按钮缩小 */
+                padding: 6px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .club-introduction h1 {
+                font-size: 26px;
+            }
+
+            .club-card h2 {
+                font-size: 24px;
             }
         }
     </style>
@@ -192,7 +239,7 @@
 <body>
 <div class="club-introduction">
     <div class="back">
-        <a href="index.jsp" class="iconfont" title="返回"></a>
+        <a href="index.jsp" class="iconfont" title="返回"> 返回</a>
     </div>
     <h1>欢迎来到俱乐部广场</h1>
     <div class="club-list">
@@ -211,6 +258,7 @@
 </div>
 
 <script>
+    // 让页面一开始只显示6个，后面页面滑动后再呈现
     document.addEventListener('DOMContentLoaded', function () {
         const clubCards = document.querySelectorAll('.club-card');
         clubCards.forEach((card, index) => {
@@ -219,19 +267,19 @@
                 card.classList.add('visible');
             }
         });
-
+        // 防止页面高度低导致无法滑动
         const visibleCards = document.querySelectorAll('.club-card.visible');
         if (visibleCards.length > 0) {
             const list = document.querySelector('.club-list');
-            list.style.minHeight = `${window.innerHeight}px`;
+            list.style.minHeight = `${window.innerHeight - 100}px`; /* 调整最小高度 */
         }
     });
-
+    
+    // 设置滑动距离
     window.addEventListener('scroll', function () {
         const clubCards = document.querySelectorAll('.club-card.hidden');
         const windowHeight = window.innerHeight;
         const scrollBottom = window.scrollY + windowHeight;
-
         clubCards.forEach(card => {
             const cardTop = card.getBoundingClientRect().top + window.scrollY;
             if (scrollBottom > cardTop + 50) {

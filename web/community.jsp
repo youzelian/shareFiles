@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,129 +14,175 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Arial", sans-serif;
+            font-family: 'Arial', 'PingFang SC', sans-serif; /* 支持中文字体 */
         }
 
         body {
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #e9f1f6, #c8d8e4); /* 与 club.jsp 一致的渐变背景 */
+            min-height: 100vh;
+            padding: 40px 0; /* 增加顶部和底部留白 */
+            color: #333;
         }
 
         .main {
-            width: 80%;
-            max-width: 1200px;
-            margin: 20px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 85%;
+            max-width: 1280px; /* 更宽的容器 */
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            position: relative;
+            animation: fadeIn 0.8s ease-in-out; /* 页面加载动画 */
         }
 
-        /* 返回首页按钮样式 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 返回首页按钮 */
         .backHome {
+            position: absolute;
             top: 20px;
             left: 20px;
         }
 
         .backHome a {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px; /* 设置固定宽度 */
-            height: 50px; /* 设置固定高度 */
-            background-color: #2ecc71; /* 使用绿色背景色 */
-            color: white;
-            font-size: 24px; /* 图标大小 */
-            border-radius: 50%; /* 圆形按钮 */
-            border: 2px solid #27ae60; /* 绿色边框 */
+            width: 50px;
+            height: 50px;
+            color: black;
+            font-size: 26px;
+            border-radius: 50%;
             text-decoration: none;
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .backHome a:hover {
-            background-color: #27ae60; /* 鼠标悬停时背景颜色变化 */
-            transform: translateY(-5px); /* 鼠标悬停时按钮上移 */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* 鼠标悬停时增加阴影 */
-        }
+        /*.backHome a:hover {*/
+        /*    background: linear-gradient(45deg, #8e44ad, #d8437e);*/
+        /*    transform: scale(1.1); !* 放大效果 *!*/
+        /*}*/
 
         .backHome a:active {
-            transform: translateY(2px); /* 按钮按下时的效果 */
+            transform: scale(0.95); /* 点击缩小 */
         }
 
         /* 搜索框 */
         .search-box {
-            width: 500px;
+            width: 100%;
+            max-width: 600px;
             display: flex;
             align-items: center;
-            border: 1px solid #d9534f;
-            border-radius: 5px;
+            border: 2px solid #d9534f;
+            border-radius: 10px;
             overflow: hidden;
-            margin: 20px auto;
+            margin: 30px auto;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:hover {
+            border-color: #c9302c;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
         }
 
         .search-box input {
             flex: 1;
-            height: 40px;
+            height: 48px;
             font-size: 16px;
             border: none;
-            padding: 0 10px;
+            padding: 0 15px;
             outline: none;
+            background: #fafafa; /* 浅灰背景 */
         }
 
         .search-box button {
-            height: 40px;
-            padding: 0 20px;
-            background-color: #d9534f;
+            height: 48px;
+            padding: 0 25px;
+            background: linear-gradient(90deg, #d9534f, #c9302c);
             color: white;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 16px;
+            transition: all 0.3s ease;
         }
 
         .search-box button:hover {
-            background-color: #c9302c;
+            background: linear-gradient(90deg, #c9302c, #b02828);
         }
 
         /* 文件介绍 */
         .file-introduction {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 25px;
+            padding: 25px;
             background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s; /* 上浮这个过程需要的时间 */
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(223, 230, 233, 0.5);
+            position: relative;
+        }
+
+        .file-introduction::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #d9534f, #e74c3c); /* 顶部装饰线 */
         }
 
         .file-introduction:hover {
-            transform: translate(-5px, -10px); /*鼠标悬停在文件上方时向左上移动*/
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
         }
 
         .file-introduction h1 {
-            font-size: 22px;
-            color: #333;
-            text-align: center;
-            margin-bottom: 10px;
+            font-size: 24px;
+            color: #1e2a38;
+            text-align: left;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .file-introduction h3 {
             color: #555;
-            margin-top: 10px;
+            font-size: 18px;
+            margin-top: 15px;
+            font-weight: 500;
         }
 
         .news_info {
             color: #666;
             font-size: 16px;
-            line-height: 1.6;
-            margin-top: 8px;
+            line-height: 1.7;
+            margin-top: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3; /* 限制3行 */
         }
 
         .message {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 15px 0;
             border-top: 1px solid #eee;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .message table {
@@ -145,63 +190,120 @@
         }
 
         .message td {
-            padding: 5px;
+            padding: 5px 15px;
             font-size: 14px;
             color: #777;
         }
 
+        /* “点击进入”按钮 */
         .message a {
-            display: inline-block;
-            text-decoration: none;
-            background-color: #3498db;
+            padding: 12px 30px; /* 增加内边距，确保文字在一行 */
+            background: linear-gradient(45deg, #f39c12, #f1c40f); /* 橙色到黄色的渐变 */
             color: white;
-            padding: 8px 12px;
-            border-radius: 5px;
-            transition: 0.3s;
-            white-space: nowrap;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 16px; /* 增大字体，确保清晰 */
+            font-weight: 600; /* 字体加粗 */
+            white-space: nowrap; /* 确保文字不换行 */
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
         }
 
         .message a:hover {
-            background-color: #2980b9;
+            background: linear-gradient(45deg, #e67e22, #d4a017);
+            transform: scale(1.05); /* 轻微放大 */
+        }
+
+        .message a:active {
+            transform: scale(0.95); /* 点击缩小 */
         }
 
         /* 分页栏 */
         .file-pagination {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
             padding: 15px;
             background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .file-pagination a {
-            margin: 0 8px;
+            margin: 0 10px;
             text-decoration: none;
-            color: #333;
-            padding: 5px 10px;
+            color: #3498db;
+            padding: 8px 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            transition: 0.3s;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
         .file-pagination a:hover {
-            background-color: #eee;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border-color: transparent;
         }
 
         .file-pagination label {
             color: #bbb;
-            padding: 5px 10px;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .file-pagination span {
+            font-size: 14px;
+            color: #555;
+            margin: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .file-introduction {
+                padding: 20px;
+            }
+
+            .message {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .message td {
+                padding: 5px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .file-introduction h1 {
+                font-size: 20px;
+            }
+
+            .file-introduction h3 {
+                font-size: 16px;
+            }
+
+            .backHome a {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
-
 <div class="main">
-    <%--返回首页--%>
+    <%-- 返回首页 --%>
     <div class="backHome">
-        <a href="index.jsp" class="iconfont" title="回到主页">&#xe68b;</a>
+        <a href="index.jsp" class="iconfont" title="回到主页"></a>
     </div>
 
     <!-- 搜索框 -->
@@ -244,9 +346,7 @@
             <a href="communityListServlet?pageNum=1">首页</a>
             <a href="communityListServlet?pageNum=${pages.pageNum - 1}">上一页</a>
         </c:if>
-
-        当前第 ${pages.pageNum} 页 / 共 ${pages.pageCount} 页
-
+        <span>当前第 ${pages.pageNum} 页 / 共 ${pages.pageCount} 页</span>
         <c:if test="${pages.pageNum < pages.pageCount}">
             <a href="communityListServlet?pageNum=${pages.pageNum + 1}">下一页</a>
             <a href="communityListServlet?pageNum=${pages.pageCount}">尾页</a>
@@ -257,6 +357,5 @@
         </c:if>
     </div>
 </div>
-
 </body>
 </html>
