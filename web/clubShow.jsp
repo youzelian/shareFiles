@@ -339,7 +339,7 @@
 <div class="main">
     <div class="header">
         <div class="back">
-            <a href="clubListServlet?web=club.jsp" class="iconfont" title="返回俱乐部广场"></a>
+            <a href="clubListServlet?web=club.jsp" class="iconfont" title="返回俱乐部广场">&#xe68b;</a>
         </div>
         <div class="search-box">
             <form action="communityListServlet" style="display: flex; width: 100%;">

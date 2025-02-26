@@ -26,19 +26,18 @@ public class fileSaveServlet extends HttpServlet {
         // 1.接受请求
         request.setCharacterEncoding("utf-8");
         String fileNme = request.getParameter("fileName");
-        // String fileType = request.getParameter("fileType");
         String fileType = "图片";
         String fileIntroduction = request.getParameter("fileIntroduction");
         int fileOfClub = Integer.parseInt(request.getParameter("fileOfClub"));
 
         // 2.接受并保存文件
         // 2.1重新赋名
-        // a.获取后缀名
+        // 2.1.1获取后缀名
         Part file = request.getPart("file");
         String FileName = file.getSubmittedFileName();
         String ext = FileName.substring(FileName.lastIndexOf("."));
-        // b.使用随机数重新赋名
-        String filePath = UUID.randomUUID().toString() + ext;
+        // 2.1.2使用随机数重新赋名
+        String filePath = UUID.randomUUID() + ext;
         // 2.2根据后缀名获取该文件类型的目录在服务器上的路径
         String dir = null;
         switch (ext) {
@@ -76,22 +75,23 @@ public class fileSaveServlet extends HttpServlet {
                 dir = getServletContext().getRealPath("/files/packages");
                 break;
         }
+        // 在Linux中和Windows中都可以通过/或者\保存，为了方便取'/‘
         String savePath = dir + "/" + filePath;
         // 2.3保存文件
         file.write(savePath);
+
         // 3.传递数据到数据库中
         FileService fileService = new FileService();
-
-        // 此处是Windows中取dir中的文件类型；表示一个反斜杠是 "\\"
-        String fileDownloadLink = "files/" + dir.substring(dir.lastIndexOf("\\") + 1) + "/" + filePath;
-
-        // 此处是Linux取文件类型 ,只需要一个正斜杠表示 "/"
-        // String fileDownloadLink = dir.substring(dir.lastIndexOf("/", dir.lastIndexOf("/") - 1) + 1) + "/" + filePath;
-
+        String fileDownloadLink;
+        // 根据路径分隔符判断程序是否运行在Linux上则，如果不是则...
+        if (dir.contains("/")) {
+            // a. linux路径是用/隔开，正则表达式中'/'是用一个'/'表示
+            fileDownloadLink = dir.substring(dir.lastIndexOf("/", dir.lastIndexOf("/") - 1) + 1) + "/" + filePath;
+        } else {
+            // b. windows路径是用\隔开，正则表达式中'\'是用两个'\'表示
+            fileDownloadLink = dir.substring(dir.lastIndexOf("\\", dir.lastIndexOf("\\") - 1) + 1) + "/" + filePath;
+        }
         boolean b = fileService.saveFile(new File(fileNme, fileType, fileDownloadLink, fileOfClub, fileIntroduction));
-
-        // File_ClubDAO file_clubDAO = new File_ClubDAO();
-        // file_clubDAO.insertFile_Club(new File_Club())
 
         // 4.跳转到提示页面然后跳转主页面，并显示提示信息
         String tips = b ? "<label style='color:green'>上传成功!</label>" : "<label style='color:red'>上传失败!</label>";
