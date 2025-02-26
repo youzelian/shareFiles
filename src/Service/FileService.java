@@ -2,12 +2,8 @@ package Service;
 
 import DAO.FileDAO;
 import DTO.File;
-import DTO.File_Club;
-import org.apache.commons.dbutils.QueryRunner;
-import utils.DruidUtils;
 import utils.pageHelper;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class FileService {
@@ -52,14 +48,13 @@ public class FileService {
         // 第一页是0 5 第二页是5 5 第三页是10 5
         List<File> fileAll = fileDAO.listAllFilesByPage(start, limit);
         // 2.算出所有文件对应的总页数
-        long count = fileDAO.listFile().size();
-        // long pageCount = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
-        long pageCount = (count + pageSize + 1) / pageSize;
+        int count = fileDAO.listFile().size();
+        int pageCount = (count + pageSize - 1) / pageSize;
         if (pageCount == 0) {
             pageCount = 1;
         }
         // 3.将所有数据放入pageHelper对象中
-        pageHelper<File> filePageHelper = new pageHelper<File>(fileAll, pageNum, (int) pageCount);
+        pageHelper<File> filePageHelper = new pageHelper<File>(fileAll, pageNum, pageCount);
         return filePageHelper;
     }
 }

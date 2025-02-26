@@ -43,7 +43,7 @@ public class communityListServlet extends HttpServlet {
             fileList = fileService.fuzzyQueryFileByFileName(searchContent);
             pages.setList(fileList);
             // int pageCount = fileList.size() % pageSize == 0 ? fileList.size() / pageSize : fileList.size() / pageSize + 1;
-            int pageCount = (fileList.size() + pageSize + 1) / pageSize;
+            int pageCount = (fileList.size() + pageSize - 1) / pageSize;
             if (pageCount == 0) {
                 pageCount = 1;
             }
