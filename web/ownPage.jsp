@@ -188,21 +188,21 @@
             <div class="form-field mb-3">
                 <label for="userEmail">邮箱</label>
                 <input type="email" value="<%=user.getUserEmail()%>" name="userEmail" id="userEmail"
-                       placeholder="请输入邮箱" required>
+                       placeholder="请输入邮箱">
             </div>
 
             <!-- 联系电话 -->
             <div class="form-field mb-3">
                 <label for="userTel">联系电话</label>
                 <input type="text" value="<%=user.getUserTel()%>" name="userTel" id="userTel"
-                       placeholder="请输入联系电话" required>
+                       placeholder="请输入联系电话">
             </div>
 
             <!-- 地址 -->
             <div class="form-field mb-3">
                 <label for="userAddress">地址</label>
                 <input type="text" value="<%=user.getUserAddress()%>" name="userAddress" id="userAddress"
-                       placeholder="请输入地址" required>
+                       placeholder="请输入地址">
             </div>
 
             <!-- 密保问题 -->
@@ -222,7 +222,7 @@
             <div class="form-field mb-3">
                 <label for="pwdQuestionAnswer">密保答案</label>
                 <input type="text" value="<%=user.getPwdReqAnswer()%>" name="pwdQuestionAnswer" id="pwdQuestionAnswer"
-                       placeholder="设置密保才能修改密码" required>
+                       placeholder="设置密保才能修改密码">
             </div>
 
             <!-- 个性签名 -->

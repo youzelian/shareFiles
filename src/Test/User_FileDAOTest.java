@@ -28,7 +28,7 @@ public class User_FileDAOTest {
     // 根据文件id和用户id查看已有关联信息
     @Test
     public void checkUser_File() {
-        User_File user_file = user_fileDAO.checkUser_File(7, 1);
+        User_File user_file = user_fileDAO.checkUser_File(1, 1);
         System.out.println(user_file);
     }
 

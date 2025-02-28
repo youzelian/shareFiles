@@ -1,15 +1,13 @@
 package Servlet;
 
 import DTO.File;
+import DTO.User;
 import Service.FileService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -29,6 +27,8 @@ public class fileSaveServlet extends HttpServlet {
         String fileType = "图片";
         String fileIntroduction = request.getParameter("fileIntroduction");
         int fileOfClub = Integer.parseInt(request.getParameter("fileOfClub"));
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
         // 2.接受并保存文件
         // 2.1重新赋名
@@ -91,7 +91,8 @@ public class fileSaveServlet extends HttpServlet {
             // b. windows路径是用\隔开，正则表达式中'\'是用两个'\'表示
             fileDownloadLink = dir.substring(dir.lastIndexOf("\\", dir.lastIndexOf("\\") - 1) + 1) + "/" + filePath;
         }
-        boolean b = fileService.saveFile(new File(fileNme, fileType, fileDownloadLink, fileOfClub, fileIntroduction));
+
+        boolean b = fileService.saveFile(new File(fileNme, fileType, fileDownloadLink, fileOfClub, fileIntroduction, user.getUserId()));
 
         // 4.跳转到提示页面然后跳转主页面，并显示提示信息
         String tips = b ? "<label style='color:green'>上传成功!</label>" : "<label style='color:red'>上传失败!</label>";

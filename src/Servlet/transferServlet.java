@@ -1,11 +1,9 @@
 package Servlet;
 
-import DTO.Comment;
-import DTO.File;
-import DTO.User;
-import DTO.User_File;
+import DTO.*;
 import Service.CommentService;
 import Service.FileService;
+import Service.File_ClubService;
 import Service.User_FileService;
 
 import javax.servlet.ServletException;
@@ -23,26 +21,32 @@ public class transferServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 1.从前端接收请求信息（fid）
         int fileId = Integer.parseInt(request.getParameter("fileId"));
         FileService fileService = new FileService();
-        // 得到文件信息
-        File file = fileService.checkFile(fileId);
         CommentService commentService = new CommentService();
+        File_ClubService fileClubService = new File_ClubService();
+        HttpSession session = request.getSession();
+
+        // 2.收集信息
+        // 得到当前用户的信息
+        User user = (User) session.getAttribute("user");
+        // 得到文件信息和文件所对应的用户信息
+        File file = fileService.checkFile(fileId);
         // 根据文件id获得文件对应的评论列表（评论者的一系列信息）
         List<Comment> commentList = commentService.listCommentByFId(fileId);
-        // 获得user_file，判断是否已经收藏过了
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        User_File user_file = new User_FileService().checkUser_File(user.getUserId(), fileId);
-        // 2.传递参数file、commentList和imgAndPath
+        // 得到文件对应的俱乐部信息
+        File_Club file_club = fileClubService.checkClubByFileId(fileId);
+        // 3.传递参数
+        request.setAttribute("user", user);
         request.setAttribute("file", file);
         request.setAttribute("commentList", commentList);
-        request.setAttribute("user_file", user_file);
-        // 3.转发至fileShow.jsp
+        request.setAttribute("file_club", file_club);
+
+        // 4.转发至fileShow.jsp
         request.getRequestDispatcher("fileShow.jsp").forward(request, response);
     }
 }

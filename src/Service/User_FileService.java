@@ -22,7 +22,7 @@ public class User_FileService {
         return i;
     }
 
-    // 根据文件id和用户id查看已有关联信息
+    // 根据文件id查看已有关联信息
     public User_File checkUser_File(int uId, int fId) {
         User_File user_file = user_fileDAO.checkUser_File(uId, fId);
         return user_file;

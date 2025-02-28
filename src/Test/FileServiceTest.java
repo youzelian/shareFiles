@@ -7,15 +7,13 @@ import utils.pageHelper;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 public class FileServiceTest {
     private FileService fileService = new FileService();
 
     // 增加文件
     @Test
     public void saveFile() {
-        boolean b = fileService.saveFile(new File("动漫图片", "图片", "xxx", 1, "动漫图片"));
+        boolean b = fileService.saveFile(new File("动漫图片", "图片", "xxx", 1, "动漫图片", 1));
         System.out.println(b);
     }
 

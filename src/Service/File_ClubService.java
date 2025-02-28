@@ -23,6 +23,12 @@ public class File_ClubService {
         return file_club;
     }
 
+    // 根据文件id查看已有关联信息
+    public File_Club checkClubByFileId(int fId) {
+        File_Club file_club = file_clubDAO.checkClubByFileId(fId);
+        return file_club;
+    }
+
     // 分页查询俱乐部所拥有的文件
     public pageHelper<File_Club> listFile_ClubByPage(int cId, int pageNum, int pageSize) {
         // 1.查询当前页面信息

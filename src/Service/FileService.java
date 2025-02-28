@@ -15,7 +15,7 @@ public class FileService {
         return i > 0 ? true : false;
     }
 
-    // 根据文件id查询文件
+    // 根据文件id查询文件,可得到发布该文件的用户信息
     public File checkFile(int fileId) {
         File file = fileDAO.selectFileById(fileId);
         return file;

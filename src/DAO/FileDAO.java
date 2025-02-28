@@ -19,9 +19,9 @@ public class FileDAO {
     public int insertFile(File file) {
         int i = 0;
         try {
-            String sql = "insert into files(file_name,file_type,file_download_link,file_of_club,file_introduction) values(?,?,?,?,?)";
+            String sql = "insert into files(file_name,file_type,file_download_link,file_of_club,file_introduction,file_of_user) values(?,?,?,?,?,?)";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            Object[] params = {file.getFileName(), file.getFileType(), file.getFileDownloadLink(), file.getFileOfClub(), file.getFileIntroduction()};
+            Object[] params = {file.getFileName(), file.getFileType(), file.getFileDownloadLink(), file.getFileOfClub(), file.getFileIntroduction(), file.getFileOfUser()};
             i = queryRunner.update(sql, params);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -33,7 +33,7 @@ public class FileDAO {
     public File selectFileById(int fileId) {
         File file = null;
         try {
-            String sql = "select * from files where file_id=?";
+            String sql = "select * from files inner join users on files.file_of_user=users.user_id where file_id=?";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             file = queryRunner.query(sql, new BeanHandler<File>(File.class, processor), fileId);
         } catch (SQLException e) {

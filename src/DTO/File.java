@@ -1,5 +1,8 @@
 package DTO;
 
+
+import java.sql.Timestamp;
+
 public class File {
     private int fileId;
     private String fileName;
@@ -10,18 +13,23 @@ public class File {
     private int fileDownloadAmount;
     private int fileOfClub;
     private String fileIntroduction;
+    private int fileOfUser;
     private String clubName;
     private int clubId;
+    private String userName;
+    private String userImgPath;
+    private Timestamp fileCreateTime;
 
     public File() {
     }
 
-    public File(String fileName, String fileType, String fileDownloadLink, int fileOfClub, String fileIntroduction) {
+    public File(String fileName, String fileType, String fileDownloadLink, int fileOfClub, String fileIntroduction, int fileOfUser) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.fileDownloadLink = fileDownloadLink;
         this.fileOfClub = fileOfClub;
         this.fileIntroduction = fileIntroduction;
+        this.fileOfUser = fileOfUser;
     }
 
     public File(int fileId, int fileVote, int fileCollect, int fileDownloadAmount) {
@@ -43,8 +51,12 @@ public class File {
                 ", fileDownloadAmount=" + fileDownloadAmount +
                 ", fileOfClub=" + fileOfClub +
                 ", fileIntroduction='" + fileIntroduction + '\'' +
+                ", fileOfUser=" + fileOfUser +
                 ", clubName='" + clubName + '\'' +
                 ", clubId=" + clubId +
+                ", userName='" + userName + '\'' +
+                ", userImgPath='" + userImgPath + '\'' +
+                ", fileCreateTime='" + fileCreateTime + '\'' +
                 '}';
     }
 
@@ -120,6 +132,13 @@ public class File {
         this.fileIntroduction = fileIntroduction;
     }
 
+    public int getFileOfUser() {
+        return fileOfUser;
+    }
+
+    public void setFileOfUser(int fileOfUser) {
+        this.fileOfUser = fileOfUser;
+    }
 
     public String getClubName() {
         return clubName;
@@ -135,5 +154,29 @@ public class File {
 
     public void setClubId(int clubId) {
         this.clubId = clubId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserImgPath() {
+        return userImgPath;
+    }
+
+    public void setUserImgPath(String userImgPath) {
+        this.userImgPath = userImgPath;
+    }
+
+    public Timestamp getFileCreateTime() {
+        return fileCreateTime;
+    }
+
+    public void setFileCreateTime(Timestamp fileCreateTime) {
+        this.fileCreateTime = fileCreateTime;
     }
 }

@@ -55,6 +55,19 @@ public class File_ClubDAO {
         return file_club;
     }
 
+    // 根据文件id查看已有关联信息
+    public File_Club checkClubByFileId(int fId) {
+        File_Club file_club = null;
+        try {
+            String sql = "select * from file_club inner join clubs on file_club.c_id=clubs.club_id where file_club.f_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            file_club = queryRunner.query(sql, new BeanHandler<File_Club>(File_Club.class, processor), fId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return file_club;
+    }
+
     // 查询俱乐部拥有的的文件的总记录数
     public Long selectFile_ClubCount(int cId) {
         long count = 0;

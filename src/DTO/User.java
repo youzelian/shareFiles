@@ -10,7 +10,6 @@ import java.io.Serializable;
 // 此处是为了session长期保存，即使服务器重新启动也能保存
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements Serializable {
-
     private int userId;
     private String userName;
     private String userPwd;

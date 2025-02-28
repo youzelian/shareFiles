@@ -4,6 +4,8 @@ public class User_File {
     private int ufId;
     private int uId;
     private int fId;
+    private String userImgPath;
+    private String userName;
     private String fileName;
     private String fileType;
     private String fileDownloadLink;
@@ -22,10 +24,12 @@ public class User_File {
         this.fId = fId;
     }
 
-    public User_File(int ufId, int uId, int fId, String fileName, String fileType, String fileDownloadLink, int fileVote, int fileCollect, int fileDownloadAmount, int fileOfClub, String fileIntroduction, String clubName) {
+    public User_File(int ufId, int uId, int fId, String userImgPath, String userName, String fileName, String fileType, String fileDownloadLink, int fileVote, int fileCollect, int fileDownloadAmount, int fileOfClub, String fileIntroduction, String clubName) {
         this.ufId = ufId;
         this.uId = uId;
         this.fId = fId;
+        this.userImgPath = userImgPath;
+        this.userName = userName;
         this.fileName = fileName;
         this.fileType = fileType;
         this.fileDownloadLink = fileDownloadLink;
@@ -43,6 +47,8 @@ public class User_File {
                 "ufId=" + ufId +
                 ", uId=" + uId +
                 ", fId=" + fId +
+                ", userImgPath='" + userImgPath + '\'' +
+                ", userName='" + userName + '\'' +
                 ", fileName='" + fileName + '\'' +
                 ", fileType='" + fileType + '\'' +
                 ", fileDownloadLink='" + fileDownloadLink + '\'' +
@@ -77,6 +83,22 @@ public class User_File {
 
     public void setfId(int fId) {
         this.fId = fId;
+    }
+
+    public String getUserImgPath() {
+        return userImgPath;
+    }
+
+    public void setUserImgPath(String userImgPath) {
+        this.userImgPath = userImgPath;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFileName() {
