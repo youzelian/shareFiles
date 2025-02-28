@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="DTO.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -123,6 +122,7 @@
         $("#collect").css("background-color", "white");
     }
     // ajax实现互动
+    // 点赞
     $("#upvote").click(function () {
         // 参数1:请求的urL
         // 参数2:传递的参数
@@ -133,6 +133,7 @@
         }, "json");
         // $(this).attr('disabled', true);
     })
+    // 收藏
     $("#collect").click(function () {
         $.post("interactServlet", {type: "collect", fileId: "${file.fileId}"}, function (res) {
             $("#collectNum").replaceWith("<label id='collectNum'>" + res.fileCollect + "</label>");
@@ -145,6 +146,7 @@
             flag = 0;
         }
     })
+    // 下载
     $("#download").click(function () {
         $.post("interactServlet", {type: "download", fileId: "${file.fileId}"}, function (res) {
             $("#downloadNum").replaceWith("<label id='downloadNum'>" + res.fileDownloadAmount + "</label>");

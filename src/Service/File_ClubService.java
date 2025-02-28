@@ -1,6 +1,7 @@
 package Service;
 
 import DAO.File_ClubDAO;
+import DTO.File;
 import DTO.File_Club;
 import DTO.User_File;
 import utils.pageHelper;
@@ -31,14 +32,20 @@ public class File_ClubService {
         List<File_Club> file_clubList = file_clubDAO.listFile_Club(cId, start, limit);
         // 2.查询并计算文件总页数
         // a.查询总记录数
-        Long count = file_clubDAO.selectFile_ClubCount(cId);
+        long count = file_clubDAO.selectFile_ClubCount(cId);
         // b.根据总记录数和每页条数，计算总页数
-        long pageCount = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
+        long pageCount = (count + pageSize - 1) / pageSize;
         if (pageCount == 0) {
             pageCount = 1;
         }
         // 3. 将分页数据都放在一个pageHelper对象中
         pageHelper<File_Club> file_ClubPageHelper = new pageHelper<File_Club>(file_clubList, pageNum, (int) pageCount);
         return file_ClubPageHelper;
+    }
+
+    // 根据文件名模糊查询文件
+    public List<File_Club> fuzzyQueryFileByFileName(String fileName) {
+        List<File_Club> file_clubList = file_clubDAO.fuzzyQueryFileByFileName(fileName);
+        return file_clubList;
     }
 }

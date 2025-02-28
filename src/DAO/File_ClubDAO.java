@@ -1,5 +1,6 @@
 package DAO;
 
+import DTO.File;
 import DTO.File_Club;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -13,7 +14,7 @@ import java.util.List;
 public class File_ClubDAO {
     BeanProcessor bean = new GenerousBeanProcessor();
     RowProcessor processor = new BasicRowProcessor(bean);
-    
+
     // 增加文件与俱乐部的关联信息
     public int insertFile_Club(File_Club file_club) {
         int i = 0;
@@ -27,7 +28,7 @@ public class File_ClubDAO {
         }
         return i;
     }
-    
+
     // 查询俱乐部所拥有的文件
     public List<File_Club> listFile_Club(int cId, int start, int limit) {
         List<File_Club> file_clubList = null;
@@ -40,7 +41,7 @@ public class File_ClubDAO {
         }
         return file_clubList;
     }
-    
+
     // 根据文件id和俱乐部id查看已有关联信息
     public File_Club checkFile_Club(int fId, int cId) {
         File_Club file_club = null;
@@ -53,7 +54,7 @@ public class File_ClubDAO {
         }
         return file_club;
     }
-    
+
     // 查询俱乐部拥有的的文件的总记录数
     public Long selectFile_ClubCount(int cId) {
         long count = 0;
@@ -65,5 +66,18 @@ public class File_ClubDAO {
             e.printStackTrace();
         }
         return count;
+    }
+
+    // 根据文件名模糊查询文件
+    public List<File_Club> fuzzyQueryFileByFileName(String fileName) {
+        List<File_Club> file_clubList = null;
+        try {
+            String sql = "select * from user_file inner join files on user_file.f_id=files.file_id where file_name like ?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            file_clubList = queryRunner.query(sql, new BeanListHandler<File_Club>(File_Club.class, processor), "%" + fileName + "%");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return file_clubList;
     }
 }
