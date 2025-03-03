@@ -36,30 +36,29 @@ public class interactServlet extends HttpServlet {
         // 处理收藏逻辑
         if (type.equals("collect")) {
             User_File user_file = user_fileService.checkUser_File(user.getUserId(), fid);
-            // 判断是否已经有了管理信息
             if (user_file == null) {
-                // 如果没有则添加
                 user_fileService.insertUser_File(new User_File(user.getUserId(), fid));
             } else {
-                // 有则删除
                 user_fileService.deleteUser_File(user.getUserId(), fid);
                 judge = false;
             }
         }
 
-        // 处理点赞、点踩、取消点赞、取消点踩、收藏和下载
+        // 处理点赞、点踩逻辑
         switch (type) {
             case "upvote":
+            case "cancelDownvote":
                 file.setFileVote(file.getFileVote() + 1);
                 break;
             case "downvote":
+            case "cancelUpvote":
                 file.setFileVote(file.getFileVote() - 1);
                 break;
-            case "cancelUpvote":
-                file.setFileVote(file.getFileVote() - 1); // 取消点赞，减去之前加的 1
+            case "upvoteFromDownvote": // 从点踩变为点赞
+                file.setFileVote(file.getFileVote() + 2); // -1 -> 1
                 break;
-            case "cancelDownvote":
-                file.setFileVote(file.getFileVote() + 1); // 取消点踩，加回之前减的 1
+            case "downvoteFromUpvote": // 从点赞变为点踩
+                file.setFileVote(file.getFileVote() - 2); // 1 -> -1
                 break;
             case "collect":
                 if (judge) {
@@ -76,9 +75,7 @@ public class interactServlet extends HttpServlet {
         // 更新数据库
         fileService.interact(file);
 
-        // 只能用\"不能用'来代替，必须是{"yy":xx}的形式
         String jsonStr = "{\"fileVote\":" + file.getFileVote() + "," + "\"fileCollect\":" + file.getFileCollect() + "," + "\"fileDownloadAmount\":" + file.getFileDownloadAmount() + "}";
-        // 3.响应ajax请求给出提示信息
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();

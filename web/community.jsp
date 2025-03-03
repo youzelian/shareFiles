@@ -303,7 +303,7 @@
 <div class="main">
     <%-- 返回首页 --%>
     <div class="backHome">
-        <a href="index.jsp" class="iconfont" title="回到主页"></a>
+        <a href="index.jsp" class="iconfont" title="回到主页">&#xe63b;</a>
     </div>
 
     <!-- 搜索框 -->
