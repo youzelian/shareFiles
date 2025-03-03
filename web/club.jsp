@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>俱乐部广场</title>
-    <link rel="stylesheet" href="fonts/font_back/iconfont.css">
+    <link rel="stylesheet" href="fonts/iconfont.css">
     <style>
         * {
             margin: 0;

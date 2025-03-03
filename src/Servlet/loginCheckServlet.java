@@ -17,7 +17,7 @@ public class loginCheckServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
@@ -35,26 +35,23 @@ public class loginCheckServlet extends HttpServlet {
             b2 = userPwd.equals(user.getUserPwd());
         }
         // 3.从session中得到验证码并判断验证码是否一致
-        // 验证码非空的判断且验证码不区分大小写
+        // 验证码非空判断且验证码不区分大小写
         String codes = (String) request.getSession().getAttribute("codes");
         boolean b3 = !inputVCode.isEmpty() && inputVCode.equalsIgnoreCase(codes);
         String jsonStr;
         if (b1) {
             jsonStr = "{\"nameCode\":1,";
-        }
-        else {
+        } else {
             jsonStr = "{\"nameCode\":0,";
         }
         if (b2) {
             jsonStr += "\"pwdCode\":1,";
-        }
-        else {
+        } else {
             jsonStr += "\"pwdCode\":0,";
         }
         if (b3) {
             jsonStr += "\"vCode\":1}";
-        }
-        else {
+        } else {
             jsonStr += "\"vCode\":0}";
         }
         System.out.println(jsonStr);

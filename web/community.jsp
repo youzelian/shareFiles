@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="JS/jquery-3.7.1.js" charset="utf-8"></script>
     <title>社区资源</title>
-    <link rel="stylesheet" href="fonts/font_back/iconfont.css">
+    <link rel="stylesheet" href="fonts/iconfont.css">
     <style>
         * {
             margin: 0;
@@ -318,7 +318,7 @@
     <div id="filesContent">
         <c:forEach items="${pages.list}" var="file">
             <div class="file-introduction">
-                <h1>${file.fileName}</h1>
+                <h1>${file.fileTitle}</h1>
                 <h3>文件介绍</h3>
                 <p class="news_info">${file.fileIntroduction}</p>
                 <div class="message">

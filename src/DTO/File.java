@@ -1,34 +1,38 @@
 package DTO;
 
-
 import java.sql.Timestamp;
 
 public class File {
     private int fileId;
+    private String fileTitle;
+    private String fileIntroduction;
+    private Timestamp fileCreateTime;
     private String fileName;
+    private String fileLength;
     private String fileType;
     private String fileDownloadLink;
     private int fileVote;
     private int fileCollect;
     private int fileDownloadAmount;
     private int fileOfClub;
-    private String fileIntroduction;
     private int fileOfUser;
-    private String clubName;
-    private int clubId;
+
     private String userName;
     private String userImgPath;
-    private Timestamp fileCreateTime;
+    private String clubName;
+    private int clubId;
 
     public File() {
     }
 
-    public File(String fileName, String fileType, String fileDownloadLink, int fileOfClub, String fileIntroduction, int fileOfUser) {
+    public File(String fileTitle, String fileIntroduction,String fileName, String fileLength,String fileType, String fileDownloadLink, int fileOfClub,int fileOfUser) {
+        this.fileTitle = fileTitle;
+        this.fileIntroduction = fileIntroduction;
         this.fileName = fileName;
+        this.fileLength = fileLength;
         this.fileType = fileType;
         this.fileDownloadLink = fileDownloadLink;
         this.fileOfClub = fileOfClub;
-        this.fileIntroduction = fileIntroduction;
         this.fileOfUser = fileOfUser;
     }
 
@@ -43,20 +47,22 @@ public class File {
     public String toString() {
         return "File{" +
                 "fileId=" + fileId +
+                ", fileTitle='" + fileTitle + '\'' +
+                ", fileIntroduction='" + fileIntroduction + '\'' +
+                ", fileCreateTime=" + fileCreateTime +
                 ", fileName='" + fileName + '\'' +
+                ", fileLength='" + fileLength + '\'' +
                 ", fileType='" + fileType + '\'' +
                 ", fileDownloadLink='" + fileDownloadLink + '\'' +
                 ", fileVote=" + fileVote +
                 ", fileCollect=" + fileCollect +
                 ", fileDownloadAmount=" + fileDownloadAmount +
                 ", fileOfClub=" + fileOfClub +
-                ", fileIntroduction='" + fileIntroduction + '\'' +
                 ", fileOfUser=" + fileOfUser +
-                ", clubName='" + clubName + '\'' +
-                ", clubId=" + clubId +
                 ", userName='" + userName + '\'' +
                 ", userImgPath='" + userImgPath + '\'' +
-                ", fileCreateTime='" + fileCreateTime + '\'' +
+                ", clubName='" + clubName + '\'' +
+                ", clubId=" + clubId +
                 '}';
     }
 
@@ -68,12 +74,44 @@ public class File {
         this.fileId = fileId;
     }
 
+    public String getFileTitle() {
+        return fileTitle;
+    }
+
+    public void setFileTitle(String fileTitle) {
+        this.fileTitle = fileTitle;
+    }
+
+    public String getFileIntroduction() {
+        return fileIntroduction;
+    }
+
+    public void setFileIntroduction(String fileIntroduction) {
+        this.fileIntroduction = fileIntroduction;
+    }
+
+    public Timestamp getFileCreateTime() {
+        return fileCreateTime;
+    }
+
+    public void setFileCreateTime(Timestamp fileCreateTime) {
+        this.fileCreateTime = fileCreateTime;
+    }
+
     public String getFileName() {
         return fileName;
     }
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getFileLength() {
+        return fileLength;
+    }
+
+    public void setFileLength(String fileLength) {
+        this.fileLength = fileLength;
     }
 
     public String getFileType() {
@@ -124,36 +162,12 @@ public class File {
         this.fileOfClub = fileOfClub;
     }
 
-    public String getFileIntroduction() {
-        return fileIntroduction;
-    }
-
-    public void setFileIntroduction(String fileIntroduction) {
-        this.fileIntroduction = fileIntroduction;
-    }
-
     public int getFileOfUser() {
         return fileOfUser;
     }
 
     public void setFileOfUser(int fileOfUser) {
         this.fileOfUser = fileOfUser;
-    }
-
-    public String getClubName() {
-        return clubName;
-    }
-
-    public void setClubName(String clubName) {
-        this.clubName = clubName;
-    }
-
-    public int getClubId() {
-        return clubId;
-    }
-
-    public void setClubId(int clubId) {
-        this.clubId = clubId;
     }
 
     public String getUserName() {
@@ -172,11 +186,19 @@ public class File {
         this.userImgPath = userImgPath;
     }
 
-    public Timestamp getFileCreateTime() {
-        return fileCreateTime;
+    public String getClubName() {
+        return clubName;
     }
 
-    public void setFileCreateTime(Timestamp fileCreateTime) {
-        this.fileCreateTime = fileCreateTime;
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
+    }
+
+    public int getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(int clubId) {
+        this.clubId = clubId;
     }
 }

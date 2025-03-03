@@ -15,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>上传文件</title>
     <script src="JS/jquery-3.7.1.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="fonts/iconfont.css">
     <style>
         * {
             margin: 0;
@@ -78,17 +79,26 @@
             color: #2c3e50;
         }
 
-        input[type="text"], textarea, select, input[type="file"] {
+        /* 输入框、文本框、下拉框的统一样式 */
+        input[type="text"], textarea, select {
             width: 100%;
             padding: 12px;
             border: 2px solid #dfe6e9;
             border-radius: 8px;
             font-size: 14px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #f9fbfc;
+            transition: all 0.3s ease;
         }
 
-        input[type="text"]:focus, textarea:focus, select:focus, input[type="file"]:focus {
+        input[type="text"]:hover, textarea:hover, select:hover {
             border-color: #3498db;
+            background: #eef2f5;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            border-color: #3498db;
+            background: #fff;
             box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
             outline: none;
         }
@@ -98,6 +108,67 @@
             min-height: 120px;
         }
 
+        /* 下拉框的箭头美化 */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 36px;
+        }
+
+        /* 自定义文件上传样式 */
+        .custom-file-upload {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #dfe6e9;
+            border-radius: 8px;
+            background: #f9fbfc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .custom-file-upload:hover {
+            border-color: #3498db;
+            background: #eef2f5;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        .custom-file-upload:active {
+            transform: scale(0.98);
+        }
+
+        .custom-file-upload .iconfont {
+            font-size: 20px;
+            color: #3498db;
+            margin-right: 10px;
+        }
+
+        .custom-file-upload .file-text {
+            flex: 1;
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .custom-file-upload input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .custom-file-upload input[type="file"]:valid + .file-text {
+            color: #27ae60;
+        }
+
+        /* 提交按钮样式 */
         input[type="submit"] {
             background: linear-gradient(90deg, #3498db, #2980b9);
             color: white;
@@ -106,42 +177,52 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: 600;
             width: 100%;
-            transition: background 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
         }
 
         input[type="submit"]:hover {
             background: linear-gradient(90deg, #2980b9, #1f6391);
             transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
         }
 
         input[type="submit"]:active {
             transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(52, 152, 219, 0.1);
         }
 
+        /* 返回按钮样式 */
         .back-button {
             display: inline-block;
             text-align: center;
             text-decoration: none;
             background: linear-gradient(90deg, #bdc3c7, #95a5a6);
             color: white;
-            padding: 10px 20px;
+            padding: 10px 24px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 600;
             width: 100%;
-            transition: background 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             margin-top: 10px;
         }
 
         .back-button:hover {
             background: linear-gradient(90deg, #95a5a6, #7f8c8d);
             transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
         .back-button:active {
             transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
+        /* 侧边栏表格样式 */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -160,12 +241,13 @@
             font-weight: 600;
         }
 
-        tr:nth-child(even) {
-            background-color: #f9fbfc;
+        td {
+            background: #f9fbfc;
+            transition: background 0.3s ease;
         }
 
-        tr:hover {
-            background-color: #eef2f5;
+        tr:hover td {
+            background: #eef2f5;
         }
 
         @media (max-width: 768px) {
@@ -183,12 +265,13 @@
 
 <body>
 <div class="main">
+    <%--内容--%>
     <div class="content">
         <form action="fileSaveServlet" method="post" enctype="multipart/form-data" class="gen-form">
             <!-- 标题 -->
             <div class="file_title">
                 <label>标题</label>
-                <input type="text" placeholder="请填写标题" name="fileName" required>
+                <input type="text" placeholder="请填写标题" name="fileTitle" required>
             </div>
 
             <!-- 正文 -->
@@ -208,10 +291,14 @@
                 </select>
             </div>
 
-            <!-- 文件 -->
+            <!-- 上传文件 -->
             <div class="file_file">
                 <label>文件选择</label>
-                <input type="file" name="file" required>
+                <div class="custom-file-upload">
+                    <span class="iconfont"></span>
+                    <span class="file-text">Choose a file</span>
+                    <input type="file" name="file" id="file" required>
+                </div>
             </div>
 
             <!-- 提交按钮 -->
@@ -221,7 +308,7 @@
             </div>
         </form>
     </div>
-
+    <%--侧边栏--%>
     <div class="sidebar">
         <table>
             <thead>
@@ -244,6 +331,17 @@
 </body>
 <script>
     $(document).ready(function () {
+        // 显示选择的文件名
+        $("#file").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            if (fileName) {
+                $(this).siblings(".file-text").text(fileName);
+            } else {
+                $(this).siblings(".file-text").text("Choose a file");
+            }
+        });
+
+        // 提交前的文件验证
         $("input[type='submit']").click(function (e) {
             if ($("input[type='file']").val() === "") {
                 alert("请选择文件后上传！");

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="JS/jquery-3.7.1.js"></script>
     <title>文件详情</title>
-    <link rel="stylesheet" href="fonts/font_back/iconfont.css">
+    <link rel="stylesheet" href="fonts/iconfont.css">
     <style>
         * {
             margin: 0;
@@ -36,6 +36,7 @@
             animation: fadeIn 0.8s ease-in-out;
         }
 
+        /*标头*/
         #head {
             display: flex;
             align-items: center;
@@ -82,6 +83,7 @@
             color: #3498db;
         }
 
+        /*发帖人信息*/
         #title {
             padding: 20px;
             background: white;
@@ -103,6 +105,7 @@
             color: #34495e;
         }
 
+        /*内容*/
         #content {
             padding: 0 20px;
             background: white;
@@ -120,59 +123,8 @@
             color: #7f8c8d;
         }
 
-        #interact {
-            padding: 15px 20px;
-            background: white;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        #interact input[type="button"] {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        #interact #upvote, #interact #downvote {
-            background-color: #ecf0f1;
-            color: #7f8c8d;
-        }
-
-        #interact #upvote:hover, #interact #downvote:hover {
-            background-color: #dfe6e9;
-            color: #2c3e50;
-        }
-
-        #interact #collect {
-            background-color: #fff;
-            border: 1px solid #ddd;
-        }
-
-        #interact #collect.active {
-            background-color: #ffebee;
-            border-color: #ffcdd2;
-            color: #e91e63;
-        }
-
-        #interact #collect:hover {
-            background-color: #f8f9fa;
-        }
-
-        #interact span {
-            color: #95a5a6;
-            font-size: 14px;
-        }
-
-        #interact label {
-            color: #2c3e50;
-            font-weight: 500;
-        }
-
-        #interact a {
+        #content a.styled-link {
+            display: inline-block;
             text-decoration: none;
             color: #3498db;
             font-weight: 500;
@@ -182,11 +134,68 @@
             transition: all 0.3s ease;
         }
 
-        #interact a:hover {
+        #content a.styled-link:hover {
             background: #d5ebff;
             color: #2980b9;
         }
 
+        /*互动区*/
+        #interact {
+            padding: 15px 20px;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #interact span {
+            /*color: #2c3e50;*/
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        #interact #upvote, #interact #downvote, #interact #collect {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #7f8c8d;
+            transition: color 0.3s ease;
+        }
+
+        /* 鼠标悬停效果 */
+        #interact #upvote:hover {
+            color: #3498db;
+        }
+
+        #interact #downvote:hover {
+            color: #e91e63;
+        }
+
+        /* 激活状态 */
+        #interact #upvote.active {
+            color: #3498db;
+        }
+
+        #interact #downvote.active {
+            color: #e91e63;
+        }
+
+        #interact #collect.active {
+            color: #fce654;
+        }
+
+
+        #interact #voteNum.upvoted {
+            color: #3498db;
+        }
+
+        #interact #voteNum.downvoted {
+            color: #e91e63;
+        }
+
+
+        /*评论区*/
         #review form {
             background: white;
             padding: 20px;
@@ -284,7 +293,7 @@
     <div id="head">
         <%--返回按钮--%>
         <div class="back">
-            <a href="communityListServlet" class="iconfont" title="返回动态广场">&#xe63b;</a>
+            <a href="communityListServlet" class="iconfont" title="返回动态广场"></a>
         </div>
         <%--文件所属俱乐部--%>
         <div class="fileOfClub">
@@ -298,26 +307,26 @@
         <img src="${file.userImgPath}" alt="">
         <p>${file.userName}</p>
         <p><fmt:formatDate value="${file.fileCreateTime}" pattern="MM-dd"/></p>
-        <%--此处太麻烦，后面再写--%>
         <p>IP属地：江西</p>
     </div>
 
     <%--内容--%>
     <div id="content">
-        <h2>${file.fileName}</h2>
+        <h2>${file.fileTitle}</h2>
         <p>${file.fileIntroduction}</p>
         <a href="${file.fileDownloadLink}" download="${file.fileDownloadLink}" class="styled-link"
            id="download">下载</a>
-        <%--如果上传的是pdf、zip、word等文件则在互动区显示下载链接按钮，如果是图片或者视频则展示在内容区域--%>
     </div>
 
     <!-- 互动区 -->
     <div id="interact">
-        <button class="iconfont" id="upvote">&#xe63c;</button>
-        <label id="voteNum">${file.fileVote}</label>
-        <button class="iconfont" id="downvote">&#xe609;</button>
-        <button class="iconfont" id="collect">&#xe642;</button>
-        <label id="collectNum">${file.fileCollect}</label>
+        <%--点赞和点踩--%>
+        <button class="iconfont" id="upvote"></button>
+        <span id="voteNum">${file.fileVote}</span>
+        <button class="iconfont" id="downvote"></button>
+        <%--收藏--%>
+        <button class="iconfont" id="collect">&#xe674;</button>
+        <span id="collectNum">${file.fileCollect}</span>
     </div>
 
     <!-- 评论区 -->
@@ -354,40 +363,88 @@
     </div>
 </div>
 <script>
-    var flag = 0;
-    if ("${user_file}" != "") {
-        $("#collect").addClass("active");
-        flag = 1;
-    }
-    // ajax实现互动
-    // 点赞
-    $("#upvote").click(function () {
-        $.post("interactServlet", {type: "upvote", fileId: "${file.fileId}"}, function (res) {
-            $("#voteNum").replaceWith("<label id='voteNum'>" + res.fileVote + "</label>");
-        }, "json");
-    });
+    // 记录用户的点赞/点踩状态（0: 未操作, 1: 已点赞, -1: 已点踩）
+    let voteStatus = 0;
 
-    // 踩
-    $("#downvote").click(function () {
-        $.post("interactServlet", {type: "downvote", fileId: "${file.fileId}"}, function (res) {
-            $("#voteNum").replaceWith("<label id='voteNum'>" + res.fileVote + "</label>");
-        }, "json");
-    });
+    // 初始化时检查用户是否已点赞/点踩（假设后端返回用户状态）
+    $(document).ready(function () {
+        // 假设后端通过某个变量传递用户是否已点赞/点踩的状态
+        const userVoteStatus = "${user_vote_status}"; // 假设后端返回 "upvote", "downvote", 或空字符串
+        if (userVoteStatus === "upvote") {
+            voteStatus = 1;
+            $("#upvote").addClass("active").html(""); // 已点赞图标
+            $("#voteNum").addClass("upvoted");
+        } else if (userVoteStatus === "downvote") {
+            voteStatus = -1;
+            $("#downvote").addClass("active").html(""); // 已点踩图标
+            $("#voteNum").addClass("downvoted");
+        }
 
-    // 收藏
-    $("#collect").click(function () {
-        $.post("interactServlet", {type: "collect", fileId: "${file.fileId}"}, function (res) {
-            $("#collectNum").replaceWith("<label id='collectNum'>" + res.fileCollect + "</label>");
-        }, "json");
-        $(this).toggleClass("active");
-        flag = !flag;
-    });
+        // 初始化收藏状态
+        let collectFlag = "${user_file}" !== "" ? 1 : 0;
+        if (collectFlag) {
+            $("#collect").addClass("active");
+        }
 
-    // 下载
-    $("#download").click(function () {
-        $.post("interactServlet", {type: "download", fileId: "${file.fileId}"}, function (res) {
-            $("#downloadNum").replaceWith("<label id='downloadNum'>" + res.fileDownloadAmount + "</label>");
-        }, "json");
+        // 点赞逻辑
+        $("#upvote").click(function () {
+            if (voteStatus === 1) {
+                // 已点赞，再次点击取消点赞
+                $.post("interactServlet", {type: "cancelUpvote", fileId: "${file.fileId}"}, function (res) {
+                    $("#voteNum").replaceWith("<label id='voteNum'>" + res.fileVote + "</label>");
+                    $("#upvote").removeClass("active").html(""); // 恢复未点赞图标
+                    $("#voteNum").removeClass("upvoted");
+                    voteStatus = 0;
+                }, "json");
+            } else {
+                // 未点赞，执行点赞
+                $.post("interactServlet", {type: "upvote", fileId: "${file.fileId}"}, function (res) {
+                    $("#voteNum").replaceWith("<label id='voteNum'>" + res.fileVote + "</label>");
+                    $("#upvote").addClass("active").html(""); // 切换为已点赞图标
+                    $("#downvote").removeClass("active").html(""); // 恢复未点踩图标
+                    $("#voteNum").removeClass("downvoted").addClass("upvoted");
+                    voteStatus = 1;
+                }, "json");
+            }
+        });
+
+        // 点踩逻辑
+        $("#downvote").click(function () {
+            if (voteStatus === -1) {
+                // 已点踩，再次点击取消点踩
+                $.post("interactServlet", {type: "cancelDownvote", fileId: "${file.fileId}"}, function (res) {
+                    $("#voteNum").replaceWith("<label id='voteNum'>" + res.fileVote + "</label>");
+                    $("#downvote").removeClass("active").html(""); // 恢复未点踩图标
+                    $("#voteNum").removeClass("downvoted");
+                    voteStatus = 0;
+                }, "json");
+            } else {
+                // 未点踩，执行点踩
+                $.post("interactServlet", {type: "downvote", fileId: "${file.fileId}"}, function (res) {
+                    $("#voteNum").replaceWith("<label id='voteNum'>" + res.fileVote + "</label>");
+                    $("#downvote").addClass("active").html(""); // 切换为已点踩图标
+                    $("#upvote").removeClass("active").html(""); // 恢复未点赞图标
+                    $("#voteNum").removeClass("upvoted").addClass("downvoted");
+                    voteStatus = -1;
+                }, "json");
+            }
+        });
+
+        // 收藏逻辑
+        $("#collect").click(function () {
+            $.post("interactServlet", {type: "collect", fileId: "${file.fileId}"}, function (res) {
+                $("#collectNum").replaceWith("<label id='collectNum'>" + res.fileCollect + "</label>");
+            }, "json");
+            $(this).toggleClass("active");
+            collectFlag = !collectFlag;
+        });
+
+        // 下载逻辑
+        $("#download").click(function () {
+            $.post("interactServlet", {type: "download", fileId: "${file.fileId}"}, function (res) {
+                $("#downloadNum").replaceWith("<label id='downloadNum'>" + res.fileDownloadAmount + "</label>");
+            }, "json");
+        });
     });
 </script>
 </body>

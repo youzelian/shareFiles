@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="JS/jquery-3.7.1.js" charset="utf-8"></script>
     <title>社区资源</title>
-    <link rel="stylesheet" href="fonts/font_back/iconfont.css">
+    <link rel="stylesheet" href="fonts/iconfont.css">
     <style>
         * {
             margin: 0;

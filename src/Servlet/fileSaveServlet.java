@@ -23,7 +23,7 @@ public class fileSaveServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 1.接受请求
         request.setCharacterEncoding("utf-8");
-        String fileNme = request.getParameter("fileName");
+        String fileTitle = request.getParameter("fileTitle");
         String fileType = "图片";
         String fileIntroduction = request.getParameter("fileIntroduction");
         int fileOfClub = Integer.parseInt(request.getParameter("fileOfClub"));
@@ -31,12 +31,14 @@ public class fileSaveServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         // 2.接受并保存文件
-        // 2.1重新赋名
-        // 2.1.1获取后缀名
+        // 2.1获取文件名后重新赋名存入
+        // 2.1.1获取文件大小
         Part file = request.getPart("file");
-        String FileName = file.getSubmittedFileName();
-        String ext = FileName.substring(FileName.lastIndexOf("."));
-        // 2.1.2使用随机数重新赋名
+        String fileLength = humanReadableByteCount(file.getSize());
+        // 2.1.2获取后缀名
+        String fileName = file.getSubmittedFileName();
+        String ext = fileName.substring(fileName.lastIndexOf("."));
+        // 2.1.3使用随机数重新赋名
         String filePath = UUID.randomUUID() + ext;
         // 2.2根据后缀名获取该文件类型的目录在服务器上的路径
         String dir = null;
@@ -92,7 +94,7 @@ public class fileSaveServlet extends HttpServlet {
             fileDownloadLink = dir.substring(dir.lastIndexOf("\\", dir.lastIndexOf("\\") - 1) + 1) + "/" + filePath;
         }
 
-        boolean b = fileService.saveFile(new File(fileNme, fileType, fileDownloadLink, fileOfClub, fileIntroduction, user.getUserId()));
+        boolean b = fileService.saveFile(new File(fileTitle, fileIntroduction,fileName, fileLength, fileType, fileDownloadLink, fileOfClub, user.getUserId()));
 
         // 4.跳转到提示页面然后跳转主页面，并显示提示信息
         String tips = b ? "<label style='color:green'>上传成功!</label>" : "<label style='color:red'>上传失败!</label>";
@@ -103,4 +105,15 @@ public class fileSaveServlet extends HttpServlet {
         request.setAttribute("address", address);
         request.getRequestDispatcher("prompt.jsp").forward(request, response);
     }
+
+    // 将字节转换为人类可读的格式
+    public static String humanReadableByteCount(long bytes) {
+        int unit = 1024;
+        if (bytes < unit)
+            return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        char pre = "KMGTPE".charAt(exp - 1);
+        return String.format("%.2f %sB", bytes / Math.pow(unit, exp), pre);
+    }
 }
+

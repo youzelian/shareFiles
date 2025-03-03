@@ -33,6 +33,7 @@ public class interactServlet extends HttpServlet {
         User_FileService user_fileService = new User_FileService();
         boolean judge = true;
 
+        // 处理收藏逻辑
         if (type.equals("collect")) {
             User_File user_file = user_fileService.checkUser_File(user.getUserId(), fid);
             // 判断是否已经有了管理信息
@@ -45,6 +46,8 @@ public class interactServlet extends HttpServlet {
                 judge = false;
             }
         }
+
+        // 处理点赞、点踩、取消点赞、取消点踩、收藏和下载
         switch (type) {
             case "upvote":
                 file.setFileVote(file.getFileVote() + 1);
@@ -52,8 +55,14 @@ public class interactServlet extends HttpServlet {
             case "downvote":
                 file.setFileVote(file.getFileVote() - 1);
                 break;
+            case "cancelUpvote":
+                file.setFileVote(file.getFileVote() - 1); // 取消点赞，减去之前加的 1
+                break;
+            case "cancelDownvote":
+                file.setFileVote(file.getFileVote() + 1); // 取消点踩，加回之前减的 1
+                break;
             case "collect":
-                if (judge == true) {
+                if (judge) {
                     file.setFileCollect(file.getFileCollect() + 1);
                 } else {
                     file.setFileCollect(file.getFileCollect() - 1);
@@ -63,6 +72,8 @@ public class interactServlet extends HttpServlet {
                 file.setFileDownloadAmount(file.getFileDownloadAmount() + 1);
                 break;
         }
+
+        // 更新数据库
         fileService.interact(file);
 
         // 只能用\"不能用'来代替，必须是{"yy":xx}的形式

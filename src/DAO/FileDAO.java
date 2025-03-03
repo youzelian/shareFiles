@@ -1,8 +1,6 @@
 package DAO;
 
 import DTO.File;
-import DTO.File_Club;
-import DTO.User;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -19,9 +17,9 @@ public class FileDAO {
     public int insertFile(File file) {
         int i = 0;
         try {
-            String sql = "insert into files(file_name,file_type,file_download_link,file_of_club,file_introduction,file_of_user) values(?,?,?,?,?,?)";
+            String sql = "insert into files(file_title,file_name,file_type,file_download_link,file_of_club,file_introduction,file_length,file_of_user) values(?,?,?,?,?,?,?,?)";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            Object[] params = {file.getFileName(), file.getFileType(), file.getFileDownloadLink(), file.getFileOfClub(), file.getFileIntroduction(), file.getFileOfUser()};
+            Object[] params = {file.getFileTitle(), file.getFileName(), file.getFileType(), file.getFileDownloadLink(), file.getFileOfClub(), file.getFileIntroduction(), file.getFileLength(), file.getFileOfUser()};
             i = queryRunner.update(sql, params);
         } catch (SQLException e) {
             e.printStackTrace();
