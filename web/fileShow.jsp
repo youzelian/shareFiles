@@ -131,46 +131,42 @@
 
         /* 下载链接样式 */
         #content a.styled-link {
-            display: inline-flex; /* 使用 inline-flex 确保宽度自适应内容 */
+            display: inline-flex;
             align-items: center;
             text-decoration: none;
-            color: #2c3e50; /* 文本颜色 */
+            color: #2c3e50;
             font-weight: 500;
-            padding: 10px 15px; /* 内边距 */
-            border-radius: 8px; /* 圆角 */
-            background: #f0f0f0; /* 浅灰色背景 */
+            padding: 10px 15px;
+            border-radius: 8px;
+            background: #f0f0f0;
             transition: background 0.3s ease;
-            gap: 10px; /* 元素间距 */
+            gap: 10px;
             width: 300px;
             margin-top: 30px;
         }
 
         #content a.styled-link:hover {
-            background: #e0e0e0; /* 鼠标悬停时的背景颜色 */
-            color: #2c3e50; /* 保持文本颜色一致 */
+            background: #e0e0e0;
+            color: #2c3e50;
         }
 
-        /* 第一个 span（文件图标）样式 */
         #content a.styled-link span:nth-child(1) {
             font-size: 30px;
             color: #7f8c8d;
         }
 
-        /* 第二个 span（下载图标）样式 */
         #content a.styled-link span:nth-child(3) {
-            font-size: 25px; /* 下载图标大小为 25px */
+            font-size: 25px;
             color: #7f8c8d;
-            margin-left: auto; /* 将下载图标推到最右边 */
+            margin-left: auto;
         }
 
-        /* 文件信息容器 */
         #content a.styled-link .file-info {
             display: flex;
-            flex-direction: column; /* 垂直排列文件名和文件大小 */
-            gap: 2px; /* 文件名和文件大小之间的间距 */
+            flex-direction: column;
+            gap: 2px;
         }
 
-        /* 文件名样式 */
         #content a.styled-link h4 {
             font-size: 14px;
             font-weight: 500;
@@ -178,10 +174,9 @@
             color: #177bcb;
         }
 
-        /* 文件大小样式 */
         #content a.styled-link p {
             font-size: 12px;
-            color: #7f8c8d; /* 灰色字体 */
+            color: #7f8c8d;
             margin: 0;
         }
 
@@ -192,7 +187,7 @@
             padding: 15px 20px;
             background: white;
             display: flex;
-            justify-content: flex-end; /* 将互动区移动到右边 */
+            justify-content: flex-end;
             align-items: center;
             gap: 15px;
         }
@@ -200,7 +195,7 @@
         #interact span {
             font-weight: 500;
             font-size: 16px;
-            min-width: 40px; /* 固定宽度防止数字变化时移动 */
+            min-width: 40px;
             text-align: center;
         }
 
@@ -217,7 +212,6 @@
             padding-left: 20px;
         }
 
-        /* 鼠标悬停效果 */
         #interact #upvote:hover {
             color: #3498db;
         }
@@ -234,7 +228,6 @@
             color: #3498db;
         }
 
-        /* 点击后的状态 */
         #interact #downvote.active {
             color: #e91e63;
         }
@@ -295,34 +288,61 @@
             background: #2980b9;
         }
 
-        #review > div {
+        #review > div.comment-item {
             background: white;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
         }
 
-        #review .img img {
+        #review .comment-item .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        #review .comment-item .img img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             margin-right: 10px;
         }
 
-        #review .userName span {
+        #review .comment-item .userName span {
             display: block;
             font-size: 14px;
             color: #34495e;
         }
 
-        #review .comment span {
+        #review .comment-item .comment span {
             font-size: 15px;
             color: #2c3e50;
             margin: 10px 0;
             display: block;
         }
 
-        #review .delete a {
+        #review .comment-item .comment-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #review .comment-item .reply a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        #review .comment-item .reply a:hover {
+            background: #e3f2fd;
+            color: #2980b9;
+        }
+
+        #review .comment-item .delete a {
             color: #e74c3c;
             text-decoration: none;
             font-size: 14px;
@@ -331,9 +351,14 @@
             transition: all 0.3s ease;
         }
 
-        #review .delete a:hover {
+        #review .comment-item .delete a:hover {
             background: #ffebee;
             color: #c0392b;
+        }
+
+        #review .child-comments {
+            margin-left: 50px;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -341,11 +366,9 @@
 <div class="main">
     <%-- 标头 --%>
     <div id="head">
-        <%-- 返回按钮 --%>
         <div class="back">
             <a href="communityListServlet" class="iconfont" title="返回动态广场"></a>
         </div>
-        <%-- 文件所属俱乐部 --%>
         <div class="fileOfClub">
             <img src="${file_club.clubImgPath}" alt="">
             <a href="eachClubServlet?clubId=${file_club.cId}">${file_club.clubName}</a>
@@ -365,12 +388,12 @@
         <h2>${file.fileTitle}</h2>
         <p>${file.fileIntroduction}</p>
         <a href="${file.fileDownloadLink}" download="${file.fileDownloadLink}" class="styled-link" id="download">
-            <span class="iconfont"></span> <!-- 文件图标 -->
+            <span class="iconfont"></span>
             <div class="file-info">
-                <h4>${file.fileName}</h4> <!-- 文件名 -->
-                <p>${file.fileLength}</p> <!-- 文件大小 -->
+                <h4>${file.fileName}</h4>
+                <p>${file.fileLength}</p>
             </div>
-            <span class="iconfont"></span> <!-- 下载箭头 -->
+            <span class="iconfont"></span>
         </a>
     </div>
 
@@ -385,37 +408,57 @@
 
     <!-- 评论区 -->
     <div id="review">
-        <%-- 发表评论 --%>
-        <form action="commentSaveServlet">
-            <img src="${user.userImgPath}" alt="">
-            <input type="hidden" name="fId" value="${file.fileId}">
-            <textarea name="commentContent" id="postComment" placeholder="请输入评论"></textarea>
-            <input type="submit" value="提交评论">
-        </form>
-        <%-- 评论区列表 --%>
-        <c:forEach items="${commentList}" var="comment">
-            <div style="display: flex; align-items: flex-start; padding: 15px 0; border-bottom: 1px solid #eef2f7;">
-                <div class="img">
-                    <img src="${comment.userImgPath}" alt="">
-                </div>
-                <div style="flex: 1;">
+        <!-- 发表评论 -->
+        <c:if test="${not empty sessionScope.user}">
+            <form action="commentSaveServlet" method="post">
+                <img src="${user.userImgPath}" alt="">
+                <textarea name="commentContent" placeholder="写下你的评论..." required></textarea>
+                <input type="hidden" name="fId" value="${file.fileId}">
+                <input type="hidden" name="parentId" value="0">
+                <input type="hidden" name="rootParentId" value="0">
+                <input type="submit" value="发表评论">
+            </form>
+        </c:if>
+
+        <!-- 递归展示评论 -->
+        <c:forEach var="comment" items="${commentList}">
+            <div class="comment-item">
+                <div class="comment-header">
+                    <div class="img">
+                        <img src="${comment.userImgPath}" alt="">
+                    </div>
                     <div class="userName">
-                        <span>用户名:${comment.userName}</span>
-                        <span>userId:${comment.uId}</span>
+                        <span>${comment.userName}</span>
+                        <span style="font-size: 12px; color: #7f8c8d;">${comment.commentCreateTime}</span>
                     </div>
-                    <div class="comment">
-                        <span>${comment.commentContent}</span>
+                </div>
+                <div class="comment">
+                    <span>${comment.commentContent}</span>
+                </div>
+                <div class="comment-footer">
+                    <div class="reply">
+                        <a href="javascript:void(0)"
+                           onclick="showReplyForm(${comment.commentId}, ${comment.rootParentId != 0 ? comment.rootParentId : comment.commentId})">回复</a>
                     </div>
-                    <c:if test="${comment.uId==user.getUserId()}">
+                    <c:if test="${sessionScope.user.userId == comment.uId}">
                         <div class="delete">
-                            <a href="commentDeleteServlet?commentId=${comment.commentId}&&fId=${file.fileId}">删除评论</a>
+                            <a href="commentDeleteServlet?commentId=${comment.commentId}&fId=${file.fileId}">删除</a>
                         </div>
                     </c:if>
                 </div>
+
+                <!-- 子评论 -->
+                <c:if test="${not empty comment.childComments}">
+                    <div class="child-comments">
+                        <c:set var="childComments" value="${comment.childComments}" scope="request"/>
+                        <c:import url="commentRecursive.jsp"/>
+                    </div>
+                </c:if>
             </div>
         </c:forEach>
     </div>
 </div>
+
 <script>
     $(document).ready(function () {
         // 状态管理
@@ -424,14 +467,12 @@
             collect: "${user_file}" !== "" ? 1 : 0
         };
 
-        // 矢量图标代码配置
         const icons = {
             upvote: {normal: "", active: ""},
             downvote: {normal: "", active: ""},
             collect: {normal: "", active: ""}
         };
 
-        // 初始化状态
         function initializeState() {
             if (interactionState.vote === 1) {
                 $("#upvote").addClass("active").html(icons.upvote.active);
@@ -445,7 +486,6 @@
             }
         }
 
-        // 发送交互请求的通用函数
         function sendInteraction(type, callback) {
             $.post("interactServlet",
                 {type: type, fileId: "${file.fileId}"},
@@ -458,7 +498,6 @@
             );
         }
 
-        // 点赞操作处理
         $("#upvote").click(function () {
             const $this = $(this);
             if (interactionState.vote === 1) {
@@ -483,7 +522,6 @@
             }
         });
 
-        // 点踩操作处理
         $("#downvote").click(function () {
             const $this = $(this);
             if (interactionState.vote === -1) {
@@ -508,7 +546,6 @@
             }
         });
 
-        // 收藏处理
         $("#collect").click(function () {
             const $this = $(this);
             sendInteraction("collect", () => {
@@ -522,15 +559,27 @@
             });
         });
 
-        // 下载处理
         $("#download").click(function () {
             sendInteraction("download", (res) => {
                 $("#downloadNum").text(res.fileDownloadAmount);
             });
         });
-        // 初始化
+
         initializeState();
     });
+
+    // 显示回复评论的表单
+    function showReplyForm(commentId, rootParentId) {
+        const replyForm = `
+        <form action="commentSaveServlet" method="post" style="margin-left: 50px; margin-top: 10px;">
+            <textarea name="commentContent" placeholder="回复..." required></textarea>
+            <input type="hidden" name="fId" value="${file.fileId}">
+            <input type="hidden" name="parentId" value="` + commentId + `">
+            <input type="hidden" name="rootParentId" value="` + rootParentId + `">
+            <input type="submit" value="提交回复">
+        </form>`;
+        $(event.target).closest('.comment-item').append(replyForm);
+    }
 </script>
 </body>
 </html>
