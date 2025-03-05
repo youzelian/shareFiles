@@ -36,9 +36,6 @@
             animation: fadeIn 0.8s ease-in-out;
         }
 
-        /********************************************/
-        /* 标头 */
-        /********************************************/
         #head {
             display: flex;
             align-items: center;
@@ -85,9 +82,6 @@
             color: #3498db;
         }
 
-        /********************************************/
-        /* 发帖人信息 */
-        /********************************************/
         #title {
             padding: 20px;
             background: white;
@@ -109,9 +103,6 @@
             color: #34495e;
         }
 
-        /********************************************/
-        /* 内容 */
-        /********************************************/
         #content {
             padding: 0 20px;
             background: white;
@@ -129,7 +120,6 @@
             color: #7f8c8d;
         }
 
-        /* 下载链接样式 */
         #content a.styled-link {
             display: inline-flex;
             align-items: center;
@@ -180,9 +170,6 @@
             margin: 0;
         }
 
-        /********************************************/
-        /* 互动区 */
-        /********************************************/
         #interact {
             padding: 15px 20px;
             background: white;
@@ -236,135 +223,307 @@
             color: #fce654;
         }
 
-        /********************************************/
-        /* 评论区 */
-        /********************************************/
-        #review form {
+        #review {
+            padding-top: 20px;
             background: white;
-            padding: 20px;
+        }
+
+        #review form {
+            background: #f9fafc;
+            padding: 15px 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        #review form:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
         }
 
         #review form img {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            border: 2px solid #eef2f7;
+            border: 1px solid #eef2f7;
         }
 
         #review form textarea {
             flex-grow: 1;
             padding: 12px;
-            border: 1px solid #eef2f7;
+            border: 1px solid #e0e4e8;
             border-radius: 8px;
             resize: none;
             font-size: 14px;
-            min-height: 80px;
-            transition: border-color 0.3s ease;
+            min-height: 60px;
+            background: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         #review form textarea:focus {
             border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
             outline: none;
         }
 
         #review form input[type="submit"] {
-            padding: 10px 20px;
+            padding: 8px 20px;
             background: #3498db;
             color: white;
             border: none;
             border-radius: 20px;
             cursor: pointer;
             font-weight: 500;
-            transition: background 0.3s ease;
+            font-size: 14px;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
 
         #review form input[type="submit"]:hover {
             background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .reply-form {
+            background: #f9fafc;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: box-shadow 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .reply-form:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .reply-form textarea {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #e0e4e8;
+            border-radius: 8px;
+            resize: none;
+            font-size: 14px;
+            min-height: 60px;
+            background: #fff;
+        }
+
+        .reply-form input[type="submit"] {
+            padding: 8px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
         }
 
         #review > div.comment-item {
-            background: white;
-            padding: 20px;
+            background: #fff;
+            padding: 15px 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             margin-bottom: 15px;
+            transition: box-shadow 0.3s ease;
         }
 
-        #review .comment-item .comment-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+        #review > div.comment-item:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
         }
 
-        #review .comment-item .img img {
+        #review > div.comment-item .comment-img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            margin-right: 10px;
+            vertical-align: middle;
+            float: left;
+            margin: 3px 12px 0 0;
         }
 
-        #review .comment-item .userName span {
-            display: block;
-            font-size: 14px;
-            color: #34495e;
+        #review > div.comment-item .comment-main {
+            display: inline-block;
+            vertical-align: middle;
+            width: calc(100% - 52px);
         }
 
-        #review .comment-item .comment span {
+        #review > div.comment-item .comment-main .username span {
+            display: inline;
+            font-size: 13px;
+            font-weight: 500;
+            color: #afafaf;
+            margin-right: 8px;
+        }
+
+        #review > div.comment-item .comment-main .content {
+            display: inline;
             font-size: 15px;
             color: #2c3e50;
-            margin: 10px 0;
-            display: block;
+            line-height: 1.5;
+            word-wrap: break-word;
         }
 
-        #review .comment-item .comment-footer {
+        #review > div.comment-item .comment-main .footer {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+            gap: 15px;
         }
 
-        #review .comment-item .reply a {
+        #review > div.comment-item .comment-main .footer .time {
+            font-size: 12px;
+        }
+
+        #review > div.comment-item .comment-main .footer .reply a,
+        #review > div.comment-item .comment-main .footer .delete a {
             color: #3498db;
             text-decoration: none;
-            font-size: 14px;
-            padding: 5px 10px;
-            border-radius: 15px;
-            transition: all 0.3s ease;
+            font-size: 12px;
+            transition: color 0.3s ease;
         }
 
-        #review .comment-item .reply a:hover {
-            background: #e3f2fd;
+        #review > div.comment-item .comment-main .footer .reply a:hover {
             color: #2980b9;
         }
 
-        #review .comment-item .delete a {
+        #review > div.comment-item .comment-main .footer .delete a {
             color: #e74c3c;
-            text-decoration: none;
-            font-size: 14px;
-            padding: 5px 10px;
-            border-radius: 15px;
-            transition: all 0.3s ease;
         }
 
-        #review .comment-item .delete a:hover {
-            background: #ffebee;
+        #review > div.comment-item .comment-main .footer .delete a:hover {
             color: #c0392b;
         }
 
+        #review > div.comment-item .comment-main .footer button#like {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        #review > div.comment-item .comment-main .footer button#like:hover {
+            color: #e74c3c;
+        }
+
+        #review > div.comment-item .comment-main .footer span#likeNum {
+            font-size: 12px;
+            color: #999;
+            margin-left: 3px;
+        }
+
         #review .child-comments {
-            margin-left: 50px;
-            margin-top: 15px;
+            margin-left: 40px;
+            margin-top: 10px;
+        }
+
+        .child-comments .comment-item {
+            background: #fff;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            box-shadow: none;
+            border-left: none;
+        }
+
+        .child-comments .comment-item .comment-main {
+            display: block;
+        }
+
+        .child-comments .comment-item .comment-main .username span {
+            display: inline;
+            font-size: 13px;
+            font-weight: 500;
+            color: #34495e;
+            vertical-align: middle;
+        }
+
+        .child-comments .comment-item .comment-main .content p {
+            display: block;
+            font-size: 14px;
+            color: #2c3e50;
+            margin-top: 5px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .child-comments .comment-item .comment-main .footer {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+            gap: 15px;
+        }
+
+        .child-comments .comment-item .comment-main .footer .time {
+            font-size: 12px;
+        }
+
+        .child-comments .comment-item .comment-main .footer .reply a,
+        .child-comments .comment-item .comment-main .footer .delete a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .child-comments .comment-item .comment-main .footer .reply a:hover {
+            color: #2980b9;
+        }
+
+        .child-comments .comment-item .comment-main .footer .delete a {
+            color: #e74c3c;
+        }
+
+        .child-comments .comment-item .comment-main .footer .delete a:hover {
+            color: #c0392b;
+        }
+
+        .child-comments .comment-item .comment-main .footer button#like {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .child-comments .comment-item .comment-main .footer button#like:hover {
+            color: #e74c3c;
+        }
+
+        .child-comments .comment-item .comment-main .footer span#likeNum {
+            font-size: 12px;
+            color: #999;
+            margin-left: 3px;
+        }
+
+        .child-comments .comment-item .comment-img-second {
+            width: 25px;
+            height: 25px;
+            float: left;
+            margin: 3px 12px 0 0;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+
+        .comment-main .username span .reply-to {
+            color: #999;
+            font-size: 12px;
+            margin-left: 5px;
+            font-weight: 400;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
 <div class="main">
-    <%-- 标头 --%>
     <div id="head">
         <div class="back">
             <a href="communityListServlet" class="iconfont" title="返回动态广场"></a>
@@ -375,7 +534,6 @@
         </div>
     </div>
 
-    <!-- 发帖人的信息 -->
     <div id="title">
         <img src="${file.userImgPath}" alt="">
         <p>${file.userName}</p>
@@ -383,7 +541,6 @@
         <p>IP属地：江西</p>
     </div>
 
-    <%-- 内容 --%>
     <div id="content">
         <h2>${file.fileTitle}</h2>
         <p>${file.fileIntroduction}</p>
@@ -397,7 +554,6 @@
         </a>
     </div>
 
-    <%-- 互动区 --%>
     <div id="interact">
         <button class="iconfont" id="upvote"></button>
         <span id="voteNum">${file.fileVote}</span>
@@ -406,12 +562,10 @@
         <span id="collectNum">${file.fileCollect}</span>
     </div>
 
-    <!-- 评论区 -->
     <div id="review">
-        <!-- 发表评论 -->
         <c:if test="${not empty sessionScope.user}">
-            <form action="commentSaveServlet" method="post">
-                <img src="${user.userImgPath}" alt="">
+            <form action="commentSaveServlet" method="post" id="main-comment-form">
+                <img src="${sessionScope.user.userImgPath}" alt="">
                 <textarea name="commentContent" placeholder="写下你的评论..." required></textarea>
                 <input type="hidden" name="fId" value="${file.fileId}">
                 <input type="hidden" name="parentId" value="0">
@@ -420,40 +574,41 @@
             </form>
         </c:if>
 
-        <!-- 递归展示评论 -->
         <c:forEach var="comment" items="${commentList}">
-            <div class="comment-item">
-                <div class="comment-header">
-                    <div class="img">
-                        <img src="${comment.userImgPath}" alt="">
-                    </div>
-                    <div class="userName">
+            <div class="comment-item" data-comment-id="${comment.commentId}">
+                <img src="${comment.userImgPath}" class="comment-img" alt="">
+                <div class="comment-main">
+                    <div class="username">
                         <span>${comment.userName}</span>
-                        <span style="font-size: 12px; color: #7f8c8d;">${comment.commentCreateTime}</span>
                     </div>
-                </div>
-                <div class="comment">
-                    <span>${comment.commentContent}</span>
-                </div>
-                <div class="comment-footer">
-                    <div class="reply">
-                        <a href="javascript:void(0)"
-                           onclick="showReplyForm(${comment.commentId}, ${comment.rootParentId != 0 ? comment.rootParentId : comment.commentId})">回复</a>
+                    <div class="content">
+                        <p>${comment.commentContent}</p>
                     </div>
-                    <c:if test="${sessionScope.user.userId == comment.uId}">
-                        <div class="delete">
-                            <a href="commentDeleteServlet?commentId=${comment.commentId}&fId=${file.fileId}">删除</a>
+                    <div class="footer">
+                        <span>${comment.commentCreateTime}</span>
+                            <%--点赞--%>
+                        <button class="iconfont" id="like"></button>
+                            <%--点赞数--%>
+                        <span id="likeNum">${comment.commentLiked}</span>
+                        <div class="reply">
+                            <a href="javascript:void(0)" data-comment-id="${comment.commentId}"
+                               data-root-parent-id="${comment.rootParentId != 0 ? comment.rootParentId : comment.commentId}"
+                               data-username="${comment.userName}">回复</a>
                         </div>
-                    </c:if>
+                        <c:if test="${sessionScope.user.userId == comment.uId}">
+                            <div class="delete">
+                                <a href="commentDeleteServlet?commentId=${comment.commentId}&fId=${file.fileId}">删除</a>
+                            </div>
+                        </c:if>
+                    </div>
                 </div>
 
-                <!-- 子评论 -->
-                <c:if test="${not empty comment.childComments}">
-                    <div class="child-comments">
+                <div class="child-comments">
+                    <c:if test="${not empty comment.childComments}">
                         <c:set var="childComments" value="${comment.childComments}" scope="request"/>
                         <c:import url="commentRecursive.jsp"/>
-                    </div>
-                </c:if>
+                    </c:if>
+                </div>
             </div>
         </c:forEach>
     </div>
@@ -461,7 +616,6 @@
 
 <script>
     $(document).ready(function () {
-        // 状态管理
         const interactionState = {
             vote: "${user_vote_status}" === "upvote" ? 1 : "${user_vote_status}" === "downvote" ? -1 : 0,
             collect: "${user_file}" !== "" ? 1 : 0
@@ -478,7 +632,7 @@
                 $("#upvote").addClass("active").html(icons.upvote.active);
                 $("#voteNum").addClass("upvoted");
             } else if (interactionState.vote === -1) {
-                $("#downvote").addClass("active").html(icons.downvote.active);
+                $("#downvote").addClass("active").html(icons.downvote.normal);
                 $("#voteNum").addClass("downvoted");
             }
             if (interactionState.collect) {
@@ -566,20 +720,68 @@
         });
 
         initializeState();
-    });
 
-    // 显示回复评论的表单
-    function showReplyForm(commentId, rootParentId) {
-        const replyForm = `
-        <form action="commentSaveServlet" method="post" style="margin-left: 50px; margin-top: 10px;">
-            <textarea name="commentContent" placeholder="回复..." required></textarea>
-            <input type="hidden" name="fId" value="${file.fileId}">
-            <input type="hidden" name="parentId" value="` + commentId + `">
-            <input type="hidden" name="rootParentId" value="` + rootParentId + `">
-            <input type="submit" value="提交回复">
-        </form>`;
-        $(event.target).closest('.comment-item').append(replyForm);
-    }
+        // 回复框管理
+        let currentReplyTarget = null; // 当前回复的目标评论 ID
+        let $replyForm = null; // 全局唯一的回复框
+
+        // 初始化唯一回复框
+        if ($(".reply-form").length === 0) {
+            const replyFormHtml = `
+                <form action="commentSaveServlet" method="post" class="reply-form" style="display: none;">
+                    <textarea name="commentContent" placeholder="回复..." required></textarea>
+                    <input type="hidden" name="fId" value="${file.fileId}">
+                    <input type="hidden" name="parentId" id="replyParentId">
+                    <input type="hidden" name="rootParentId" id="replyRootParentId">
+                    <input type="submit" value="提交回复">
+                </form>
+            `;
+            $("#review").append(replyFormHtml);
+        }
+        $replyForm = $(".reply-form");
+
+        // 点击回复的处理函数
+        $(document).on("click", ".reply a", function (e) {
+            e.preventDefault();
+            const commentId = $(this).data("comment-id");
+            const rootParentId = $(this).data("root-parent-id");
+            const username = $(this).data("username"); // 获取被回复的用户名
+            const $rootCommentItem = $("#review > .comment-item[data-comment-id='" + rootParentId + "']");
+            const $childComments = $rootCommentItem.find(".child-comments");
+
+            // 如果当前回复框已显示且目标相同，则隐藏
+            if (currentReplyTarget === commentId && $replyForm.is(":visible")) {
+                $replyForm.hide();
+                currentReplyTarget = null;
+            } else {
+                // 更新回复框内容并显示
+                $("#replyParentId").val(commentId);
+                $("#replyRootParentId").val(rootParentId);
+                // 动态设置 placeholder 为 @用户名
+                $replyForm.find("textarea").attr("placeholder", "@" + username);
+                // 如果没有 child-comments，则先创建一个空的
+                if ($childComments.length === 0) {
+                    $rootCommentItem.append('<div class="child-comments"></div>');
+                }
+                // 追加到 child-comments 内部
+                $replyForm.appendTo($rootCommentItem.find(".child-comments"));
+                $replyForm.show();
+                currentReplyTarget = commentId;
+
+                // 自动滚动到回复框
+                $('html, body').animate({
+                    scrollTop: $replyForm.offset().top - 100 // 偏移 100px 留出顶部空间
+                }, 500); // 500ms 平滑滚动
+            }
+        });
+
+        // 提交后隐藏回复框并重置 placeholder
+        $replyForm.on("submit", function () {
+            $(this).hide();
+            $(this).find("textarea").attr("placeholder", "回复..."); // 重置 placeholder
+            currentReplyTarget = null;
+        });
+    });
 </script>
 </body>
 </html>

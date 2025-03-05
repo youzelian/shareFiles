@@ -14,7 +14,7 @@ public class Comment {
     private int rootParentId;   // 根评论ID
     private List<Comment> childComments; // 子评论
 
-
+    private String repliedUserName; // 被回复的用户（仅在对二级评论回复时使用）
     private String userName;  // 用户名
     private String userImgPath; // 用户头像路径
 
@@ -48,6 +48,14 @@ public class Comment {
                 ", userName='" + userName + '\'' +
                 ", userImgPath='" + userImgPath + '\'' +
                 '}';
+    }
+
+    public String getRepliedUserName() {
+        return repliedUserName;
+    }
+
+    public void setRepliedUserName(String repliedUserName) {
+        this.repliedUserName = repliedUserName;
     }
 
     public int getCommentId() {

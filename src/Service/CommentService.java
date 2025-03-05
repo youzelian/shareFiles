@@ -2,12 +2,7 @@ package Service;
 
 import DAO.CommentDAO;
 import DTO.Comment;
-import DTO.File;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.BeanHandler;
-import utils.DruidUtils;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +23,7 @@ public class CommentService {
         return i > 0;
     }
 
-    // 根据文件id查询所有评论，并构建父子关系
+    // 根据文件id查询所有评论，并构建两层评论树
     public List<Comment> listCommentByFId(int fId) {
         // 查询所有评论
         List<Comment> commentList = commentDAO.listCommentByFId(fId);
@@ -36,11 +31,11 @@ public class CommentService {
             return new ArrayList<>();
         }
 
-        // 构建父子关系
+        // 构建两层评论树
         return buildCommentTree(commentList);
     }
 
-    // 将平面评论列表构建成树形结构
+    // 将平面评论列表构建成两层评论树
     private List<Comment> buildCommentTree(List<Comment> commentList) {
         // 使用 Map 存储评论，key 为 commentId，value 为 Comment 对象
         Map<Integer, Comment> commentMap = new HashMap<>();
@@ -52,20 +47,31 @@ public class CommentService {
         // 存储根评论（一级评论）
         List<Comment> rootComments = new ArrayList<>();
 
-        // 遍历评论列表，构建父子关系
+        // 遍历评论列表，构建两层结构
         for (Comment comment : commentList) {
             if (comment.getParentId() == 0) {
-                // 如果 parentId 为 0，说明是一级评论
+                // 一级评论
                 rootComments.add(comment);
             } else {
-                // 如果有 parentId，找到父评论并添加到其子评论列表
+                // 查找父评论
                 Comment parentComment = commentMap.get(comment.getParentId());
                 if (parentComment != null) {
-                    parentComment.getChildComments().add(comment);
+                    if (parentComment.getParentId() == 0) {
+                        // 如果父评论是一级评论，则当前评论是二级评论
+                        parentComment.getChildComments().add(comment);
+                    } else {
+                        // 如果父评论是二级评论，则将当前评论的 parentId 调整为 rootParentId
+                        Comment rootComment = commentMap.get(comment.getRootParentId());
+                        if (rootComment != null) {
+                            // 记录被回复的用户
+                            comment.setRepliedUserName(parentComment.getUserName());
+                            // 将当前评论作为二级评论，添加到一级评论的子评论列表
+                            rootComment.getChildComments().add(comment);
+                        }
+                    }
                 }
             }
         }
-
         return rootComments;
     }
 }

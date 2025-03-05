@@ -31,7 +31,7 @@ public class commentDeleteServlet extends HttpServlet {
         boolean success = commentService.deleteComment(commentId);
         if (success) {
             // 重定向回文件详情页
-            response.sendRedirect("fileShowServlet?fileId=" + fId);
+            response.sendRedirect("transferServlet?fileId=" + fId);
         } else {
             response.getWriter().write("删除评论失败，请重试！");
         }
