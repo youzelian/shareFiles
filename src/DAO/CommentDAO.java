@@ -1,7 +1,9 @@
 package DAO;
 
+import DTO.Club;
 import DTO.Comment;
 import org.apache.commons.dbutils.*;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ColumnListHandler;
 import utils.DruidUtils;
@@ -82,5 +84,32 @@ public class CommentDAO {
             e.printStackTrace();
         }
         return commentList;
+    }
+
+    // 根据评论id查询评论信息
+    public Comment getCommentById(int commentId) {
+        Comment comment = null;
+        try {
+            String sql = "select * from comments where comment_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            comment = queryRunner.query(sql, new BeanHandler<Comment>(Comment.class, processor), commentId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return comment;
+    }
+
+    // 更新评论信息
+    public int updateComment(Comment comment) {
+        int i = 0;
+        try {
+            String sql = "update comments set comment_liked=? where comment_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            Object[] params = {comment.getCommentLiked(), comment.getCommentId()};
+            i = queryRunner.update(sql, params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
     }
 }

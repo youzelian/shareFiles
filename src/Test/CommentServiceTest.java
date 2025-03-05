@@ -25,10 +25,17 @@ public class CommentServiceTest {
         System.out.println(b);
     }
 
+    // 更新评论信息
+    @Test
+    public void updateComment() {
+        int i = commentService.updateComment(new Comment(2, 45));
+        System.out.println(i);
+    }
+
     // 查询评论信息
     @Test
-    public void checkComment() {
-        List<Comment> commentList = commentService.listCommentByFId(1);
-        System.out.println(commentList);
+    public void getCommentById() {
+        Comment comment = commentService.getCommentById(45);
+        System.out.println(comment);
     }
 }

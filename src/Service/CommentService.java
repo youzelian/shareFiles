@@ -74,4 +74,16 @@ public class CommentService {
         }
         return rootComments;
     }
+
+    // 根据评论Id查询评论信息
+    public Comment getCommentById(int commentId) {
+        Comment comment = commentDAO.getCommentById(commentId);
+        return comment;
+    }
+
+    // 更新评论信息
+    public int updateComment(Comment comment) {
+        int i = commentDAO.updateComment(comment);
+        return i;
+    }
 }

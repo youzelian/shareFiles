@@ -18,6 +18,11 @@ public class Comment {
     private String userName;  // 用户名
     private String userImgPath; // 用户头像路径
 
+    public Comment(int commentLiked, int commentId) {
+        this.commentLiked = commentLiked;
+        this.commentId = commentId;
+    }
+
     public Comment(int fId, int uId, String commentContent, int parentId, int rootParentId, String userName, String userImgPath) {
         this.fId = fId;
         this.uId = uId;

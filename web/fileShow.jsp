@@ -585,7 +585,7 @@
                         <p>${comment.commentContent}</p>
                     </div>
                     <div class="footer">
-                        <span>${comment.commentCreateTime}</span>
+                        <span class="time">${comment.commentCreateTime}</span>
                             <%--点赞--%>
                         <button class="iconfont" id="like"></button>
                             <%--点赞数--%>
@@ -618,13 +618,15 @@
     $(document).ready(function () {
         const interactionState = {
             vote: "${user_vote_status}" === "upvote" ? 1 : "${user_vote_status}" === "downvote" ? -1 : 0,
-            collect: "${user_file}" !== "" ? 1 : 0
+            collect: "${user_file}" !== "" ? 1 : 0,
+            likedComments: {}
         };
 
         const icons = {
             upvote: {normal: "", active: ""},
             downvote: {normal: "", active: ""},
-            collect: {normal: "", active: ""}
+            collect: {normal: "", active: ""},
+            like: {normal: "", active: "&#xe7e2;"}
         };
 
         function initializeState() {
@@ -640,37 +642,31 @@
             }
         }
 
-        function sendInteraction(type, callback) {
-            $.post("interactServlet",
-                {type: type, fileId: "${file.fileId}"},
-                function (res) {
-                    $("#voteNum").text(res.fileVote);
-                    $("#collectNum").text(res.fileCollect);
-                    callback(res);
-                },
-                "json"
-            );
+        function sendInteraction(type, data, callback) {
+            $.post("interactServlet", data, function (res) {
+                callback(res);
+            }, "json");
         }
 
         $("#upvote").click(function () {
             const $this = $(this);
             if (interactionState.vote === 1) {
-                sendInteraction("cancelUpvote", () => {
+                sendInteraction("cancelUpvote", {type: "cancelUpvote", fileId: "${file.fileId}"}, (res) => {
                     $this.removeClass("active").html(icons.upvote.normal);
-                    $("#voteNum").removeClass("upvoted");
+                    $("#voteNum").removeClass("upvoted").text(res.fileVote);
                     interactionState.vote = 0;
                 });
             } else if (interactionState.vote === -1) {
-                sendInteraction("upvoteFromDownvote", () => {
+                sendInteraction("upvoteFromDownvote", {type: "upvoteFromDownvote", fileId: "${file.fileId}"}, (res) => {
                     $this.addClass("active").html(icons.upvote.active);
                     $("#downvote").removeClass("active").html(icons.downvote.normal);
-                    $("#voteNum").removeClass("downvoted").addClass("upvoted");
+                    $("#voteNum").removeClass("downvoted").addClass("upvoted").text(res.fileVote);
                     interactionState.vote = 1;
                 });
             } else {
-                sendInteraction("upvote", () => {
+                sendInteraction("upvote", {type: "upvote", fileId: "${file.fileId}"}, (res) => {
                     $this.addClass("active").html(icons.upvote.active);
-                    $("#voteNum").addClass("upvoted");
+                    $("#voteNum").addClass("upvoted").text(res.fileVote);
                     interactionState.vote = 1;
                 });
             }
@@ -679,22 +675,22 @@
         $("#downvote").click(function () {
             const $this = $(this);
             if (interactionState.vote === -1) {
-                sendInteraction("cancelDownvote", () => {
+                sendInteraction("cancelDownvote", {type: "cancelDownvote", fileId: "${file.fileId}"}, (res) => {
                     $this.removeClass("active").html(icons.downvote.normal);
-                    $("#voteNum").removeClass("downvoted");
+                    $("#voteNum").removeClass("downvoted").text(res.fileVote);
                     interactionState.vote = 0;
                 });
             } else if (interactionState.vote === 1) {
-                sendInteraction("downvoteFromUpvote", () => {
+                sendInteraction("downvoteFromUpvote", {type: "downvoteFromUpvote", fileId: "${file.fileId}"}, (res) => {
                     $this.addClass("active").html(icons.downvote.active);
                     $("#upvote").removeClass("active").html(icons.upvote.normal);
-                    $("#voteNum").removeClass("upvoted").addClass("downvoted");
+                    $("#voteNum").removeClass("upvoted").addClass("downvoted").text(res.fileVote);
                     interactionState.vote = -1;
                 });
             } else {
-                sendInteraction("downvote", () => {
+                sendInteraction("downvote", {type: "downvote", fileId: "${file.fileId}"}, (res) => {
                     $this.addClass("active").html(icons.downvote.active);
-                    $("#voteNum").addClass("downvoted");
+                    $("#voteNum").addClass("downvoted").text(res.fileVote);
                     interactionState.vote = -1;
                 });
             }
@@ -702,83 +698,103 @@
 
         $("#collect").click(function () {
             const $this = $(this);
-            sendInteraction("collect", () => {
+            sendInteraction("collect", {type: "collect", fileId: "${file.fileId}"}, (res) => {
                 if (interactionState.collect) {
                     $this.removeClass("active").html(icons.collect.normal);
+                    $("#collectNum").text(res.fileCollect);
                     interactionState.collect = 0;
                 } else {
                     $this.addClass("active").html(icons.collect.active);
+                    $("#collectNum").text(res.fileCollect);
                     interactionState.collect = 1;
                 }
             });
         });
 
         $("#download").click(function () {
-            sendInteraction("download", (res) => {
+            sendInteraction("download", {type: "download", fileId: "${file.fileId}"}, (res) => {
                 $("#downloadNum").text(res.fileDownloadAmount);
+            });
+        });
+
+        // 评论点赞逻辑（支持点赞和取消）
+        $("#review").on("click", ".comment-item #like", function () {
+            const $this = $(this);
+            const $commentItem = $this.closest(".comment-item");
+            const commentId = $commentItem.data("comment-id");
+            const isLiked = interactionState.likedComments[commentId] === true;
+
+            if (!commentId) {
+                return;
+            }
+
+            sendInteraction("likeComment", {
+                type: isLiked ? "unlikeComment" : "likeComment",
+                commentId: commentId
+            }, (res) => {
+                if (res.error) {
+                    return;
+                }
+                if (isLiked) {
+                    $this.removeClass("active").html(icons.like.normal);
+                    interactionState.likedComments[commentId] = false;
+                } else {
+                    $this.addClass("active").html(icons.like.active);
+                    interactionState.likedComments[commentId] = true;
+                }
+                $this.next("#likeNum").text(res.commentLiked);
             });
         });
 
         initializeState();
 
         // 回复框管理
-        let currentReplyTarget = null; // 当前回复的目标评论 ID
-        let $replyForm = null; // 全局唯一的回复框
-
-        // 初始化唯一回复框
+        let currentReplyTarget = null;
+        let $replyForm = null;
         if ($(".reply-form").length === 0) {
             const replyFormHtml = `
-                <form action="commentSaveServlet" method="post" class="reply-form" style="display: none;">
-                    <textarea name="commentContent" placeholder="回复..." required></textarea>
-                    <input type="hidden" name="fId" value="${file.fileId}">
-                    <input type="hidden" name="parentId" id="replyParentId">
-                    <input type="hidden" name="rootParentId" id="replyRootParentId">
-                    <input type="submit" value="提交回复">
-                </form>
-            `;
+            <form action="commentSaveServlet" method="post" class="reply-form" style="display: none;">
+                <textarea name="commentContent" placeholder="回复..." required></textarea>
+                <input type="hidden" name="fId" value="${file.fileId}">
+                <input type="hidden" name="parentId" id="replyParentId">
+                <input type="hidden" name="rootParentId" id="replyRootParentId">
+                <input type="submit" value="提交回复">
+            </form>
+        `;
             $("#review").append(replyFormHtml);
         }
         $replyForm = $(".reply-form");
 
-        // 点击回复的处理函数
         $(document).on("click", ".reply a", function (e) {
             e.preventDefault();
             const commentId = $(this).data("comment-id");
             const rootParentId = $(this).data("root-parent-id");
-            const username = $(this).data("username"); // 获取被回复的用户名
+            const username = $(this).data("username");
             const $rootCommentItem = $("#review > .comment-item[data-comment-id='" + rootParentId + "']");
             const $childComments = $rootCommentItem.find(".child-comments");
 
-            // 如果当前回复框已显示且目标相同，则隐藏
             if (currentReplyTarget === commentId && $replyForm.is(":visible")) {
                 $replyForm.hide();
                 currentReplyTarget = null;
             } else {
-                // 更新回复框内容并显示
                 $("#replyParentId").val(commentId);
                 $("#replyRootParentId").val(rootParentId);
-                // 动态设置 placeholder 为 @用户名
                 $replyForm.find("textarea").attr("placeholder", "@" + username);
-                // 如果没有 child-comments，则先创建一个空的
                 if ($childComments.length === 0) {
                     $rootCommentItem.append('<div class="child-comments"></div>');
                 }
-                // 追加到 child-comments 内部
                 $replyForm.appendTo($rootCommentItem.find(".child-comments"));
                 $replyForm.show();
                 currentReplyTarget = commentId;
-
-                // 自动滚动到回复框
                 $('html, body').animate({
-                    scrollTop: $replyForm.offset().top - 100 // 偏移 100px 留出顶部空间
-                }, 500); // 500ms 平滑滚动
+                    scrollTop: $replyForm.offset().top - 100
+                }, 500);
             }
         });
 
-        // 提交后隐藏回复框并重置 placeholder
         $replyForm.on("submit", function () {
             $(this).hide();
-            $(this).find("textarea").attr("placeholder", "回复..."); // 重置 placeholder
+            $(this).find("textarea").attr("placeholder", "回复...");
             currentReplyTarget = null;
         });
     });

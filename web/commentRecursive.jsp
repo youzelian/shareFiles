@@ -1,14 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:forEach var="comment" items="${childComments}">
-    <div class="comment-item">
+    <div class="comment-item" data-comment-id="${comment.commentId}">
         <img src="${comment.userImgPath}" class="comment-img-second" alt="">
         <div class="comment-main">
             <div class="username">
                 <span class="iconfont">
                     ${comment.userName}
                     <c:if test="${not empty comment.repliedUserName}">
-                        &#xe714; ${comment.repliedUserName}
+                         ${comment.repliedUserName}
                     </c:if>
                 </span>
             </div>
@@ -17,11 +17,12 @@
             </div>
             <div class="footer">
                 <span class="time">${comment.commentCreateTime}</span>
-                <button class="iconfont" id="like">&#xe644;</button>
+                    <%--点赞--%>
+                <button class="iconfont" id="like"></button>
+                    <%--点赞数--%>
                 <span id="likeNum">${comment.commentLiked}</span>
                 <div class="reply">
-                    <a href="javascript:void(0)"
-                       data-comment-id="${comment.commentId}"
+                    <a href="javascript:void(0)" data-comment-id="${comment.commentId}"
                        data-root-parent-id="${comment.rootParentId != 0 ? comment.rootParentId : comment.commentId}"
                        data-username="${comment.userName}">回复</a>
                 </div>
