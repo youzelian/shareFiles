@@ -520,6 +520,24 @@
             font-weight: 400;
             vertical-align: middle;
         }
+
+        /* 提示框样式 */
+        .alert {
+            padding: 10px 20px;
+            background-color: #333; /* 黑色背景 */
+            color: white; /* 白色文字 */
+            position: fixed;
+            top: 50%; /* 垂直居中 */
+            left: 50%; /* 水平居中 */
+            transform: translate(-50%, -50%); /* 偏移自身宽高的一半以实现居中 */
+            z-index: 1000;
+            display: none; /* 初始隐藏 */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center; /* 文字居中 */
+        }
     </style>
 </head>
 <body>
@@ -586,9 +604,7 @@
                     </div>
                     <div class="footer">
                         <span class="time">${comment.commentCreateTime}</span>
-                            <%--点赞--%>
                         <button class="iconfont" id="like"></button>
-                            <%--点赞数--%>
                         <span id="likeNum">${comment.commentLiked}</span>
                         <div class="reply">
                             <a href="javascript:void(0)" data-comment-id="${comment.commentId}"
@@ -597,7 +613,8 @@
                         </div>
                         <c:if test="${sessionScope.user.userId == comment.uId}">
                             <div class="delete">
-                                <a href="commentDeleteServlet?commentId=${comment.commentId}&fId=${file.fileId}">删除</a>
+                                <a href="commentDeleteServlet?commentId=${comment.commentId}&fId=${file.fileId}"
+                                   class="delete-comment">删除</a>
                             </div>
                         </c:if>
                     </div>
@@ -626,7 +643,7 @@
             upvote: {normal: "", active: ""},
             downvote: {normal: "", active: ""},
             collect: {normal: "", active: ""},
-            like: {normal: "", active: "&#xe7e2;"}
+            like: {normal: "", active: ""}
         };
 
         function initializeState() {
@@ -717,7 +734,6 @@
             });
         });
 
-        // 评论点赞逻辑（支持点赞和取消）
         $("#review").on("click", ".comment-item #like", function () {
             const $this = $(this);
             const $commentItem = $this.closest(".comment-item");
@@ -792,10 +808,105 @@
             }
         });
 
-        $replyForm.on("submit", function () {
-            $(this).hide();
-            $(this).find("textarea").attr("placeholder", "回复...");
-            currentReplyTarget = null;
+        // 动态创建并显示提示框
+        function showAlert(message) {
+            // 移除已有的提示框（避免重复）
+            $("#myAlert").remove();
+
+            // 创建新的提示框
+            const $alertBox = $("<div>", {
+                id: "myAlert",
+                class: "alert",
+                text: message
+            });
+
+            // 添加到页面
+            $("body").append($alertBox);
+
+            // 显示动画
+            $alertBox.fadeIn();
+            setTimeout(function () {
+                $alertBox.fadeOut(function () {
+                    $(this).remove(); // 动画完成后移除元素
+                });
+            }, 3000); // 3秒后消失
+        }
+
+        // 主评论表单提交
+        $("#main-comment-form").on("submit", function (e) {
+            e.preventDefault();
+            const $form = $(this);
+            $.ajax({
+                url: $form.attr("action"),
+                type: "POST",
+                data: $form.serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if (res.message) {
+                        $form.find("textarea").val(""); // 清空输入框
+                        showAlert(res.message);
+                        if (res.message === "发送成功") {
+                            setTimeout(() => {
+                                location.reload(); // 刷新页面
+                            }, 3000); // 等待提示消失后再刷新
+                        }
+                    }
+                },
+                error: function () {
+                    showAlert("发送失败");
+                }
+            });
+        });
+
+        // 回复表单提交
+        $replyForm.on("submit", function (e) {
+            e.preventDefault();
+            const $form = $(this);
+            $.ajax({
+                url: $form.attr("action"),
+                type: "POST",
+                data: $form.serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if (res.message) {
+                        $form.hide();
+                        $form.find("textarea").val("").attr("placeholder", "回复...");
+                        currentReplyTarget = null;
+                        showAlert(res.message);
+                        if (res.message === "发送成功") {
+                            setTimeout(() => {
+                                location.reload(); // 刷新页面
+                            }, 1000); // 等待提示消失后再刷新
+                        }
+                    }
+                },
+                error: function () {
+                    showAlert("发送失败");
+                }
+            });
+        });
+
+        // 删除评论
+        $(document).on("click", ".delete-comment", function (e) {
+            e.preventDefault();
+            const $this = $(this);
+            const href = $this.attr("href");
+            $.ajax({
+                url: href,
+                type: "POST",
+                dataType: "json",
+                success: function (res) {
+                    if (res.message) {
+                        showAlert(res.message);
+                        if (res.message === "删除成功") {
+                            $this.closest(".comment-item").remove();
+                        }
+                    }
+                },
+                error: function () {
+                    showAlert("删除失败");
+                }
+            });
         });
     });
 </script>

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "commentDeleteServlet", urlPatterns = "/commentDeleteServlet")
 public class commentDeleteServlet extends HttpServlet {
@@ -21,7 +22,8 @@ public class commentDeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 设置编码
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
 
         // 获取参数
         int commentId = Integer.parseInt(request.getParameter("commentId"));
@@ -30,10 +32,11 @@ public class commentDeleteServlet extends HttpServlet {
         // 删除评论
         boolean success = commentService.deleteComment(commentId);
         if (success) {
-            // 重定向回文件详情页
-            response.sendRedirect("transferServlet?fileId=" + fId);
+            out.println("{\"message\": \"删除成功\", \"fileId\": " + fId + "}");
         } else {
-            response.getWriter().write("删除评论失败，请重试！");
+            out.println("{\"message\": \"删除失败\"}");
         }
+        out.flush();
+        out.close();
     }
 }

@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.PrintWriter;
 
 @WebServlet(name = "commentSaveServlet", urlPatterns = "/commentSaveServlet")
 public class commentSaveServlet extends HttpServlet {
@@ -26,7 +25,9 @@ public class commentSaveServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 设置编码
         request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
         // 获取参数
         int fId = Integer.parseInt(request.getParameter("fId"));
         String commentContent = request.getParameter("commentContent");
@@ -42,10 +43,11 @@ public class commentSaveServlet extends HttpServlet {
         // 保存评论
         boolean success = commentService.saveComment(new Comment(fId, user.getUserId(), commentContent, parentId, rootParentId, user.getUserName(), user.getUserImgPath()));
         if (success) {
-            // 重定向回文件详情页
-            response.sendRedirect("transferServlet?fileId=" + fId);
+            out.println("{\"message\": \"发送成功\", \"fileId\": " + fId + "}");
         } else {
-            response.getWriter().write("评论失败，请重试！");
+            out.println("{\"message\": \"发送失败\"}");
         }
+        out.flush();
+        out.close();
     }
 }
