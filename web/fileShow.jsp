@@ -592,7 +592,7 @@
             </form>
         </c:if>
 
-        <c:forEach var="comment" items="${commentList}">
+        <c:forEach var="comment" items="${commentRootList}">
             <div class="comment-item" data-comment-id="${comment.commentId}">
                 <img src="${comment.userImgPath}" class="comment-img" alt="">
                 <div class="comment-main">
@@ -634,14 +634,14 @@
 <script>
     $(document).ready(function () {
         const interactionState = {
-            vote: "${user_vote_status}" === "upvote" ? 1 : "${user_vote_status}" === "downvote" ? -1 : 0,
-            collect: "${user_file}" !== "" ? 1 : 0,
+            vote: "${vote_status}" === "upvote" ? 1 : "${vote_status}" === "downvote" ? -1 : 0,
+            collect: "${isCollectByUser}" !== "" ? 1 : 0,
             likedComments: {}
         };
 
         const icons = {
             upvote: {normal: "", active: ""},
-            downvote: {normal: "", active: ""},
+            downvote: {normal: "&#xe603;", active: "&#xe606;"},
             collect: {normal: "", active: ""},
             like: {normal: "", active: ""}
         };
@@ -651,7 +651,7 @@
                 $("#upvote").addClass("active").html(icons.upvote.active);
                 $("#voteNum").addClass("upvoted");
             } else if (interactionState.vote === -1) {
-                $("#downvote").addClass("active").html(icons.downvote.normal);
+                $("#downvote").addClass("active").html(icons.downvote.active);
                 $("#voteNum").addClass("downvoted");
             }
             if (interactionState.collect) {

@@ -1,10 +1,8 @@
 package Servlet;
 
-import DTO.File;
-import DTO.User;
-import DTO.User_File;
-import DTO.Comment;
+import DTO.*;
 import Service.FileService;
+import Service.InteractService;
 import Service.User_FileService;
 import Service.CommentService;
 
@@ -29,9 +27,13 @@ public class interactServlet extends HttpServlet {
         String type = request.getParameter("type");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        int userId = user.getUserId();
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
+        InteractService interactService = new InteractService();
+        User_FileService user_fileService = new User_FileService();
+
 
         if (user == null) {
             out.println("{\"error\":\"User not logged in\"}");
@@ -48,19 +50,17 @@ public class interactServlet extends HttpServlet {
         }
 
         // 处理文件相关交互
-        if (type.startsWith("upvote") || type.startsWith("downvote") || type.equals("collect") || type.equals("download")) {
+        if (type.startsWith("upvote") || type.startsWith("downvote") || type.equals("collect") || type.equals("download") || type.startsWith("cancelUpvote") || type.startsWith("cancelDownvote") || type.startsWith("upvoteFromDownvote") || type.startsWith("downvoteFromUpvote")) {
             int fid = Integer.parseInt(request.getParameter("fileId"));
             FileService fileService = new FileService();
             File file = fileService.checkFile(fid);
-            User_FileService user_fileService = new User_FileService();
             boolean judge = true;
-
             if (type.equals("collect")) {
-                User_File user_file = user_fileService.checkUser_File(user.getUserId(), fid);
+                User_File user_file = user_fileService.checkUser_File(userId, fid);
                 if (user_file == null) {
-                    user_fileService.insertUser_File(new User_File(user.getUserId(), fid));
+                    user_fileService.insertUser_File(new User_File(userId, fid));
                 } else {
-                    user_fileService.deleteUser_File(user.getUserId(), fid);
+                    user_fileService.deleteUser_File(userId, fid);
                     judge = false;
                 }
             }
@@ -68,22 +68,28 @@ public class interactServlet extends HttpServlet {
             switch (type) {
                 case "upvote":
                 case "cancelDownvote":
+                    interactService.updateInteraction(1, userId, fid, 1);
                     file.setFileVote(file.getFileVote() + 1);
                     break;
                 case "downvote":
                 case "cancelUpvote":
+                    interactService.updateInteraction(1, userId, fid, -1);
                     file.setFileVote(file.getFileVote() - 1);
                     break;
                 case "upvoteFromDownvote":
+                    interactService.updateInteraction(1, userId, fid, 1);
                     file.setFileVote(file.getFileVote() + 2);
                     break;
                 case "downvoteFromUpvote":
+                    interactService.updateInteraction(1, userId, fid, -1);
                     file.setFileVote(file.getFileVote() - 2);
                     break;
                 case "collect":
                     if (judge) {
+                        interactService.updateInteraction(2, userId, fid, 1);
                         file.setFileCollect(file.getFileCollect() + 1);
                     } else {
+                        interactService.updateInteraction(2, userId, fid, 0);
                         file.setFileCollect(file.getFileCollect() - 1);
                     }
                     break;
@@ -96,6 +102,7 @@ public class interactServlet extends HttpServlet {
             String jsonStr = "{\"fileVote\":" + file.getFileVote() + ",\"fileCollect\":" + file.getFileCollect() + ",\"fileDownloadAmount\":" + file.getFileDownloadAmount() + "}";
             out.println(jsonStr);
         }
+
         // 处理评论点赞（支持点赞和取消）
         else if (type.equals("likeComment") || type.equals("unlikeComment")) {
             int commentId = Integer.parseInt(request.getParameter("commentId"));
@@ -106,9 +113,11 @@ public class interactServlet extends HttpServlet {
                 out.println("{\"error\":\"Comment not found\"}");
             } else {
                 if (type.equals("likeComment")) {
+                    interactService.updateInteraction(3, userId, commentId, 1);
                     comment.setCommentLikedNum(comment.getCommentLikedNum() + 1);
                 } else if (type.equals("unlikeComment")) {
                     if (comment.getCommentLikedNum() > 0) { // 防止负数
+                        interactService.updateInteraction(3, userId, commentId, -1);
                         comment.setCommentLikedNum(comment.getCommentLikedNum() - 1);
                     }
                 }

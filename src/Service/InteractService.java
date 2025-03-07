@@ -24,8 +24,8 @@ public class InteractService {
     }
 
     // 查询互动信息的状态
-    public int checkInteraction(int type, int uId, int objectId) {
-        int status = interactDAO.checkInteraction(type, uId, objectId);
-        return status;
+    public Interaction checkInteraction(int type, int uId, int objectId) {
+        Interaction interaction = interactDAO.checkInteraction(type, uId, objectId);
+        return interaction;
     }
 }

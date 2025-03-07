@@ -1,5 +1,6 @@
 package DAO;
 
+import DTO.Club;
 import DTO.Interaction;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -40,15 +41,15 @@ public class InteractDAO {
     }
 
     // 查询互动信息的状态
-    public int checkInteraction(int type, int uId, int objectId) {
-        int status = 0;
+    public Interaction checkInteraction(int type, int uId, int objectId) {
+        Interaction interaction = null;
         try {
-            String sql = "select status from interactions where u_id=? and object_id=? and type=?";
+            String sql = "select * from interactions where u_id=? and object_id=? and type=?";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            status = queryRunner.query(sql, new ScalarHandler<>(), uId, objectId, type);
+            interaction = queryRunner.query(sql, new BeanHandler<>(Interaction.class, processor), uId, objectId, type);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return status;
+        return interaction;
     }
 }

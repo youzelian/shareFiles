@@ -25,7 +25,7 @@ public class InteractDAOTest {
     // 查询互动信息的状态
     @Test
     public void checkInteraction() {
-        int status = interactDAO.checkInteraction(1, 1, 1);
-        System.out.println(status);
+        Interaction interaction = interactDAO.checkInteraction(1, 1, 1);
+        System.out.println(interaction);
     }
 }

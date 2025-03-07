@@ -16,6 +16,8 @@ public class File {
     private int fileDownloadAmount;
     private int fileOfClub;
     private int fileOfUser;
+    private int voteStatus;   // -1=点踩，0=无，1=点赞
+    private boolean isCollectByUser;   // 是否被当前用户收藏 0-没有 1-有
 
     private String userName;
     private String userImgPath;
@@ -25,7 +27,7 @@ public class File {
     public File() {
     }
 
-    public File(String fileTitle, String fileIntroduction,String fileName, String fileLength,String fileType, String fileDownloadLink, int fileOfClub,int fileOfUser) {
+    public File(String fileTitle, String fileIntroduction, String fileName, String fileLength, String fileType, String fileDownloadLink, int fileOfClub, int fileOfUser) {
         this.fileTitle = fileTitle;
         this.fileIntroduction = fileIntroduction;
         this.fileName = fileName;
@@ -59,6 +61,8 @@ public class File {
                 ", fileDownloadAmount=" + fileDownloadAmount +
                 ", fileOfClub=" + fileOfClub +
                 ", fileOfUser=" + fileOfUser +
+                ", voteStatus=" + voteStatus +
+                ", isCollectByUser=" + isCollectByUser +
                 ", userName='" + userName + '\'' +
                 ", userImgPath='" + userImgPath + '\'' +
                 ", clubName='" + clubName + '\'' +
@@ -200,5 +204,21 @@ public class File {
 
     public void setClubId(int clubId) {
         this.clubId = clubId;
+    }
+
+    public int getVoteStatus() {
+        return voteStatus;
+    }
+
+    public void setVoteStatus(int voteStatus) {
+        this.voteStatus = voteStatus;
+    }
+
+    public boolean isCollectByUser() {
+        return isCollectByUser;
+    }
+
+    public void setCollectByUser(boolean collectByUser) {
+        isCollectByUser = collectByUser;
     }
 }

@@ -13,6 +13,8 @@ public class Comment {
     private int parentId;   // 父评论ID（被回复的评论）
     private int rootParentId;   // 根评论ID
     private List<Comment> childComments; // 子评论
+    private boolean isLikedByUser;   // 是否被当前用户点赞 0-没有 1-有
+
 
     private String repliedUserName; // 被回复的用户（仅在对二级评论回复时使用）
     private String userName;  // 用户名
@@ -37,6 +39,25 @@ public class Comment {
 
     }
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "commentId=" + commentId +
+                ", fId=" + fId +
+                ", uId=" + uId +
+                ", commentContent='" + commentContent + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", commentCreateTime='" + commentCreateTime + '\'' +
+                ", commentLikedNum=" + commentLikedNum +
+                ", parentId=" + parentId +
+                ", rootParentId=" + rootParentId +
+                ", childComments=" + childComments +
+                ", isLikedByUser=" + isLikedByUser +
+                ", repliedUserName='" + repliedUserName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userImgPath='" + userImgPath + '\'' +
+                '}';
+    }
 
     public String getRepliedUserName() {
         return repliedUserName;
@@ -140,5 +161,13 @@ public class Comment {
 
     public void setUserImgPath(String userImgPath) {
         this.userImgPath = userImgPath;
+    }
+
+    public boolean isLikedByUser() {
+        return isLikedByUser;
+    }
+
+    public void setLikedByUser(boolean likedByUser) {
+        isLikedByUser = likedByUser;
     }
 }
