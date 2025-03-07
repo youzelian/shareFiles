@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 
 @WebServlet(name = "commentSaveServlet", urlPatterns = "/commentSaveServlet")
 public class commentSaveServlet extends HttpServlet {
@@ -41,7 +42,7 @@ public class commentSaveServlet extends HttpServlet {
         }
 
         // 保存评论
-        boolean success = commentService.saveComment(new Comment(fId, user.getUserId(), commentContent, parentId, rootParentId, user.getUserName(), user.getUserImgPath()));
+        boolean success = commentService.saveComment(new Comment(fId, user.getUserId(), commentContent, new Timestamp(System.currentTimeMillis()), parentId, rootParentId, user.getUserName(), user.getUserImgPath()));
         if (success) {
             out.println("{\"message\": \"发送成功\", \"fileId\": " + fId + "}");
         } else {

@@ -24,32 +24,18 @@ public class interactServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1.接受请求并初始化
+        response.setContentType("application/json;charset=utf-8");
+        response.setCharacterEncoding("utf-8");
         String type = request.getParameter("type");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         int userId = user.getUserId();
-        response.setContentType("application/json;charset=utf-8");
-        response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
         InteractService interactService = new InteractService();
         User_FileService user_fileService = new User_FileService();
 
-
-        if (user == null) {
-            out.println("{\"error\":\"User not logged in\"}");
-            out.flush();
-            out.close();
-            return;
-        }
-
-        if (type == null || type.isEmpty()) {
-            out.println("{\"error\":\"Invalid type\"}");
-            out.flush();
-            out.close();
-            return;
-        }
-
-        // 处理文件相关交互
+        // 2.处理文件相关交互
         if (type.startsWith("upvote") || type.startsWith("downvote") || type.equals("collect") || type.equals("download") || type.startsWith("cancelUpvote") || type.startsWith("cancelDownvote") || type.startsWith("upvoteFromDownvote") || type.startsWith("downvoteFromUpvote")) {
             int fid = Integer.parseInt(request.getParameter("fileId"));
             FileService fileService = new FileService();
@@ -109,36 +95,26 @@ public class interactServlet extends HttpServlet {
             out.println(jsonStr);
         }
 
-        // 处理评论点赞（支持点赞和取消）
+        // 3.处理评论点赞（支持点赞和取消）
         else if (type.equals("likeComment") || type.equals("cancelLikeComment")) {
             int commentId = Integer.parseInt(request.getParameter("commentId"));
             CommentService commentService = new CommentService();
             Comment comment = commentService.getCommentById(commentId);
+            int newStatus;
+            int commentLikedNum;
 
-            if (comment == null) {
-                out.println("{\"error\":\"Comment not found\"}");
+            if (type.equals("likeComment")) {
+                newStatus = 1;
+                commentLikedNum = comment.getCommentLikedNum() + 1;
             } else {
-                Interaction interaction = interactService.checkInteraction(3, userId, commentId);
-                int newStatus;
-                int commentLikedNum;
-                if (type.equals("likeComment")) {
-                    newStatus = 1;
-                    commentLikedNum = comment.getCommentLikedNum() + 1;
-                } else {
-                    newStatus = 0;
-                    commentLikedNum = comment.getCommentLikedNum() - 1;
-                }
-                if (interaction == null) {
-                    interactService.insertInteraction(new Interaction(3, userId, commentId, newStatus));
-                } else {
-                    interactService.updateInteraction(3, userId, commentId, newStatus);
-                }
-
-                comment.setCommentLikedNum(commentLikedNum);
-                commentService.updateComment(comment);
-                String jsonStr = "{\"commentLikedNum\":" + commentLikedNum + "}";
-                out.println(jsonStr);
+                newStatus = 0;
+                commentLikedNum = comment.getCommentLikedNum() - 1;
             }
+            interactService.updateInteraction(3, userId, commentId, newStatus);
+            comment.setCommentLikedNum(commentLikedNum);
+            commentService.updateComment(comment);
+            String jsonStr = "{\"commentLikedNum\":" + commentLikedNum + "}";
+            out.println(jsonStr);
         } else {
             out.println("{\"error\":\"Unsupported type\"}");
         }

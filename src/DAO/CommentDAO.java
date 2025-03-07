@@ -19,14 +19,15 @@ public class CommentDAO {
     public int insertComment(Comment comment) {
         int i = 0;
         try {
-            String sql = "insert into comments (f_id, u_id, comment_content, parent_id, root_parent_id) values ( ?, ?, ?, ?, ?)";
+            String sql = "insert into comments (f_id, u_id, comment_content, parent_id, root_parent_id,comment_create_time) values ( ?, ?, ?, ?, ?,?)";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             Object[] params = {
                     comment.getfId(),
                     comment.getuId(),
                     comment.getCommentContent(),
                     comment.getParentId(),
-                    comment.getRootParentId()
+                    comment.getRootParentId(),
+                    comment.getCommentCreateTime()
             };
             i = queryRunner.update(sql, params);
         } catch (SQLException e) {
@@ -75,9 +76,7 @@ public class CommentDAO {
     public List<Comment> listCommentByFId(int fId) {
         List<Comment> commentList = null;
         try {
-            String sql = "SELECT c.comment_id, c.f_id, c.u_id, c.comment_content, c.is_delete, c.comment_create_time, c.comment_liked_num, c.parent_id, c.root_parent_id, u.user_name, u.user_img_path " +
-                    "FROM comments c INNER JOIN users u ON c.u_id = u.user_id " +
-                    "WHERE c.f_id = ? AND c.is_delete = 0";
+            String sql = "select * from comments inner join users on comments.u_id=users.user_id where comments.f_id=? and comments.is_delete=0";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             commentList = queryRunner.query(sql, new BeanListHandler<Comment>(Comment.class, processor), fId);
         } catch (SQLException e) {

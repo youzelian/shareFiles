@@ -42,7 +42,7 @@
             padding: 15px 20px;
             background: linear-gradient(135deg, #ffffff, #f8f9fd);
             position: sticky;
-            top: 0;
+            top: -5px; /*减少缝隙*/
             z-index: 10;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
@@ -841,7 +841,7 @@
                 $alertBox.fadeOut(function () {
                     $(this).remove(); // 动画完成后移除元素
                 });
-            }, 3000); // 3秒后消失
+            }, 1500); // 1秒后消失
         }
 
         // 主评论表单提交

@@ -1,5 +1,6 @@
 package DTO;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class Comment {
@@ -8,7 +9,7 @@ public class Comment {
     private int uId; // 用户ID
     private String commentContent;  // 评论内容
     private int isDeleted;  // 是否被删除  0-未删除；1-已删除
-    private String commentCreateTime; // 创建时间
+    private Timestamp commentCreateTime; // 创建时间
     private int commentLikedNum;    // 被点赞数
     private int parentId;   // 父评论ID（被回复的评论）
     private int rootParentId;   // 根评论ID
@@ -24,10 +25,11 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public Comment(int fId, int uId, String commentContent, int parentId, int rootParentId, String userName, String userImgPath) {
+    public Comment(int fId, int uId, String commentContent, Timestamp commentCreateTime, int parentId, int rootParentId, String userName, String userImgPath) {
         this.fId = fId;
         this.uId = uId;
         this.commentContent = commentContent;
+        this.commentCreateTime = commentCreateTime;
         this.parentId = parentId;
         this.rootParentId = rootParentId;
         this.userName = userName;
@@ -35,7 +37,6 @@ public class Comment {
     }
 
     public Comment() {
-
     }
 
     @Override
@@ -46,7 +47,7 @@ public class Comment {
                 ", uId=" + uId +
                 ", commentContent='" + commentContent + '\'' +
                 ", isDeleted=" + isDeleted +
-                ", commentCreateTime='" + commentCreateTime + '\'' +
+                ", commentCreateTime=" + commentCreateTime +
                 ", commentLikedNum=" + commentLikedNum +
                 ", parentId=" + parentId +
                 ", rootParentId=" + rootParentId +
@@ -56,14 +57,6 @@ public class Comment {
                 ", userName='" + userName + '\'' +
                 ", userImgPath='" + userImgPath + '\'' +
                 '}';
-    }
-
-    public String getRepliedUserName() {
-        return repliedUserName;
-    }
-
-    public void setRepliedUserName(String repliedUserName) {
-        this.repliedUserName = repliedUserName;
     }
 
     public int getCommentId() {
@@ -106,11 +99,11 @@ public class Comment {
         this.isDeleted = isDeleted;
     }
 
-    public String getCommentCreateTime() {
+    public Timestamp getCommentCreateTime() {
         return commentCreateTime;
     }
 
-    public void setCommentCreateTime(String commentCreateTime) {
+    public void setCommentCreateTime(Timestamp commentCreateTime) {
         this.commentCreateTime = commentCreateTime;
     }
 
@@ -146,6 +139,22 @@ public class Comment {
         this.childComments = childComments;
     }
 
+    public boolean isLikedByUser() {
+        return isLikedByUser;
+    }
+
+    public void setLikedByUser(boolean likedByUser) {
+        isLikedByUser = likedByUser;
+    }
+
+    public String getRepliedUserName() {
+        return repliedUserName;
+    }
+
+    public void setRepliedUserName(String repliedUserName) {
+        this.repliedUserName = repliedUserName;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -160,13 +169,5 @@ public class Comment {
 
     public void setUserImgPath(String userImgPath) {
         this.userImgPath = userImgPath;
-    }
-
-    public boolean isLikedByUser() {
-        return isLikedByUser;
-    }
-
-    public void setLikedByUser(boolean likedByUser) {
-        isLikedByUser = likedByUser;
     }
 }
