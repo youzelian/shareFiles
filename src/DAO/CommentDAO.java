@@ -75,7 +75,7 @@ public class CommentDAO {
     public List<Comment> listCommentByFId(int fId) {
         List<Comment> commentList = null;
         try {
-            String sql = "SELECT c.comment_id, c.f_id, c.u_id, c.comment_content, c.is_delete, c.comment_create_time, c.comment_liked, c.parent_id, c.root_parent_id, u.user_name, u.user_img_path " +
+            String sql = "SELECT c.comment_id, c.f_id, c.u_id, c.comment_content, c.is_delete, c.comment_create_time, c.comment_liked_num, c.parent_id, c.root_parent_id, u.user_name, u.user_img_path " +
                     "FROM comments c INNER JOIN users u ON c.u_id = u.user_id " +
                     "WHERE c.f_id = ? AND c.is_delete = 0";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
@@ -103,9 +103,9 @@ public class CommentDAO {
     public int updateComment(Comment comment) {
         int i = 0;
         try {
-            String sql = "update comments set comment_liked=? where comment_id=?";
+            String sql = "update comments set comment_liked_num=? where comment_id=?";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            Object[] params = {comment.getCommentLiked(), comment.getCommentId()};
+            Object[] params = {comment.getCommentLikedNum(), comment.getCommentId()};
             i = queryRunner.update(sql, params);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -35,7 +35,7 @@ public class CommentServiceTest {
     // 查询评论信息
     @Test
     public void getCommentById() {
-        Comment comment = commentService.getCommentById(45);
+        Comment comment = commentService.getCommentById(72);
         System.out.println(comment);
     }
 }

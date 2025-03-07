@@ -106,14 +106,14 @@ public class interactServlet extends HttpServlet {
                 out.println("{\"error\":\"Comment not found\"}");
             } else {
                 if (type.equals("likeComment")) {
-                    comment.setCommentLiked(comment.getCommentLiked() + 1);
+                    comment.setCommentLikedNum(comment.getCommentLikedNum() + 1);
                 } else if (type.equals("unlikeComment")) {
-                    if (comment.getCommentLiked() > 0) { // 防止负数
-                        comment.setCommentLiked(comment.getCommentLiked() - 1);
+                    if (comment.getCommentLikedNum() > 0) { // 防止负数
+                        comment.setCommentLikedNum(comment.getCommentLikedNum() - 1);
                     }
                 }
                 commentService.updateComment(comment);
-                String jsonStr = "{\"commentLiked\":" + comment.getCommentLiked() + "}";
+                String jsonStr = "{\"commentLiked\":" + comment.getCommentLikedNum() + "}";
                 out.println(jsonStr);
             }
         } else {

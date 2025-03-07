@@ -605,7 +605,7 @@
                     <div class="footer">
                         <span class="time">${comment.commentCreateTime}</span>
                         <button class="iconfont" id="like"></button>
-                        <span id="likeNum">${comment.commentLiked}</span>
+                        <span id="likeNum">${comment.commentLikedNum}</span>
                         <div class="reply">
                             <a href="javascript:void(0)" data-comment-id="${comment.commentId}"
                                data-root-parent-id="${comment.rootParentId != 0 ? comment.rootParentId : comment.commentId}"

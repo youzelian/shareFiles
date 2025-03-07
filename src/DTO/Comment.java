@@ -18,8 +18,8 @@ public class Comment {
     private String userName;  // 用户名
     private String userImgPath; // 用户头像路径
 
-    public Comment(int commentLiked, int commentId) {
-        this.commentLikedNum = commentLiked;
+    public Comment(int commentLikedNum, int commentId) {
+        this.commentLikedNum = commentLikedNum;
         this.commentId = commentId;
     }
 
@@ -37,23 +37,6 @@ public class Comment {
 
     }
 
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "commentId=" + commentId +
-                ", fId=" + fId +
-                ", uId=" + uId +
-                ", commentContent='" + commentContent + '\'' +
-                ", isDeleted=" + isDeleted +
-                ", commentCreateTime='" + commentCreateTime + '\'' +
-                ", commentLiked=" + commentLikedNum +
-                ", parentId=" + parentId +
-                ", rootParentId=" + rootParentId +
-                ", childComments=" + childComments +
-                ", userName='" + userName + '\'' +
-                ", userImgPath='" + userImgPath + '\'' +
-                '}';
-    }
 
     public String getRepliedUserName() {
         return repliedUserName;
@@ -111,12 +94,12 @@ public class Comment {
         this.commentCreateTime = commentCreateTime;
     }
 
-    public int getCommentLiked() {
+    public int getCommentLikedNum() {
         return commentLikedNum;
     }
 
-    public void setCommentLiked(int commentLiked) {
-        this.commentLikedNum = commentLiked;
+    public void setCommentLikedNum(int commentLikedNum) {
+        this.commentLikedNum = commentLikedNum;
     }
 
     public int getParentId() {
