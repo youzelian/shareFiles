@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:forEach var="comment" items="${childComments}">
-    <div class="comment-item" data-comment-id="${comment.commentId}">
+    <div class="comment-item" data-comment-id="${comment.commentId}" data-liked="${comment.likedByUser}">
         <img src="${comment.userImgPath}" class="comment-img-second" alt="">
         <div class="comment-main">
             <div class="username">

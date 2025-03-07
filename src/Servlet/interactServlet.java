@@ -67,13 +67,19 @@ public class interactServlet extends HttpServlet {
 
             switch (type) {
                 case "upvote":
-                case "cancelDownvote":
                     interactService.updateInteraction(1, userId, fid, 1);
                     file.setFileVote(file.getFileVote() + 1);
                     break;
+                case "cancelDownvote":
+                    interactService.updateInteraction(1, userId, fid, 0);
+                    file.setFileVote(file.getFileVote() + 1);
+                    break;
                 case "downvote":
-                case "cancelUpvote":
                     interactService.updateInteraction(1, userId, fid, -1);
+                    file.setFileVote(file.getFileVote() - 1);
+                    break;
+                case "cancelUpvote":
+                    interactService.updateInteraction(1, userId, fid, 0);
                     file.setFileVote(file.getFileVote() - 1);
                     break;
                 case "upvoteFromDownvote":
@@ -104,7 +110,7 @@ public class interactServlet extends HttpServlet {
         }
 
         // 处理评论点赞（支持点赞和取消）
-        else if (type.equals("likeComment") || type.equals("unlikeComment")) {
+        else if (type.equals("likeComment") || type.equals("cancelLikeComment")) {
             int commentId = Integer.parseInt(request.getParameter("commentId"));
             CommentService commentService = new CommentService();
             Comment comment = commentService.getCommentById(commentId);
@@ -112,17 +118,25 @@ public class interactServlet extends HttpServlet {
             if (comment == null) {
                 out.println("{\"error\":\"Comment not found\"}");
             } else {
+                Interaction interaction = interactService.checkInteraction(3, userId, commentId);
+                int newStatus;
+                int commentLikedNum;
                 if (type.equals("likeComment")) {
-                    interactService.updateInteraction(3, userId, commentId, 1);
-                    comment.setCommentLikedNum(comment.getCommentLikedNum() + 1);
-                } else if (type.equals("unlikeComment")) {
-                    if (comment.getCommentLikedNum() > 0) { // 防止负数
-                        interactService.updateInteraction(3, userId, commentId, -1);
-                        comment.setCommentLikedNum(comment.getCommentLikedNum() - 1);
-                    }
+                    newStatus = 1;
+                    commentLikedNum = comment.getCommentLikedNum() + 1;
+                } else {
+                    newStatus = 0;
+                    commentLikedNum = comment.getCommentLikedNum() - 1;
                 }
+                if (interaction == null) {
+                    interactService.insertInteraction(new Interaction(3, userId, commentId, newStatus));
+                } else {
+                    interactService.updateInteraction(3, userId, commentId, newStatus);
+                }
+
+                comment.setCommentLikedNum(commentLikedNum);
                 commentService.updateComment(comment);
-                String jsonStr = "{\"commentLiked\":" + comment.getCommentLikedNum() + "}";
+                String jsonStr = "{\"commentLikedNum\":" + commentLikedNum + "}";
                 out.println(jsonStr);
             }
         } else {

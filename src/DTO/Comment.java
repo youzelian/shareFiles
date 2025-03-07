@@ -13,9 +13,8 @@ public class Comment {
     private int parentId;   // 父评论ID（被回复的评论）
     private int rootParentId;   // 根评论ID
     private List<Comment> childComments; // 子评论
+
     private boolean isLikedByUser;   // 是否被当前用户点赞 0-没有 1-有
-
-
     private String repliedUserName; // 被回复的用户（仅在对二级评论回复时使用）
     private String userName;  // 用户名
     private String userImgPath; // 用户头像路径

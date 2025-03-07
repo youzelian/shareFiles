@@ -262,7 +262,7 @@
     <%-- 标头 --%>
     <div class="header">
         <div class="back">
-            <a href="index.jsp" class="iconfont" title="返回主页"></a>
+            <a href="index.jsp" class="iconfont" title="返回主页">&#xe63b;</a>
         </div>
         <div class="search-box">
             <form action="myClubsListServlet" method="post" style="display: flex; width: 100%;">

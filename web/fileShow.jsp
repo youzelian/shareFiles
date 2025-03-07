@@ -593,7 +593,7 @@
         </c:if>
 
         <c:forEach var="comment" items="${commentRootList}">
-            <div class="comment-item" data-comment-id="${comment.commentId}">
+            <div class="comment-item" data-comment-id="${comment.commentId}" data-liked="${comment.likedByUser}">
                 <img src="${comment.userImgPath}" class="comment-img" alt="">
                 <div class="comment-main">
                     <div class="username">
@@ -657,6 +657,18 @@
             if (interactionState.collect) {
                 $("#collect").addClass("active").html(icons.collect.active);
             }
+            // 初始化评论点赞状态
+            $(".comment-item").each(function () {
+                const $this = $(this);
+                const commentId = $this.data("comment-id");
+                const isLiked = $this.data("liked") === true; // 从后端传递
+                if (isLiked) {
+                    $this.find("#like").addClass("active").html(icons.like.active);
+                    interactionState.likedComments[commentId] = true;
+                } else {
+                    interactionState.likedComments[commentId] = false;
+                }
+            });
         }
 
         function sendInteraction(type, data, callback) {
@@ -745,7 +757,7 @@
             }
 
             sendInteraction("likeComment", {
-                type: isLiked ? "unlikeComment" : "likeComment",
+                type: isLiked ? "cancelLikeComment" : "likeComment",
                 commentId: commentId
             }, (res) => {
                 if (res.error) {
@@ -758,7 +770,7 @@
                     $this.addClass("active").html(icons.like.active);
                     interactionState.likedComments[commentId] = true;
                 }
-                $this.next("#likeNum").text(res.commentLiked);
+                $this.next("#likeNum").text(res.commentLikedNum);
             });
         });
 
