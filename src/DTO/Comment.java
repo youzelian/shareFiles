@@ -9,7 +9,7 @@ public class Comment {
     private String commentContent;  // 评论内容
     private int isDeleted;  // 是否被删除  0-未删除；1-已删除
     private String commentCreateTime; // 创建时间
-    private int commentLiked;    // 被点赞数
+    private int commentLikedNum;    // 被点赞数
     private int parentId;   // 父评论ID（被回复的评论）
     private int rootParentId;   // 根评论ID
     private List<Comment> childComments; // 子评论
@@ -19,7 +19,7 @@ public class Comment {
     private String userImgPath; // 用户头像路径
 
     public Comment(int commentLiked, int commentId) {
-        this.commentLiked = commentLiked;
+        this.commentLikedNum = commentLiked;
         this.commentId = commentId;
     }
 
@@ -46,7 +46,7 @@ public class Comment {
                 ", commentContent='" + commentContent + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", commentCreateTime='" + commentCreateTime + '\'' +
-                ", commentLiked=" + commentLiked +
+                ", commentLiked=" + commentLikedNum +
                 ", parentId=" + parentId +
                 ", rootParentId=" + rootParentId +
                 ", childComments=" + childComments +
@@ -112,11 +112,11 @@ public class Comment {
     }
 
     public int getCommentLiked() {
-        return commentLiked;
+        return commentLikedNum;
     }
 
     public void setCommentLiked(int commentLiked) {
-        this.commentLiked = commentLiked;
+        this.commentLikedNum = commentLiked;
     }
 
     public int getParentId() {
