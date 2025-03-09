@@ -1,11 +1,14 @@
 package DAO;
 
+import DTO.Club;
 import DTO.File;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import utils.DruidUtils;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,13 +16,30 @@ public class FileDAO {
     BeanProcessor bean = new GenerousBeanProcessor();
     RowProcessor processor = new BasicRowProcessor(bean);
 
-    // 增加文件信息
+    // 增加文件信息并返回主键ID
     public int insertFile(File file) {
-        int i = 0;
+        int generatedId = 0;
         try {
             String sql = "insert into files(file_title,file_name,file_type,file_download_link,file_of_club,file_introduction,file_length,file_of_user) values(?,?,?,?,?,?,?,?)";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
             Object[] params = {file.getFileTitle(), file.getFileName(), file.getFileType(), file.getFileDownloadLink(), file.getFileOfClub(), file.getFileIntroduction(), file.getFileLength(), file.getFileOfUser()};
+            // 使用 ScalarHandler<BigInteger> 获取主键
+            BigInteger bigIntId = queryRunner.insert(sql, new ScalarHandler<BigInteger>(), params);
+            generatedId = bigIntId.intValue(); // 转换为 int
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return generatedId;
+    }
+
+
+    // 更新俱乐部信息
+    public int updateFile(File file) {
+        int i = 0;
+        try {
+            String sql = "update  files set file_download_link=? where file_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            Object[] params = {file.getFileDownloadLink(), file.getFileId()};
             i = queryRunner.update(sql, params);
         } catch (SQLException e) {
             e.printStackTrace();

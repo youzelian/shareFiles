@@ -27,13 +27,12 @@ public class File {
     public File() {
     }
 
-    public File(String fileTitle, String fileIntroduction, String fileName, String fileLength, String fileType, String fileDownloadLink, int fileOfClub, int fileOfUser) {
+    public File(String fileTitle, String fileIntroduction, String fileName, String fileLength, String fileType, int fileOfClub, int fileOfUser) {
         this.fileTitle = fileTitle;
         this.fileIntroduction = fileIntroduction;
         this.fileName = fileName;
         this.fileLength = fileLength;
         this.fileType = fileType;
-        this.fileDownloadLink = fileDownloadLink;
         this.fileOfClub = fileOfClub;
         this.fileOfUser = fileOfUser;
     }
@@ -43,6 +42,11 @@ public class File {
         this.fileVote = fileVote;
         this.fileCollect = fileCollect;
         this.fileDownloadAmount = fileDownloadAmount;
+    }
+
+    public File(int fileId, String fileDownloadLink) {
+        this.fileId = fileId;
+        this.fileDownloadLink = fileDownloadLink;
     }
 
     @Override

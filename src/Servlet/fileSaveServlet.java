@@ -77,27 +77,39 @@ public class fileSaveServlet extends HttpServlet {
                 dir = getServletContext().getRealPath("/files/packages");
                 break;
         }
-        // 在Linux中和Windows中都可以通过/或者\保存，为了方便取'/‘
-        String savePath = dir + "/" + filePath;
-        // 2.3保存文件
-        file.write(savePath);
 
         // 3.传递数据到数据库中
         FileService fileService = new FileService();
+        // 在Linux中和Windows中都可以通过/或者\保存，为了方便取'/‘
+        File savedFile = new File(fileTitle, fileIntroduction, fileName, fileLength, fileType, fileOfClub, user.getUserId());
+        int fileId = fileService.saveFile(savedFile);
         String fileDownloadLink;
         // 根据路径分隔符判断程序是否运行在Linux上则，如果不是则...
         if (dir.contains("/")) {
             // a. linux路径是用/隔开，正则表达式中'/'是用一个'/'表示
-            fileDownloadLink = dir.substring(dir.lastIndexOf("/", dir.lastIndexOf("/") - 1) + 1) + "/" + filePath;
+            fileDownloadLink = dir.substring(dir.lastIndexOf("/", dir.lastIndexOf("/") - 1) + 1) + "/" + fileId + "/" + filePath;
         } else {
             // b. windows路径是用\隔开，正则表达式中'\'是用两个'\'表示
-            fileDownloadLink = dir.substring(dir.lastIndexOf("\\", dir.lastIndexOf("\\") - 1) + 1) + "/" + filePath;
+            fileDownloadLink = dir.substring(dir.lastIndexOf("\\", dir.lastIndexOf("\\") - 1) + 1) + "/" + fileId + "/" + filePath;
         }
+        // 设置文件下载路径
+        File reallSaveFile = fileService.checkFile(fileId);
+        reallSaveFile.setFileDownloadLink(fileDownloadLink);
+        fileService.updateFile(reallSaveFile);
 
-        boolean b = fileService.saveFile(new File(fileTitle, fileIntroduction,fileName, fileLength, fileType, fileDownloadLink, fileOfClub, user.getUserId()));
+        // 修改保存路径，加入文件ID作为子目录
+        String saveDir = dir + "/" + fileId;
+        String savePath = saveDir + "/" + filePath;
+        // 创建文件ID目录
+        java.io.File directory = new java.io.File(saveDir);
+        if (!directory.exists()) {
+            directory.mkdirs(); // 创建目录（包括必要的父目录）
+        }
+        // 保存文件
+        file.write(savePath);
 
         // 4.跳转到提示页面然后跳转主页面，并显示提示信息
-        String tips = b ? "<label style='color:green'>上传成功!</label>" : "<label style='color:red'>上传失败!</label>";
+        String tips = fileId != -1 ? "<label style='color:green'>上传成功!</label>" : "<label style='color:red'>上传失败!</label>";
         String type = "fileSave";
         String address = "主页面";
         request.setAttribute("tips", tips);

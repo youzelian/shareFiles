@@ -10,9 +10,15 @@ public class FileService {
     private FileDAO fileDAO = new FileDAO();
 
     // 增加文件
-    public boolean saveFile(File file) {
+    public int saveFile(File file) {
         int i = fileDAO.insertFile(file);
-        return i > 0 ? true : false;
+        return i;
+    }
+
+    // 增加文件
+    public int updateFile(File file) {
+        int i = fileDAO.updateFile(file);
+        return i;
     }
 
     // 根据文件id查询文件,可得到发布该文件的用户信息

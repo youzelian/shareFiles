@@ -13,7 +13,7 @@ public class FileServiceTest {
     // 增加文件
     @Test
     public void saveFile() {
-        boolean b = fileService.saveFile(new File("海贼王","海贼王团伙","海贼王一家","100.00 KB","图片","userImg/11.png",1,1));
+        int b = fileService.saveFile(new File("海贼王", "海贼王团伙", "海贼王一家", "100.00 KB", "图片", 1, 1));
         System.out.println(b);
     }
 

@@ -542,6 +542,7 @@
 </head>
 <body>
 <div class="main">
+    <%--标头--%>
     <div id="head">
         <div class="back">
             <a href="communityListServlet" class="iconfont" title="返回动态广场"></a>
@@ -552,6 +553,7 @@
         </div>
     </div>
 
+    <%--题目--%>
     <div id="title">
         <img src="${file.userImgPath}" alt="">
         <p>${file.userName}</p>
@@ -559,6 +561,7 @@
         <p>IP属地：江西</p>
     </div>
 
+    <%--内容--%>
     <div id="content">
         <h2>${file.fileTitle}</h2>
         <p>${file.fileIntroduction}</p>
@@ -572,6 +575,7 @@
         </a>
     </div>
 
+    <%--互动区--%>
     <div id="interact">
         <button class="iconfont" id="upvote"></button>
         <span id="voteNum">${file.fileVote}</span>
@@ -580,6 +584,7 @@
         <span id="collectNum">${file.fileCollect}</span>
     </div>
 
+    <%--评论区--%>
     <div id="review">
         <c:if test="${not empty sessionScope.user}">
             <form action="commentSaveServlet" method="post" id="main-comment-form">
@@ -632,13 +637,15 @@
 </div>
 
 <script>
+    // 准备工作
     $(document).ready(function () {
+        // 对于互动按钮的状态值
         const interactionState = {
             vote: "${vote_status}" === "upvote" ? 1 : "${vote_status}" === "downvote" ? -1 : 0,
             collect: "${isCollectByUser}" !== "" ? 1 : 0,
             likedComments: {}
         };
-
+        // 矢量图标代码
         const icons = {
             upvote: {normal: "", active: ""},
             downvote: {normal: "&#xe603;", active: "&#xe606;"},
@@ -646,6 +653,7 @@
             like: {normal: "", active: ""}
         };
 
+        // 初始化矢量图标状态
         function initializeState() {
             if (interactionState.vote === 1) {
                 $("#upvote").addClass("active").html(icons.upvote.active);
@@ -671,12 +679,14 @@
             });
         }
 
+        // 通用ajax方法
         function sendInteraction(type, data, callback) {
             $.post("interactServlet", data, function (res) {
                 callback(res);
             }, "json");
         }
 
+        // 点赞函数
         $("#upvote").click(function () {
             const $this = $(this);
             if (interactionState.vote === 1) {
@@ -701,6 +711,7 @@
             }
         });
 
+        // 点踩函数
         $("#downvote").click(function () {
             const $this = $(this);
             if (interactionState.vote === -1) {
@@ -725,6 +736,7 @@
             }
         });
 
+        // 收藏函数
         $("#collect").click(function () {
             const $this = $(this);
             sendInteraction("collect", {type: "collect", fileId: "${file.fileId}"}, (res) => {
@@ -740,12 +752,14 @@
             });
         });
 
+        // 下载函数
         $("#download").click(function () {
             sendInteraction("download", {type: "download", fileId: "${file.fileId}"}, (res) => {
                 $("#downloadNum").text(res.fileDownloadAmount);
             });
         });
 
+        // 评论函数
         $("#review").on("click", ".comment-item #like", function () {
             const $this = $(this);
             const $commentItem = $this.closest(".comment-item");
@@ -773,7 +787,7 @@
                 $this.next("#likeNum").text(res.commentLikedNum);
             });
         });
-
+        // 初始化
         initializeState();
 
         // 回复框管理
@@ -793,6 +807,7 @@
         }
         $replyForm = $(".reply-form");
 
+        // 评论区回复内容设置
         $(document).on("click", ".reply a", function (e) {
             e.preventDefault();
             const commentId = $(this).data("comment-id");
