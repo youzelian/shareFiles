@@ -37,9 +37,9 @@ public class FileDAO {
     public int updateFile(File file) {
         int i = 0;
         try {
-            String sql = "update  files set file_download_link=? where file_id=?";
+            String sql = "update  files set file_download_link=?,file_introduction=? where file_id=?";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            Object[] params = {file.getFileDownloadLink(), file.getFileId()};
+            Object[] params = {file.getFileDownloadLink(), file.getFileIntroduction(), file.getFileId()};
             i = queryRunner.update(sql, params);
         } catch (SQLException e) {
             e.printStackTrace();

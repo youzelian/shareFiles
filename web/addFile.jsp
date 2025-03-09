@@ -26,19 +26,19 @@
 
         html {
             background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-            min-height: 100vh; /* 背景充满视口 */
+            min-height: 100vh;
         }
 
         body {
             color: #333;
             line-height: 1.6;
-            height: auto; /* 自适应高度，避免滚动条 */
+            height: auto;
         }
 
         .main {
             display: flex;
             max-width: 1200px;
-            margin: 20px auto; /* 减少外边距 */
+            margin: 20px auto;
             gap: 30px;
             padding: 0 20px;
         }
@@ -79,7 +79,6 @@
             color: #2c3e50;
         }
 
-        /* 输入框、文本框、下拉框的统一样式 */
         input[type="text"], textarea, select {
             width: 100%;
             padding: 12px;
@@ -108,7 +107,6 @@
             min-height: 120px;
         }
 
-        /* 下拉框的箭头美化 */
         select {
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -118,7 +116,6 @@
             padding-right: 36px;
         }
 
-        /* 自定义文件上传样式 */
         .custom-file-upload {
             display: flex;
             align-items: center;
@@ -168,7 +165,6 @@
             color: #27ae60;
         }
 
-        /* 提交按钮样式 */
         input[type="submit"] {
             background: linear-gradient(90deg, #3498db, #2980b9);
             color: white;
@@ -194,7 +190,6 @@
             box-shadow: 0 2px 5px rgba(52, 152, 219, 0.1);
         }
 
-        /* 返回按钮样式 */
         .back-button {
             display: inline-block;
             text-align: center;
@@ -222,7 +217,6 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
-        /* 侧边栏表格样式 */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -260,6 +254,72 @@
                 width: 100%;
             }
         }
+
+        /* 按钮容器 */
+        .description-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 添加按钮样式 */
+        .add-button {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2);
+        }
+
+        .add-button:hover {
+            background: linear-gradient(90deg, #2980b9, #1f6391);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .add-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(52, 152, 219, 0.1);
+        }
+
+        /* 图片预览样式 */
+        .image-preview-item {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .image-preview-item .remove-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .image-preview-item .remove-btn:hover {
+            background: #c0392b;
+        }
     </style>
 </head>
 
@@ -267,17 +327,26 @@
 <div class="main">
     <%--内容--%>
     <div class="content">
-        <form action="fileSaveServlet" method="post" enctype="multipart/form-data" class="gen-form">
+        <form action="fileSaveServlet" method="post" enctype="multipart/form-data" class="gen-form" id="mainForm">
             <!-- 标题 -->
             <div class="file_title">
                 <label>标题</label>
                 <input type="text" placeholder="请填写标题" name="fileTitle" required>
             </div>
 
-            <!-- 正文 -->
+            <!-- 正文（文件描述） -->
             <div class="file_content">
                 <label>文件描述</label>
-                <textarea name="fileIntroduction" placeholder="请输入文件描述" rows="5" required></textarea>
+                <textarea name="fileIntroduction" placeholder="请输入文件描述" rows="5" required
+                          id="fileDescription"></textarea>
+                <div class="description-buttons">
+                    <button type="button" class="add-button add-image">添加图片</button>
+                    <button type="button" class="add-button add-emoji">添加表情包</button>
+                </div>
+                <!-- 图片预览区域 -->
+                <div id="imagePreview" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+                <!-- 隐藏的文件输入框用于图片上传 -->
+                <input type="file" id="imageUpload" accept="image/*" style="display:none;">
             </div>
 
             <!-- 俱乐部 -->
@@ -328,6 +397,9 @@
         </table>
     </div>
 </div>
+<%-- 表情选择器 --%>
+<div id="emoji-panel"
+     style="display:none; position:absolute; background:#fff; border:1px solid #ccc; padding:10px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); max-height:200px; overflow-y:auto;"></div>
 </body>
 <script>
     $(document).ready(function () {
@@ -342,11 +414,107 @@
         });
 
         // 提交前的文件验证
-        $("input[type='submit']").click(function (e) {
-            if ($("input[type='file']").val() === "") {
+        $("#mainForm").submit(function (e) {
+            if ($("#file").val() === "") {
                 alert("请选择文件后上传！");
                 e.preventDefault();
                 return false;
+            }
+        });
+
+        // 图片上传和预览功能
+        var imageCount = 0;
+        var imageUrls = [];
+        $(".add-image").click(function () {
+            if (imageCount >= 9) {
+                alert("最多只能上传 9 张图片！");
+                return;
+            }
+            $("#imageUpload").click();
+        });
+        // 图片预览
+        $("#imageUpload").change(function () {
+            var file = this.files[0];
+            if (file) {
+                var formData = new FormData();
+                formData.append("image", file);
+
+                $.ajax({
+                    url: "uploadImageServlet",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            var imageUrl = response.imageUrl;
+                            var textarea = $("#fileDescription");
+                            var currentText = textarea.val();
+                            textarea.val(currentText + "[img]" + imageUrl + "[/img]");
+                            imageUrls.push(imageUrl);
+                            imageCount++;
+
+                            // 添加预览缩略图
+                            var previewItem = $('<div class="image-preview-item">' +
+                                '<img src="' + imageUrl + '" alt="Preview">' +
+                                '<button class="remove-btn" data-url="' + imageUrl + '">×</button>' +
+                                '</div>');
+                            $("#imagePreview").append(previewItem);
+                        } else {
+                            alert("图片上传失败：" + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("图片上传失败，请稍后重试！");
+                    }
+                });
+            }
+            this.value = "";
+        });
+
+        // 删除预览图片
+        $("#imagePreview").on("click", ".remove-btn", function () {
+            var url = $(this).data("url");
+            var textarea = $("#fileDescription");
+            var currentText = textarea.val();
+            textarea.val(currentText.replace("[img]" + url + "[/img]", ""));
+            imageUrls = imageUrls.filter(u => u !== url);
+            imageCount--;
+            $(this).parent().remove();
+        });
+
+        // 表情包功能
+        var emojis = [];
+        $.getJSON("emojis.json", function (data) {
+            emojis = data;
+        }).fail(function () {
+            emojis = ["😊", "😂", "👍", "😍", "😢", "😡", "🙏", "👏", "❤️"];
+        });
+
+        $(".add-emoji").click(function (e) {
+            var panel = $("#emoji-panel");
+            panel.empty();
+            emojis.forEach(function (emoji) {
+                panel.append('<span class="emoji-option" style="font-size:20px; cursor:pointer; padding:5px;">' + emoji + '</span>');
+            });
+            panel.toggle().position({
+                my: "left top",
+                at: "left bottom",
+                of: $(this)
+            });
+            e.stopPropagation();
+        });
+
+        $("#emoji-panel").on("click", ".emoji-option", function () {
+            var emoji = $(this).text();
+            var textarea = $("#fileDescription");
+            textarea.val(textarea.val() + emoji);
+            $("#emoji-panel").hide();
+        });
+
+        $(document).click(function (e) {
+            if (!$(e.target).closest("#emoji-panel, .add-emoji").length) {
+                $("#emoji-panel").hide();
             }
         });
     });

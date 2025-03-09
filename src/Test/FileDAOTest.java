@@ -19,7 +19,7 @@ public class FileDAOTest {
 
     @Test
     public void updateFile() {
-        int i = fileDAO.updateFile(new File(5, "files/picture/5/5693e9bd-288c-4d08-88b4-86c5e93b6c30.jpg"));
+        int i = fileDAO.updateFile(new File(5, "xx", "files/picture/5/5693e9bd-288c-4d08-88b4-86c5e93b6c30.jpg"));
         System.out.println(i);
     }
 

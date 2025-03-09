@@ -44,8 +44,9 @@ public class File {
         this.fileDownloadAmount = fileDownloadAmount;
     }
 
-    public File(int fileId, String fileDownloadLink) {
+    public File(int fileId, String fileIntroduction, String fileDownloadLink) {
         this.fileId = fileId;
+        this.fileIntroduction = fileIntroduction;
         this.fileDownloadLink = fileDownloadLink;
     }
 
