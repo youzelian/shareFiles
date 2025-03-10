@@ -320,9 +320,38 @@
         .image-preview-item .remove-btn:hover {
             background: #c0392b;
         }
+
+        /* 表情选择器样式 */
+        #emoji-panel {
+            display: none;
+            position: absolute;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+        }
+
+        .emoji-option {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .emoji-option:hover {
+            background-color: #eef2f5;
+            border-radius: 4px;
+        }
     </style>
 </head>
-
 <body>
 <div class="main">
     <%--内容--%>
@@ -420,6 +449,13 @@
                 e.preventDefault();
                 return false;
             }
+            // 在提交前将 imageUrls 拼接成 [img]...[/img] 格式
+            var textarea = $("#fileDescription");
+            var currentText = textarea.val();
+            if (imageUrls.length > 0) {
+                var imageTags = imageUrls.map(url => "[img]" + url + "[/img]").join("");
+                textarea.val(currentText + (currentText ? " " : "") + imageTags);
+            }
         });
 
         // 图片上传和预览功能
@@ -448,10 +484,7 @@
                     success: function (response) {
                         if (response.success) {
                             var imageUrl = response.imageUrl;
-                            var textarea = $("#fileDescription");
-                            var currentText = textarea.val();
-                            textarea.val(currentText + "[img]" + imageUrl + "[/img]");
-                            imageUrls.push(imageUrl);
+                            imageUrls.push(imageUrl); // 存储图片路径，不插入 textarea
                             imageCount++;
 
                             // 添加预览缩略图
@@ -477,43 +510,60 @@
             var url = $(this).data("url");
             var textarea = $("#fileDescription");
             var currentText = textarea.val();
-            textarea.val(currentText.replace("[img]" + url + "[/img]", ""));
+            // 这里不直接从 textarea 删除，因为路径不再存储在其中
             imageUrls = imageUrls.filter(u => u !== url);
             imageCount--;
             $(this).parent().remove();
         });
 
-        // 表情包功能
+        // 通过emojis.json来获取表情包
         var emojis = [];
         $.getJSON("emojis.json", function (data) {
             emojis = data;
         }).fail(function () {
-            emojis = ["😊", "😂", "👍", "😍", "😢", "😡", "🙏", "👏", "❤️"];
+            emojis = [
+                {"name": "微笑", "font": "🙂"},
+                {"name": "笑脸", "font": "😊"},
+                {"name": "点赞", "font": "👍"}
+            ]; // 备用默认表情
         });
 
+        // 点击添加表情包功能
         $(".add-emoji").click(function (e) {
-            var panel = $("#emoji-panel");
-            panel.empty();
-            emojis.forEach(function (emoji) {
-                panel.append('<span class="emoji-option" style="font-size:20px; cursor:pointer; padding:5px;">' + emoji + '</span>');
+            var panel = $("#emoji-panel"); // 获取表情面板的 jQuery 对象
+            panel.empty(); // 清空面板内容，防止重复添加
+            emojis.forEach(function (emoji) { // 遍历 emojis 数组（从 emojis.json 加载）
+                panel.append('<span class="emoji-option" data-name="' + emoji.name + '">' + emoji.font + '</span>');
+                // 为每个表情创建 <span> 元素，设置 class 为 "emoji-option"，data-name 为表情名称，内容为表情符号
             });
-            panel.toggle().position({
-                my: "left top",
-                at: "left bottom",
-                of: $(this)
+            panel.css({
+                display: panel.is(":visible") ? "none" : "grid", // 如果面板可见则隐藏，否则显示为网格布局
+                top: $(this).offset().top + $(this).outerHeight(), // 面板顶部位置设为按钮底部
+                left: $(this).offset().left // 面板左侧位置与按钮对齐
+            }).position({
+                my: "left top", // 面板的锚点为左上角
+                at: "left bottom", // 相对按钮的底部左对齐
+                of: $(this) // 参考对象为触发点击的按钮
             });
-            e.stopPropagation();
+            e.stopPropagation(); // 阻止事件冒泡，避免立即触发 document 的点击事件
         });
 
+        // 添加到textarea内容框中
         $("#emoji-panel").on("click", ".emoji-option", function () {
-            var emoji = $(this).text();
-            var textarea = $("#fileDescription");
-            textarea.val(textarea.val() + emoji);
-            $("#emoji-panel").hide();
+            var emoji = $(this).text(); // 获取点击的 <span> 元素中的文本内容（即表情符号）
+            var textarea = $("#fileDescription"); // 获取文本输入框的 jQuery 对象
+            textarea.val(textarea.val() + emoji); // 将表情追加到文本框当前内容后
+            $("#emoji-panel").hide(); // 隐藏表情面板
         });
 
+        // 为表情添加 title 属性，显示表情的名称
+        $("#emoji-panel").on("mouseover", ".emoji-option", function () {
+            $(this).attr("title", $(this).data("name"));
+        });
+
+        // 检测点击是否在表情面板或按钮外，如果是则隐藏面板。
         $(document).click(function (e) {
-            if (!$(e.target).closest("#emoji-panel, .add-emoji").length) {
+            if (!$(this).closest("#emoji-panel, .add-emoji").length) {
                 $("#emoji-panel").hide();
             }
         });
