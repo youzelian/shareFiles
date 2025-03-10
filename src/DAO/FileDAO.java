@@ -32,14 +32,26 @@ public class FileDAO {
         return generatedId;
     }
 
+    // 删除指定 file_id 的文件记录
+    public int deleteFile(int fileId) {
+        int rowsAffected = 0;
+        try {
+            String sql = "delete from files where file_id=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            rowsAffected = queryRunner.update(sql, fileId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rowsAffected; // 返回受影响的行数，0 表示删除失败
+    }
 
     // 更新俱乐部信息
     public int updateFile(File file) {
         int i = 0;
         try {
-            String sql = "update  files set file_download_link=?,file_introduction=? where file_id=?";
+            String sql = "update  files set file_download_link=?,media_urls=? where file_id=?";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            Object[] params = {file.getFileDownloadLink(), file.getFileIntroduction(), file.getFileId()};
+            Object[] params = {file.getFileDownloadLink(), file.getMediaUrls(), file.getFileId()};
             i = queryRunner.update(sql, params);
         } catch (SQLException e) {
             e.printStackTrace();

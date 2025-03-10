@@ -15,7 +15,61 @@ public class FileService {
         return i;
     }
 
-    // 增加文件
+    // 删除文件记录并清理文件系统
+    public void deleteFile(int fileId, String contextPath) {
+        // 先查询文件信息以获取路径
+        File file = fileDAO.selectFileById(fileId);
+        if (file == null) {
+            return; // 文件不存在，直接返回
+        }
+
+        // 删除数据库记录
+        int rows = fileDAO.deleteFile(fileId);
+        if (rows == 0) {
+            throw new RuntimeException("删除数据库记录失败: fileId=" + fileId);
+        }
+
+        // 删除文件系统中的文件
+        String fileDownloadLink = file.getFileDownloadLink();
+        if (fileDownloadLink != null && !fileDownloadLink.isEmpty()) {
+            String filePath = contextPath + "/" + fileDownloadLink;
+            java.io.File fileToDelete = new java.io.File(filePath);
+            if (fileToDelete.exists()) {
+                fileToDelete.delete();
+            }
+
+            // 删除父目录（如果为空）
+            java.io.File parentDir = fileToDelete.getParentFile();
+            if (parentDir.exists() && parentDir.isDirectory() && parentDir.list().length == 0) {
+                parentDir.delete();
+            }
+        }
+
+        // 删除描述图片（media_urls 中的文件）
+        String mediaUrls = file.getMediaUrls();
+        if (mediaUrls != null && !mediaUrls.isEmpty()) {
+            try {
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                List<String> urls = mapper.readValue(mediaUrls, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
+                for (String url : urls) {
+                    String imagePath = contextPath + "/" + url;
+                    java.io.File imageFile = new java.io.File(imagePath);
+                    if (imageFile.exists()) {
+                        imageFile.delete();
+                    }
+                    // 删除描述图片目录（如果为空）
+                    java.io.File imageDir = imageFile.getParentFile();
+                    if (imageDir.exists() && imageDir.isDirectory() && imageDir.list().length == 0) {
+                        imageDir.delete();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); // 建议使用日志记录
+            }
+        }
+    }
+
+    // 更新文件
     public int updateFile(File file) {
         int i = fileDAO.updateFile(file);
         return i;

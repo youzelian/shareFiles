@@ -547,7 +547,6 @@
 </head>
 <body>
 <div class="main">
-    <%--标头--%>
     <div id="head">
         <div class="back">
             <a href="communityListServlet" class="iconfont" title="返回动态广场"></a>
@@ -558,7 +557,6 @@
         </div>
     </div>
 
-    <%--题目--%>
     <div id="title">
         <img src="${file.userImgPath}" alt="">
         <p>${file.userName}</p>
@@ -566,10 +564,12 @@
         <p>IP属地：江西</p>
     </div>
 
-    <%--内容--%>
     <div id="content">
         <h2>${file.fileTitle}</h2>
         <p>${file.fileIntroduction}</p>
+        <c:if test="${not empty mediaHtml}">
+            ${mediaHtml}
+        </c:if>
         <a href="${file.fileDownloadLink}" download="${file.fileDownloadLink}" class="styled-link" id="download">
             <span class="iconfont"></span>
             <div class="file-info">
@@ -580,7 +580,6 @@
         </a>
     </div>
 
-    <%--互动区--%>
     <div id="interact">
         <button class="iconfont" id="upvote"></button>
         <span id="voteNum">${file.fileVote}</span>
@@ -589,7 +588,6 @@
         <span id="collectNum">${file.fileCollect}</span>
     </div>
 
-    <%--评论区--%>
     <div id="review">
         <c:if test="${not empty sessionScope.user}">
             <form action="commentSaveServlet" method="post" id="main-comment-form">
@@ -642,39 +640,28 @@
 </div>
 
 <script>
-    // 准备工作
     $(document).ready(function () {
-        // 文件名截断处理
         function truncateFileName() {
             const $fileName = $("#content .file-info h4");
-            const fullName = $fileName.data("full-name"); // 获取完整文件名
-            const maxLength = 20; // 最大字符长度（可根据实际宽度调整）
-
+            const fullName = $fileName.data("full-name");
+            const maxLength = 20;
             if (fullName.length > maxLength) {
-                const extIndex = fullName.lastIndexOf("."); // 找到文件扩展名位置
-                const name = fullName.substring(0, extIndex); // 文件名部分
-                const ext = fullName.substring(extIndex); // 扩展名部分（包括 .）
-
-                // 计算前后部分长度
+                const extIndex = fullName.lastIndexOf(".");
+                const name = fullName.substring(0, extIndex);
+                const ext = fullName.substring(extIndex);
                 const frontLength = Math.floor((maxLength - ext.length) / 2);
-                const backLength = maxLength - ext.length - frontLength - 3; // 3 是省略号长度
-
-                // 截断文件名，保留前后部分和扩展名
+                const backLength = maxLength - ext.length - frontLength - 3;
                 const truncatedName = name.substring(0, frontLength) + "..." + name.substring(name.length - backLength) + ext;
-                $fileName.text(truncatedName); // 设置截断后的文件名
+                $fileName.text(truncatedName);
             }
-
-            // 设置 title 属性显示完整文件名
             $fileName.attr("title", fullName);
         }
 
-        // 对于互动按钮的状态值
         const interactionState = {
             vote: "${vote_status}" === "upvote" ? 1 : "${vote_status}" === "downvote" ? -1 : 0,
             collect: "${isCollectByUser}" !== "" ? 1 : 0,
             likedComments: {}
         };
-        // 矢量图标代码
         const icons = {
             upvote: {normal: "", active: ""},
             downvote: {normal: "&#xe603;", active: "&#xe606;"},
@@ -682,7 +669,6 @@
             like: {normal: "", active: ""}
         };
 
-        // 初始化矢量图标状态
         function initializeState() {
             if (interactionState.vote === 1) {
                 $("#upvote").addClass("active").html(icons.upvote.active);
@@ -694,11 +680,10 @@
             if (interactionState.collect) {
                 $("#collect").addClass("active").html(icons.collect.active);
             }
-            // 初始化评论点赞状态
             $(".comment-item").each(function () {
                 const $this = $(this);
                 const commentId = $this.data("comment-id");
-                const isLiked = $this.data("liked") === true; // 从后端传递
+                const isLiked = $this.data("liked") === true;
                 if (isLiked) {
                     $this.find("#like").addClass("active").html(icons.like.active);
                     interactionState.likedComments[commentId] = true;
@@ -708,14 +693,12 @@
             });
         }
 
-        // 通用ajax方法
         function sendInteraction(type, data, callback) {
             $.post("interactServlet", data, function (res) {
                 callback(res);
             }, "json");
         }
 
-        // 点赞函数
         $("#upvote").click(function () {
             const $this = $(this);
             if (interactionState.vote === 1) {
@@ -740,7 +723,6 @@
             }
         });
 
-        // 点踩函数
         $("#downvote").click(function () {
             const $this = $(this);
             if (interactionState.vote === -1) {
@@ -765,7 +747,6 @@
             }
         });
 
-        // 收藏函数
         $("#collect").click(function () {
             const $this = $(this);
             sendInteraction("collect", {type: "collect", fileId: "${file.fileId}"}, (res) => {
@@ -781,31 +762,25 @@
             });
         });
 
-        // 下载函数
         $("#download").click(function () {
             sendInteraction("download", {type: "download", fileId: "${file.fileId}"}, (res) => {
                 $("#downloadNum").text(res.fileDownloadAmount);
             });
         });
 
-        // 评论函数
         $("#review").on("click", ".comment-item #like", function () {
             const $this = $(this);
             const $commentItem = $this.closest(".comment-item");
             const commentId = $commentItem.data("comment-id");
             const isLiked = interactionState.likedComments[commentId] === true;
 
-            if (!commentId) {
-                return;
-            }
+            if (!commentId) return;
 
             sendInteraction("likeComment", {
                 type: isLiked ? "cancelLikeComment" : "likeComment",
                 commentId: commentId
             }, (res) => {
-                if (res.error) {
-                    return;
-                }
+                if (res.error) return;
                 if (isLiked) {
                     $this.removeClass("active").html(icons.like.normal);
                     interactionState.likedComments[commentId] = false;
@@ -817,11 +792,9 @@
             });
         });
 
-        // 初始化
         initializeState();
-        truncateFileName(); // 调用文件名截断函数
+        truncateFileName();
 
-        // 回复框管理
         let currentReplyTarget = null;
         let $replyForm = null;
         if ($(".reply-form").length === 0) {
@@ -838,7 +811,6 @@
         }
         $replyForm = $(".reply-form");
 
-        // 评论区回复内容设置
         $(document).on("click", ".reply a", function (e) {
             e.preventDefault();
             const commentId = $(this).data("comment-id");
@@ -866,31 +838,22 @@
             }
         });
 
-        // 动态创建并显示提示框
         function showAlert(message) {
-            // 移除已有的提示框（避免重复）
             $("#myAlert").remove();
-
-            // 创建新的提示框
             const $alertBox = $("<div>", {
                 id: "myAlert",
                 class: "alert",
                 text: message
             });
-
-            // 添加到页面
             $("body").append($alertBox);
-
-            // 显示动画
             $alertBox.fadeIn();
             setTimeout(function () {
                 $alertBox.fadeOut(function () {
-                    $(this).remove(); // 动画完成后移除元素
+                    $(this).remove();
                 });
-            }, 1500); // 1秒后消失
+            }, 1500);
         }
 
-        // 主评论表单提交
         $("#main-comment-form").on("submit", function (e) {
             e.preventDefault();
             const $form = $(this);
@@ -901,12 +864,12 @@
                 dataType: "json",
                 success: function (res) {
                     if (res.message) {
-                        $form.find("textarea").val(""); // 清空输入框
+                        $form.find("textarea").val("");
                         showAlert(res.message);
                         if (res.message === "发送成功") {
                             setTimeout(() => {
-                                location.reload(); // 刷新页面
-                            }, 3000); // 等待提示消失后再刷新
+                                location.reload();
+                            }, 3000);
                         }
                     }
                 },
@@ -916,7 +879,6 @@
             });
         });
 
-        // 回复表单提交
         $replyForm.on("submit", function (e) {
             e.preventDefault();
             const $form = $(this);
@@ -933,8 +895,8 @@
                         showAlert(res.message);
                         if (res.message === "发送成功") {
                             setTimeout(() => {
-                                location.reload(); // 刷新页面
-                            }, 1000); // 等待提示消失后再刷新
+                                location.reload();
+                            }, 1000);
                         }
                     }
                 },
@@ -944,7 +906,6 @@
             });
         });
 
-        // 删除评论
         $(document).on("click", ".delete-comment", function (e) {
             e.preventDefault();
             const $this = $(this);

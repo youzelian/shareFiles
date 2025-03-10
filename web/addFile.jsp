@@ -360,13 +360,13 @@
             <!-- 标题 -->
             <div class="file_title">
                 <label>标题</label>
-                <input type="text" placeholder="请填写标题" name="fileTitle" required>
+                <input type="text" placeholder="请填写标题" name="fileTitle" required maxlength="255">
             </div>
 
-            <!-- 正文（文件描述） -->
+            <%--正文--%>
             <div class="file_content">
                 <label>文件描述</label>
-                <textarea name="fileIntroduction" placeholder="请输入文件描述" rows="5" required
+                <textarea name="fileIntroduction" placeholder="请输入文件描述" rows="5" required maxlength="255"
                           id="fileDescription"></textarea>
                 <div class="description-buttons">
                     <button type="button" class="add-button add-image">添加图片</button>
@@ -374,8 +374,9 @@
                 </div>
                 <!-- 图片预览区域 -->
                 <div id="imagePreview" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:10px;"></div>
-                <!-- 隐藏的文件输入框用于图片上传 -->
                 <input type="file" id="imageUpload" accept="image/*" style="display:none;">
+                <!-- 隐藏的文件输入框用于图片上传 -->
+                <input type="hidden" name="mediaUrls" id="mediaUrls">
             </div>
 
             <!-- 俱乐部 -->
@@ -389,7 +390,7 @@
                 </select>
             </div>
 
-            <!-- 上传文件 -->
+            <%--上传文件--%>
             <div class="file_file">
                 <label>文件选择</label>
                 <div class="custom-file-upload">
@@ -399,13 +400,14 @@
                 </div>
             </div>
 
-            <!-- 提交按钮 -->
+            <%--提交按钮--%>
             <div class="file_submit">
                 <input type="submit" value="提交文件">
                 <a href="index.jsp" class="back-button">返回</a>
             </div>
         </form>
     </div>
+
     <%--侧边栏--%>
     <div class="sidebar">
         <table>
@@ -432,14 +434,9 @@
 </body>
 <script>
     $(document).ready(function () {
-        // 显示选择的文件名
         $("#file").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
-            if (fileName) {
-                $(this).siblings(".file-text").text(fileName);
-            } else {
-                $(this).siblings(".file-text").text("Choose a file");
-            }
+            $(this).siblings(".file-text").text(fileName || "Choose a file");
         });
 
         // 提交前的文件验证
@@ -449,13 +446,9 @@
                 e.preventDefault();
                 return false;
             }
-            // 在提交前将 imageUrls 拼接成 [img]...[/img] 格式
-            var textarea = $("#fileDescription");
-            var currentText = textarea.val();
-            if (imageUrls.length > 0) {
-                var imageTags = imageUrls.map(url => "[img]" + url + "[/img]").join("");
-                textarea.val(currentText + (currentText ? " " : "") + imageTags);
-            }
+            // 将 imageUrls 转为 JSON 存入隐藏字段
+            var mediaUrlsJson = JSON.stringify(imageUrls);
+            $("#mediaUrls").val(mediaUrlsJson);
         });
 
         // 图片上传和预览功能
@@ -472,6 +465,10 @@
         $("#imageUpload").change(function () {
             var file = this.files[0];
             if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert("图片大小不能超过 5MB！");
+                    return;
+                }
                 var formData = new FormData();
                 formData.append("image", file);
 
@@ -484,10 +481,8 @@
                     success: function (response) {
                         if (response.success) {
                             var imageUrl = response.imageUrl;
-                            imageUrls.push(imageUrl); // 存储图片路径，不插入 textarea
+                            imageUrls.push(imageUrl);
                             imageCount++;
-
-                            // 添加预览缩略图
                             var previewItem = $('<div class="image-preview-item">' +
                                 '<img src="' + imageUrl + '" alt="Preview">' +
                                 '<button class="remove-btn" data-url="' + imageUrl + '">×</button>' +
@@ -497,20 +492,17 @@
                             alert("图片上传失败：" + response.message);
                         }
                     },
-                    error: function () {
-                        alert("图片上传失败，请稍后重试！");
+                    error: function (xhr, status, error) {
+                        alert("图片上传失败：" + error);
                     }
                 });
             }
             this.value = "";
         });
 
-        // 删除预览图片
+        // 删除预览的图片
         $("#imagePreview").on("click", ".remove-btn", function () {
             var url = $(this).data("url");
-            var textarea = $("#fileDescription");
-            var currentText = textarea.val();
-            // 这里不直接从 textarea 删除，因为路径不再存储在其中
             imageUrls = imageUrls.filter(u => u !== url);
             imageCount--;
             $(this).parent().remove();
@@ -525,35 +517,30 @@
                 {"name": "微笑", "font": "🙂"},
                 {"name": "笑脸", "font": "😊"},
                 {"name": "点赞", "font": "👍"}
-            ]; // 备用默认表情
+            ];
         });
 
         // 点击添加表情包功能
         $(".add-emoji").click(function (e) {
-            var panel = $("#emoji-panel"); // 获取表情面板的 jQuery 对象
-            panel.empty(); // 清空面板内容，防止重复添加
-            emojis.forEach(function (emoji) { // 遍历 emojis 数组（从 emojis.json 加载）
+            var panel = $("#emoji-panel");
+            panel.empty();
+            emojis.forEach(function (emoji) {
                 panel.append('<span class="emoji-option" data-name="' + emoji.name + '">' + emoji.font + '</span>');
-                // 为每个表情创建 <span> 元素，设置 class 为 "emoji-option"，data-name 为表情名称，内容为表情符号
             });
             panel.css({
-                display: panel.is(":visible") ? "none" : "grid", // 如果面板可见则隐藏，否则显示为网格布局
-                top: $(this).offset().top + $(this).outerHeight(), // 面板顶部位置设为按钮底部
-                left: $(this).offset().left // 面板左侧位置与按钮对齐
-            }).position({
-                my: "left top", // 面板的锚点为左上角
-                at: "left bottom", // 相对按钮的底部左对齐
-                of: $(this) // 参考对象为触发点击的按钮
+                display: panel.is(":visible") ? "none" : "grid",
+                top: $(this).offset().top + $(this).outerHeight(),
+                left: $(this).offset().left
             });
-            e.stopPropagation(); // 阻止事件冒泡，避免立即触发 document 的点击事件
+            e.stopPropagation();
         });
 
         // 添加到textarea内容框中
         $("#emoji-panel").on("click", ".emoji-option", function () {
-            var emoji = $(this).text(); // 获取点击的 <span> 元素中的文本内容（即表情符号）
-            var textarea = $("#fileDescription"); // 获取文本输入框的 jQuery 对象
-            textarea.val(textarea.val() + emoji); // 将表情追加到文本框当前内容后
-            $("#emoji-panel").hide(); // 隐藏表情面板
+            var emoji = $(this).text();
+            var textarea = $("#fileDescription");
+            textarea.val(textarea.val() + emoji);
+            $("#emoji-panel").hide();
         });
 
         // 为表情添加 title 属性，显示表情的名称
@@ -561,9 +548,9 @@
             $(this).attr("title", $(this).data("name"));
         });
 
-        // 检测点击是否在表情面板或按钮外，如果是则隐藏面板。
+        // 检测点击是否在表情面板或按钮外，如果是则隐藏面板
         $(document).click(function (e) {
-            if (!$(this).closest("#emoji-panel, .add-emoji").length) {
+            if (!$(e.target).closest("#emoji-panel, .add-emoji").length) {
                 $("#emoji-panel").hide();
             }
         });

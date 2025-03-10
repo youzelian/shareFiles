@@ -16,6 +16,7 @@ public class File {
     private int fileDownloadAmount;
     private int fileOfClub;
     private int fileOfUser;
+    private String mediaUrls;   // 数字媒体url路径内容
 
     private int voteStatus;   // -1=点踩，0=无，1=点赞
     private boolean isCollectByUser;   // 是否被当前用户收藏 0-没有 1-有
@@ -66,6 +67,7 @@ public class File {
                 ", fileDownloadAmount=" + fileDownloadAmount +
                 ", fileOfClub=" + fileOfClub +
                 ", fileOfUser=" + fileOfUser +
+                ", mediaUrls='" + mediaUrls + '\'' +
                 ", voteStatus=" + voteStatus +
                 ", isCollectByUser=" + isCollectByUser +
                 ", userName='" + userName + '\'' +
@@ -225,5 +227,13 @@ public class File {
 
     public void setCollectByUser(boolean collectByUser) {
         isCollectByUser = collectByUser;
+    }
+
+    public String getMediaUrls() {
+        return mediaUrls;
+    }
+
+    public void setMediaUrls(String mediaUrls) {
+        this.mediaUrls = mediaUrls;
     }
 }
