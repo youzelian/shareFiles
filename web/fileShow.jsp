@@ -155,13 +155,18 @@
             display: flex;
             flex-direction: column;
             gap: 2px;
+            flex: 1; /* 让 file-info 占据剩余空间 */
+            overflow: hidden; /* 隐藏超出部分 */
         }
 
-        #content a.styled-link h4 {
+        #content a.styled-link .file-info h4 {
             font-size: 14px;
             font-weight: 500;
             margin: 0;
             color: #177bcb;
+            white-space: nowrap; /* 防止换行 */
+            overflow: hidden; /* 隐藏超出部分 */
+            text-overflow: ellipsis; /* 超出部分显示省略号 */
         }
 
         #content a.styled-link p {
@@ -568,7 +573,7 @@
         <a href="${file.fileDownloadLink}" download="${file.fileDownloadLink}" class="styled-link" id="download">
             <span class="iconfont"></span>
             <div class="file-info">
-                <h4>${file.fileName}</h4>
+                <h4 data-full-name="${file.fileName}">${file.fileName}</h4>
                 <p>${file.fileLength}</p>
             </div>
             <span class="iconfont"></span>
@@ -639,6 +644,30 @@
 <script>
     // 准备工作
     $(document).ready(function () {
+        // 文件名截断处理
+        function truncateFileName() {
+            const $fileName = $("#content .file-info h4");
+            const fullName = $fileName.data("full-name"); // 获取完整文件名
+            const maxLength = 20; // 最大字符长度（可根据实际宽度调整）
+
+            if (fullName.length > maxLength) {
+                const extIndex = fullName.lastIndexOf("."); // 找到文件扩展名位置
+                const name = fullName.substring(0, extIndex); // 文件名部分
+                const ext = fullName.substring(extIndex); // 扩展名部分（包括 .）
+
+                // 计算前后部分长度
+                const frontLength = Math.floor((maxLength - ext.length) / 2);
+                const backLength = maxLength - ext.length - frontLength - 3; // 3 是省略号长度
+
+                // 截断文件名，保留前后部分和扩展名
+                const truncatedName = name.substring(0, frontLength) + "..." + name.substring(name.length - backLength) + ext;
+                $fileName.text(truncatedName); // 设置截断后的文件名
+            }
+
+            // 设置 title 属性显示完整文件名
+            $fileName.attr("title", fullName);
+        }
+
         // 对于互动按钮的状态值
         const interactionState = {
             vote: "${vote_status}" === "upvote" ? 1 : "${vote_status}" === "downvote" ? -1 : 0,
@@ -787,8 +816,10 @@
                 $this.next("#likeNum").text(res.commentLikedNum);
             });
         });
+
         // 初始化
         initializeState();
+        truncateFileName(); // 调用文件名截断函数
 
         // 回复框管理
         let currentReplyTarget = null;
