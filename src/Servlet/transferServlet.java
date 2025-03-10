@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "transferServlet", urlPatterns = "/transferServlet")
@@ -40,15 +41,19 @@ public class transferServlet extends HttpServlet {
         File file = fileService.checkFile(fileId);
         if (file != null) {
             String mediaUrlsJson = file.getMediaUrls();
+            List<String> mediaUrls = new ArrayList<>();
             if (mediaUrlsJson != null && !mediaUrlsJson.isEmpty()) {
-                ObjectMapper mapper = new ObjectMapper();
-                List<String> mediaUrls = mapper.readValue(mediaUrlsJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
-                StringBuilder mediaHtml = new StringBuilder();
-                for (String url : mediaUrls) {
-                    mediaHtml.append("<img src=\"").append(url).append("\" style=\"max-width: 100%; height: auto;\" alt=\"图片\">");
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    mediaUrls = mapper.readValue(mediaUrlsJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("JSON 解析失败: " + mediaUrlsJson);
                 }
-                request.setAttribute("mediaHtml", mediaHtml.toString());
             }
+            request.setAttribute("mediaUrls", mediaUrls);
+        } else {
+            request.setAttribute("mediaUrls", new ArrayList<>());
         }
 
         List<Comment> commentRootList = commentService.listCommentByFId(fileId);

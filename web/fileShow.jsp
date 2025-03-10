@@ -25,7 +25,7 @@
         }
 
         .main {
-            width: 85%;
+            width: 80%;
             max-width: 1280px;
             margin: 0 auto;
             background: #fff;
@@ -42,7 +42,7 @@
             padding: 15px 20px;
             background: linear-gradient(135deg, #ffffff, #f8f9fd);
             position: sticky;
-            top: -5px; /*减少缝隙*/
+            top: -5px;
             z-index: 10;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
@@ -120,6 +120,29 @@
             color: #7f8c8d;
         }
 
+        #imageGallery {
+            display: grid;
+            gap: 4px;
+            margin-top: 10px;
+            padding: 5px;
+        }
+
+        #imageGallery img {
+            width: 100%;
+            height: 225px;
+            object-fit: cover;
+            border-radius: 10px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 600px) {
+            #imageGallery img {
+                height: 100px;
+            }
+        }
+
         #content a.styled-link {
             display: inline-flex;
             align-items: center;
@@ -155,8 +178,8 @@
             display: flex;
             flex-direction: column;
             gap: 2px;
-            flex: 1; /* 让 file-info 占据剩余空间 */
-            overflow: hidden; /* 隐藏超出部分 */
+            flex: 1;
+            overflow: hidden;
         }
 
         #content a.styled-link .file-info h4 {
@@ -164,9 +187,9 @@
             font-weight: 500;
             margin: 0;
             color: #177bcb;
-            white-space: nowrap; /* 防止换行 */
-            overflow: hidden; /* 隐藏超出部分 */
-            text-overflow: ellipsis; /* 超出部分显示省略号 */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         #content a.styled-link p {
@@ -243,6 +266,7 @@
             gap: 15px;
             margin-bottom: 25px;
             transition: box-shadow 0.3s ease;
+            position: relative;
         }
 
         #review form:hover {
@@ -276,19 +300,17 @@
 
         #review form input[type="submit"] {
             padding: 8px 20px;
-            background: #3498db;
-            color: white;
+            background: #f9fafc;
+            color: #92c1f3;
             border: none;
-            border-radius: 20px;
             cursor: pointer;
             font-weight: 500;
             font-size: 14px;
-            transition: background 0.3s ease, transform 0.3s ease;
+            transition: color 0.3s ease;
         }
 
         #review form input[type="submit"]:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
+            color: #3498db;
         }
 
         .reply-form {
@@ -526,22 +548,137 @@
             vertical-align: middle;
         }
 
-        /* 提示框样式 */
+        /* 图片预览样式 */
+        .image-preview {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-preview.active {
+            display: flex;
+        }
+
+        .image-preview img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        .image-preview .controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            transform: translateY(-50%);
+        }
+
+        .image-preview .controls button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .image-preview .controls button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .image-preview .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .image-preview .close-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
         .alert {
             padding: 10px 20px;
-            background-color: #333; /* 黑色背景 */
-            color: white; /* 白色文字 */
+            background-color: #333;
+            color: white;
             position: fixed;
-            top: 50%; /* 垂直居中 */
-            left: 50%; /* 水平居中 */
-            transform: translate(-50%, -50%); /* 偏移自身宽高的一半以实现居中 */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 1000;
-            display: none; /* 初始隐藏 */
+            display: none;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             font-size: 14px;
             font-weight: 500;
-            text-align: center; /* 文字居中 */
+            text-align: center;
+        }
+
+        /* 添加按钮样式（模仿 addFile.jsp） */
+        .comment-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .add-emoji-btn {
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .add-emoji-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(52, 152, 219, 0.1);
+        }
+
+        /* 表情选择器样式 */
+        .emoji-panel {
+            display: none;
+            position: absolute;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+        }
+
+        .emoji-option {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .emoji-option:hover {
+            background-color: #eef2f5;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -567,9 +704,13 @@
     <div id="content">
         <h2>${file.fileTitle}</h2>
         <p>${file.fileIntroduction}</p>
-        <c:if test="${not empty mediaHtml}">
-            ${mediaHtml}
-        </c:if>
+        <div id="imageGallery">
+            <c:if test="${not empty mediaUrls}">
+                <c:forEach var="url" items="${mediaUrls}" varStatus="loop">
+                    <img src="${url}" alt="图片" loading="lazy" data-index="${loop.index}">
+                </c:forEach>
+            </c:if>
+        </div>
         <a href="${file.fileDownloadLink}" download="${file.fileDownloadLink}" class="styled-link" id="download">
             <span class="iconfont"></span>
             <div class="file-info">
@@ -597,6 +738,9 @@
                 <input type="hidden" name="parentId" value="0">
                 <input type="hidden" name="rootParentId" value="0">
                 <input type="submit" value="发表评论">
+                <div class="comment-buttons">
+                    <button type="button" class="add-emoji-btn main-add-emoji iconfont">&#xe6bc;</button>
+                </div>
             </form>
         </c:if>
 
@@ -639,6 +783,19 @@
     </div>
 </div>
 
+<!-- 图片预览模态框 -->
+<div class="image-preview" id="imagePreviewModal">
+    <button class="close-btn iconfont" id="closePreview"></button>
+    <div class="controls">
+        <button class="iconfont" id="prevImage"></button>
+        <button class="iconfont" id="nextImage"></button>
+    </div>
+    <img src="" alt="预览图片" id="previewImage">
+</div>
+
+<!-- 表情选择器 -->
+<div class="emoji-panel" id="emojiPanel"></div>
+
 <script>
     $(document).ready(function () {
         function truncateFileName() {
@@ -664,7 +821,7 @@
         };
         const icons = {
             upvote: {normal: "", active: ""},
-            downvote: {normal: "&#xe603;", active: "&#xe606;"},
+            downvote: {normal: "", active: ""},
             collect: {normal: "", active: ""},
             like: {normal: "", active: ""}
         };
@@ -764,7 +921,8 @@
 
         $("#download").click(function () {
             sendInteraction("download", {type: "download", fileId: "${file.fileId}"}, (res) => {
-                $("#downloadNum").text(res.fileDownloadAmount);
+                // 注意：此处应根据实际返回数据调整
+                // $("#downloadNum").text(res.fileDownloadAmount); // 如果有下载量字段，可启用
             });
         });
 
@@ -792,6 +950,131 @@
             });
         });
 
+        // 动态调整图片布局
+        const $gallery = $("#imageGallery");
+        const $images = $gallery.find("img");
+        const imageCount = $images.length;
+
+        if (imageCount === 1) {
+            $gallery.css("grid-template-columns", "1fr");
+        } else if (imageCount === 2) {
+            $gallery.css("grid-template-columns", "repeat(2, 1fr)");
+        } else if (imageCount === 3) {
+            $gallery.css("grid-template-columns", "repeat(3, 1fr)");
+        } else if (imageCount === 4) {
+            $gallery.css("grid-template-columns", "repeat(2, 1fr)");
+            $gallery.css("grid-template-rows", "repeat(2, 225px)");
+        } else if (imageCount >= 5 && imageCount <= 6) {
+            $gallery.css("grid-template-columns", "repeat(3, 1fr)");
+            $gallery.css("grid-template-rows", "repeat(2, 225px)");
+        } else if (imageCount >= 7 && imageCount <= 9) {
+            $gallery.css("grid-template-columns", "repeat(3, 1fr)");
+            $gallery.css("grid-template-rows", "repeat(3, 225px)");
+        }
+
+        // 图片预览功能
+        const $previewModal = $("#imagePreviewModal");
+        const $previewImage = $("#previewImage");
+        const $prevBtn = $("#prevImage");
+        const $nextBtn = $("#nextImage");
+        const $closeBtn = $("#closePreview");
+        let currentIndex = 0;
+        const imageUrls = [];
+        $images.each(function (index) {
+            imageUrls.push($(this).attr("src"));
+        });
+
+        $images.on("click", function () {
+            currentIndex = $(this).data("index");
+            $previewImage.attr("src", imageUrls[currentIndex]);
+            $previewModal.addClass("active");
+        });
+
+        $prevBtn.on("click", function () {
+            currentIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
+            $previewImage.attr("src", imageUrls[currentIndex]);
+        });
+
+        $nextBtn.on("click", function () {
+            currentIndex = (currentIndex + 1) % imageUrls.length;
+            $previewImage.attr("src", imageUrls[currentIndex]);
+        });
+
+        $closeBtn.on("click", function () {
+            $previewModal.removeClass("active");
+        });
+
+        $previewModal.on("click", function (e) {
+            if (e.target === this) {
+                $previewModal.removeClass("active");
+            }
+        });
+
+        // 表情包功能（模仿 addFile.jsp）
+        var emojis = [];
+        $.getJSON("emojis.json", function (data) {
+            emojis = data;
+        }).fail(function () {
+            emojis = [
+                {"name": "微笑", "font": "🙂"},
+                {"name": "笑脸", "font": "😊"},
+                {"name": "点赞", "font": "👍"}
+            ];
+        });
+
+        // 主评论表情包功能
+        $(".main-add-emoji").click(function (e) {
+            var panel = $("#emojiPanel");
+            panel.empty();
+            emojis.forEach(function (emoji) {
+                panel.append('<span class="emoji-option" data-name="' + emoji.name + '">' + emoji.font + '</span>');
+            });
+            // 获取 emojiPanel 的宽度
+            var panelWidth = panel.outerWidth();
+            panel.css({
+                display: panel.is(":visible") ? "none" : "grid",
+                top: $(this).offset().top + $(this).outerHeight() + 5,
+                left: $(this).offset().left - 275  //硬编码，后面改
+            });
+            panel.data("targetTextarea", $(this).closest("form").find("textarea"));
+            e.stopPropagation();
+        });
+
+        // 回复评论表情包功能
+        $(document).on("click", ".reply-add-emoji", function (e) {
+            var panel = $("#emojiPanel");
+            panel.empty();
+            emojis.forEach(function (emoji) {
+                panel.append('<span class="emoji-option" data-name="' + emoji.name + '">' + emoji.font + '</span>');
+            });
+            panel.css({
+                display: panel.is(":visible") ? "none" : "grid",
+                top: $(this).offset().top + $(this).outerHeight() + 5,
+                left: $(this).offset().left - 275  //硬编码，后面改
+            });
+            panel.data("targetTextarea", $(this).closest(".reply-form").find("textarea"));
+            e.stopPropagation();
+        });
+
+        $("#emojiPanel").on("click", ".emoji-option", function () {
+            var emoji = $(this).text();
+            var targetTextarea = $("#emojiPanel").data("targetTextarea");
+            if (targetTextarea && targetTextarea.length) {
+                targetTextarea.val(targetTextarea.val() + emoji);
+            }
+            $("#emojiPanel").hide();
+        });
+
+        $("#emojiPanel").on("mouseover", ".emoji-option", function () {
+            $(this).attr("title", $(this).data("name"));
+        });
+
+        $(document).click(function (e) {
+            if (!$(e.target).closest("#emojiPanel, .main-add-emoji, .reply-add-emoji").length) {
+                $("#emojiPanel").hide();
+            }
+        });
+
         initializeState();
         truncateFileName();
 
@@ -799,14 +1082,17 @@
         let $replyForm = null;
         if ($(".reply-form").length === 0) {
             const replyFormHtml = `
-            <form action="commentSaveServlet" method="post" class="reply-form" style="display: none;">
-                <textarea name="commentContent" placeholder="回复..." required></textarea>
-                <input type="hidden" name="fId" value="${file.fileId}">
-                <input type="hidden" name="parentId" id="replyParentId">
-                <input type="hidden" name="rootParentId" id="replyRootParentId">
-                <input type="submit" value="提交回复">
-            </form>
-        `;
+                <form action="commentSaveServlet" method="post" class="reply-form" style="display: none;">
+                    <textarea name="commentContent" placeholder="回复..." required></textarea>
+                    <input type="hidden" name="fId" value="${file.fileId}">
+                    <input type="hidden" name="parentId" id="replyParentId">
+                    <input type="hidden" name="rootParentId" id="replyRootParentId">
+                    <input type="submit" value="提交回复">
+                    <div class="comment-buttons">
+                        <button type="button" class="add-emoji-btn reply-add-emoji iconfont">&#xe6bc;</button>
+                    </div>
+                </form>
+            `;
             $("#review").append(replyFormHtml);
         }
         $replyForm = $(".reply-form");
@@ -829,8 +1115,7 @@
                 if ($childComments.length === 0) {
                     $rootCommentItem.append('<div class="child-comments"></div>');
                 }
-                $replyForm.appendTo($rootCommentItem.find(".child-comments"));
-                $replyForm.show();
+                $replyForm.appendTo($rootCommentItem.find(".child-comments")).show();
                 currentReplyTarget = commentId;
                 $('html, body').animate({
                     scrollTop: $replyForm.offset().top - 100
