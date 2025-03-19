@@ -706,7 +706,13 @@
     <div id="head">
         <%--返回按钮--%>
         <div class="back">
-            <a href="communityListServlet" class="iconfont" title="返回动态广场"></a>
+            <c:if test="${type == 1}">
+                <a href="communityListServlet?pageNum=${pageNum}" class="iconfont" title="返回动态广场"></a>
+            </c:if>
+            <c:if test="${type == 2}">
+                <a href="eachClubServlet?pageNum=${pageNum}&clubId=${file_club.cId}" class="iconfont"
+                   title="返回俱乐部广场"></a>
+            </c:if>
         </div>
         <%--文件所属俱乐部--%>
         <div class="fileOfClub">

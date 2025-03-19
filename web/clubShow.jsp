@@ -415,7 +415,7 @@
                             <td>📥 ${file_club.fileDownloadAmount}</td>
                         </tr>
                     </table>
-                    <a href="transferServlet?fileId=${file_club.fId}">点击进入</a>
+                    <a href="transferServlet?fileId=${file_club.fId}&pageNum=${file_ClubPageHelper.pageNum}&type=2">点击进入</a>
                 </div>
             </div>
         </c:forEach>
@@ -427,15 +427,15 @@
             <label>上一页</label>
         </c:if>
         <c:if test="${file_ClubPageHelper.pageNum > 1}">
-            <a href="communityListServlet?pageNum=1">首页</a>
-            <a href="communityListServlet?pageNum=${file_ClubPageHelper.pageNum - 1}">上一页</a>
+            <a href="eachClubServlet?pageNum=1&clubId=${club.clubId}">首页</a>
+            <a href="eachClubServlet?pageNum=${file_ClubPageHelper.pageNum - 1}&clubId=${club.clubId}">上一页</a>
         </c:if>
 
         当前第 ${file_ClubPageHelper.pageNum} 页 / 共 ${file_ClubPageHelper.pageCount} 页
 
         <c:if test="${file_ClubPageHelper.pageNum < file_ClubPageHelper.pageCount}">
-            <a href="communityListServlet?pageNum=${file_ClubPageHelper.pageNum + 1}">下一页</a>
-            <a href="communityListServlet?pageNum=${file_ClubPageHelper.pageCount}">尾页</a>
+            <a href="eachClubServlet?pageNum=${file_ClubPageHelper.pageNum + 1}&clubId=${club.clubId}">下一页</a>
+            <a href="eachClubServlet?pageNum=${file_ClubPageHelper.pageCount}&clubId=${club.clubId}">尾页</a>
         </c:if>
         <c:if test="${file_ClubPageHelper.pageNum == file_ClubPageHelper.pageCount}">
             <label>下一页</label>

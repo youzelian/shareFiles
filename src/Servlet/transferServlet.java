@@ -30,6 +30,8 @@ public class transferServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         int fileId = Integer.parseInt(request.getParameter("fileId"));
+        int type = Integer.parseInt(request.getParameter("type"));
+        int pageNum = Integer.parseInt(request.getParameter("pageNum"));
         FileService fileService = new FileService();
         CommentService commentService = new CommentService();
         File_ClubService fileClubService = new File_ClubService();
@@ -88,13 +90,14 @@ public class transferServlet extends HttpServlet {
 
         File_Club file_club = fileClubService.checkClubByFileId(fileId);
 
+        request.setAttribute("pageNum", pageNum);
+        request.setAttribute("type", type);
         request.setAttribute("user", user);
         request.setAttribute("file", file);
         request.setAttribute("commentRootList", commentRootList);
         request.setAttribute("file_club", file_club);
         request.setAttribute("vote_status", (file != null && file.getVoteStatus() == 1) ? "upvote" : (file != null && file.getVoteStatus() == -1) ? "downvote" : "none");
         request.setAttribute("isCollectByUser", (file != null && file.isCollectByUser()) ? "collected" : "");
-
         request.getRequestDispatcher("fileShow.jsp").forward(request, response);
     }
 
