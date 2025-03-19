@@ -372,7 +372,7 @@
     <%--标头--%>
     <div class="header">
         <div class="back">
-            <a href="clubListServlet?web=club.jsp" class="iconfont" title="返回俱乐部广场"></a>
+            <a href="clubListServlet?web=club.jsp" class="iconfont" title="返回俱乐部广场">&#xe63b;</a>
         </div>
         <div class="search-box">
             <form action="eachClubServlet?clubId=${club.clubId}" method="post" style="display: flex; width: 100%;">

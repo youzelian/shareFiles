@@ -434,12 +434,11 @@
 </body>
 <script>
     $(document).ready(function () {
+        // 提交前的文件验证
         $("#file").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".file-text").text(fileName || "Choose a file");
         });
-
-        // 提交前的文件验证
         $("#mainForm").submit(function (e) {
             if ($("#file").val() === "") {
                 alert("请选择文件后上传！");
@@ -499,7 +498,6 @@
             }
             this.value = "";
         });
-
         // 删除预览的图片
         $("#imagePreview").on("click", ".remove-btn", function () {
             var url = $(this).data("url");
@@ -519,7 +517,6 @@
                 {"name": "点赞", "font": "👍"}
             ];
         });
-
         // 点击添加表情包功能
         $(".add-emoji").click(function (e) {
             var panel = $("#emoji-panel");
@@ -534,20 +531,26 @@
             });
             e.stopPropagation();
         });
-
         // 添加到textarea内容框中
         $("#emoji-panel").on("click", ".emoji-option", function () {
             var emoji = $(this).text();
             var textarea = $("#fileDescription");
-            textarea.val(textarea.val() + emoji);
+            var startPos = textarea[0].selectionStart; // 获取光标起始位置
+            var endPos = textarea[0].selectionEnd;     // 获取光标结束位置
+            var text = textarea.val();
+            // 在光标位置插入表情
+            var newText = text.substring(0, startPos) + emoji + text.substring(endPos);
+            textarea.val(newText);
+            // 移动光标到插入后的位置
+            var newCursorPos = startPos + emoji.length;
+            textarea[0].setSelectionRange(newCursorPos, newCursorPos);
+            textarea[0].focus(); // 保持焦点
             $("#emoji-panel").hide();
         });
-
         // 为表情添加 title 属性，显示表情的名称
         $("#emoji-panel").on("mouseover", ".emoji-option", function () {
             $(this).attr("title", $(this).data("name"));
         });
-
         // 检测点击是否在表情面板或按钮外，如果是则隐藏面板
         $(document).click(function (e) {
             if (!$(e.target).closest("#emoji-panel, .add-emoji").length) {
