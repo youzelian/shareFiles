@@ -256,6 +256,42 @@
             margin: 0 10px;
         }
 
+        /* 分页输入框样式 */
+        .file-pagination input#pageInput {
+            width: 50px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            background: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        .file-pagination input#pageInput:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        /* 提示框样式 */
+        .alert {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .main {
                 width: 90%;
@@ -346,7 +382,9 @@
             <a href="communityListServlet?pageNum=1">首页</a>
             <a href="communityListServlet?pageNum=${pages.pageNum - 1}">上一页</a>
         </c:if>
-        <span>当前第 ${pages.pageNum} 页 / 共 ${pages.pageCount} 页</span>
+        <span>当前第 </span>
+        <input type="number" id="pageInput" value="${pages.pageNum}" min="1" max="${pages.pageCount}"/>
+        <span> 页 / 共 ${pages.pageCount} 页</span>
         <c:if test="${pages.pageNum < pages.pageCount}">
             <a href="communityListServlet?pageNum=${pages.pageNum + 1}">下一页</a>
             <a href="communityListServlet?pageNum=${pages.pageCount}">尾页</a>
@@ -358,4 +396,55 @@
     </div>
 </div>
 </body>
+<script>
+    $(document).ready(function () {
+        // 显示提示信息
+        function showAlert(message) {
+            $("#myAlert").remove();
+            const $alertBox = $("<div>", {
+                id: "myAlert",
+                class: "alert",
+                text: message
+            });
+            $("body").append($alertBox);
+            $alertBox.fadeIn();
+            setTimeout(function () {
+                $alertBox.fadeOut(function () {
+                    $(this).remove();
+                });
+            }, 1500);
+        }
+
+        // 分页跳转功能
+        $("#pageInput").on("keypress", function (e) {
+            if (e.key === "Enter") {
+                const inputPage = parseInt($(this).val());
+                const maxPage = ${pages.pageCount};
+                const searchContent = $("#searchContent").val(); // 获取搜索框内容
+
+                if (isNaN(inputPage) || inputPage < 1 || inputPage > maxPage) {
+                    showAlert("请输入 1 到 " + maxPage + " 之间的页码");
+                    $(this).val(${pages.pageNum});
+                    return;
+                }
+
+                let url = "communityListServlet?pageNum=" + inputPage;
+                if (searchContent) {
+                    url += "&searchContent=" + encodeURIComponent(searchContent);
+                }
+                window.location.href = url;
+            }
+        });
+
+        // 失去焦点时验证输入
+        $("#pageInput").on("blur", function () {
+            const inputPage = parseInt($(this).val());
+            const maxPage = ${pages.pageCount};
+
+            if (isNaN(inputPage) || inputPage < 1 || inputPage > maxPage) {
+                $(this).val(${pages.pageNum});
+            }
+        });
+    });
+</script>
 </html>

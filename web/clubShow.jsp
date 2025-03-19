@@ -312,6 +312,42 @@
             padding: 8px 12px;
         }
 
+        /* 分页输入框样式 */
+        .file-pagination input#pageInput {
+            width: 50px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            background: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        .file-pagination input#pageInput:focus {
+            border-color: #00aeec; /* 与页面主题色一致 */
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 174, 236, 0.3);
+        }
+
+        /* 提示框样式 */
+        .alert {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .main {
                 width: 90%;
@@ -431,7 +467,10 @@
             <a href="eachClubServlet?pageNum=${file_ClubPageHelper.pageNum - 1}&clubId=${club.clubId}">上一页</a>
         </c:if>
 
-        当前第 ${file_ClubPageHelper.pageNum} 页 / 共 ${file_ClubPageHelper.pageCount} 页
+        <span>当前第 </span>
+        <input type="number" id="pageInput" value="${file_ClubPageHelper.pageNum}" min="1"
+               max="${file_ClubPageHelper.pageCount}"/>
+        <span> 页 / 共 ${file_ClubPageHelper.pageCount} 页</span>
 
         <c:if test="${file_ClubPageHelper.pageNum < file_ClubPageHelper.pageCount}">
             <a href="eachClubServlet?pageNum=${file_ClubPageHelper.pageNum + 1}&clubId=${club.clubId}">下一页</a>
@@ -444,18 +483,64 @@
     </div>
 </div>
 <script>
-    $("#join").click(function (e) {
-        e.preventDefault(); // 阻止默认链接行为
-        $.post("user_clubOperationServlet",
-            {clubId: "${club.clubId}", operation: $("#join").data("operation")},
-            function (res) {
-                $("#join").removeClass("join-btn joined-btn").addClass(res.operation == 1 ? "join-btn" : "joined-btn").text(res.status); // 动态切换类名和文本
-                $("#join").data("operation", res.operation); // 更新 operation
-                $("#clubNumbers").text(res.clubNumbers + " ${club.clubMembership}"); // 更新 clubNumbers
-            }, "json")
-            .fail(function () {
-                alert("操作失败，请稍后重试");
+    $(document).ready(function () {
+        // 加入或退出俱乐部功能
+        $("#join").click(function (e) {
+            e.preventDefault();// 阻止默认链接行为
+            $.post("user_clubOperationServlet",
+                {clubId: "${club.clubId}", operation: $("#join").data("operation")},
+                function (res) {
+                    $("#join").removeClass("join-btn joined-btn").addClass(res.operation == 1 ? "join-btn" : "joined-btn").text(res.status);// 动态切换类名和文本
+                    $("#join").data("operation", res.operation);// 更新 operation
+                    $("#clubNumbers").text(res.clubNumbers + " ${club.clubMembership}");// 更新 clubNumbers
+                }, "json")
+                .fail(function () {
+                    alert("操作失败，请稍后重试");
+                });
+        });
+
+        // 显示提示信息
+        function showAlert(message) {
+            $("#myAlert").remove();
+            const $alertBox = $("<div>", {
+                id: "myAlert",
+                class: "alert",
+                text: message
             });
+            $("body").append($alertBox);
+            $alertBox.fadeIn();
+            setTimeout(function () {
+                $alertBox.fadeOut(function () {
+                    $(this).remove();
+                });
+            }, 1500);
+        }
+
+        // 分页跳转功能
+        $("#pageInput").on("keypress", function (e) {
+            if (e.key === "Enter") {
+                const inputPage = parseInt($(this).val());
+                const maxPage = ${file_ClubPageHelper.pageCount};
+
+                if (isNaN(inputPage) || inputPage < 1 || inputPage > maxPage) {
+                    showAlert("请输入 1 到 " + maxPage + " 之间的页码");
+                    $(this).val(${file_ClubPageHelper.pageNum});
+                    return;
+                }
+
+                window.location.href = "eachClubServlet?pageNum=" + inputPage + "&clubId=${club.clubId}";
+            }
+        });
+
+        // 失去焦点时验证输入
+        $("#pageInput").on("blur", function () {
+            const inputPage = parseInt($(this).val());
+            const maxPage = ${file_ClubPageHelper.pageCount};
+
+            if (isNaN(inputPage) || inputPage < 1 || inputPage > maxPage) {
+                $(this).val(${file_ClubPageHelper.pageNum});
+            }
+        });
     });
 </script>
 </body>
