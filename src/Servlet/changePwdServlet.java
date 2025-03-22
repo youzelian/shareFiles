@@ -2,14 +2,16 @@ package Servlet;
 
 import DTO.User;
 import Service.UserService;
+import com.google.gson.Gson;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "changePwdServlet", urlPatterns = "/changePwdServlet")
 public class changePwdServlet extends HttpServlet {
@@ -17,34 +19,83 @@ public class changePwdServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 1.从前端接收请求
         request.setCharacterEncoding("utf-8");
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+
+        // 获取参数
         String oldPwd = request.getParameter("oldPwd");
-        String newPwd1 = request.getParameter("newPwd1");
-        String newPwd2 = request.getParameter("newPwd2");
-        // 2.从数据库中取出数据并比较旧密码
-        UserService userService = new UserService();
-        String type = null;
-        String address = null;
-        if (user.getUserPwd().equals(oldPwd) && newPwd1.equals(newPwd2)) {
-            user.setUserPwd(newPwd2);
-            userService.modifyUserPwd(user);
-            request.setAttribute("tips", "<label style='color:green'>修改密码成功!请重新登录</label>");
-            type = "forgetPwd";
-            address = "登录页面";
+        String newPwd = request.getParameter("newPwd");
+        String success = request.getParameter("success");
+
+        // 从 session 获取当前用户
+        User user = (User) request.getSession().getAttribute("user");
+
+        // 如果是页面跳转请求（成功后第二次请求）
+        if ("true".equals(success)) {
+            // 清除 session，强制重新登录
+            request.getSession().invalidate();
+            // 设置跳转参数
+            request.setAttribute("tips", "<label style='color:green'>密码修改成功！</label>");
+            request.setAttribute("type", "forgetPwd");
+            request.setAttribute("address", "登录页面");
+            request.getRequestDispatcher("prompt.jsp").forward(request, response);
+            return;
         }
-        else {
-            request.setAttribute("tips", "<label style='color:red'>修改密码失败!</label>");
-            type = "forgetPwdFail";
-            address = "主页面";
+
+        // 第一次请求：AJAX 验证
+        response.setContentType("application/json;charset=utf-8");
+
+        ResponseData responseData;
+        if (user == null) {
+            responseData = new ResponseData(false, "用户未登录，请重新登录！");
+        } else if (oldPwd == null || newPwd == null || oldPwd.trim().isEmpty() || newPwd.trim().isEmpty()) {
+            responseData = new ResponseData(false, "旧密码和新密码不能为空！");
+        } else if (oldPwd.equals(newPwd)) {
+            responseData = new ResponseData(false, "旧密码和新密码不能相同！");
+        } else if (newPwd.length() < 6 || newPwd.length() > 20 || !isComplexEnough(newPwd)) {
+            responseData = new ResponseData(false, "密码需6-20个字符，且包含字母、数字、特殊符号中的至少两种！");
+        } else {
+            try {
+                // 验证旧密码
+                if (!BCrypt.checkpw(oldPwd, user.getUserPwd())) {
+                    responseData = new ResponseData(false, "旧密码不正确！");
+                } else {
+                    // 加密新密码
+                    String hashedPassword = BCrypt.hashpw(newPwd, BCrypt.gensalt());
+                    user.setUserPwd(hashedPassword);
+                    UserService userService = new UserService();
+                    userService.modifyUserPwd(user);
+                    responseData = new ResponseData(true, "密码修改成功！");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                responseData = new ResponseData(false, "密码修改失败！");
+            }
         }
-        request.setAttribute("type", type);
-        request.setAttribute("address", address);
-        request.getRequestDispatcher("prompt.jsp").forward(request, response);
+
+        PrintWriter out = response.getWriter();
+        out.println(new Gson().toJson(responseData));
+        out.flush();
+        out.close();
+    }
+
+    private boolean isComplexEnough(String pwd) {
+        int types = 0;
+        if (pwd.matches(".*[a-zA-Z].*")) types++;
+        if (pwd.matches(".*\\d.*")) types++;
+        if (pwd.matches(".*[@$!%*?&].*")) types++;
+        return types >= 2;
+    }
+
+    static class ResponseData {
+        boolean success;
+        String message;
+
+        ResponseData(boolean success, String message) {
+            this.success = success;
+            this.message = message;
+        }
     }
 }

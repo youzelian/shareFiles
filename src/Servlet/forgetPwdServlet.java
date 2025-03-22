@@ -2,6 +2,8 @@ package Servlet;
 
 import DTO.User;
 import Service.UserService;
+import com.google.gson.Gson;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "forgetPwdServlet", urlPatterns = "/forgetPwdServlet")
 public class forgetPwdServlet extends HttpServlet {
@@ -16,30 +19,77 @@ public class forgetPwdServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 1.从前端接收请求
         request.setCharacterEncoding("utf-8");
-        String userName = request.getParameter("userName");
-        String pwdReq = request.getParameter("pwdReq");
-        String pwdReqAnswer = request.getParameter("pwdReqAnswer");
-        String newPwd = request.getParameter("newPwd2");
-        // 2.从数据库中取出数据并比较密保问题和密保答案是否一致
-        UserService userService = new UserService();
-        User user = userService.checkUser(userName);
-        if (user.getPwdReq().equals(pwdReq) && user.getPwdReqAnswer().equals(pwdReqAnswer)) {
-            user.setUserPwd(newPwd);
-            userService.modifyUserPwd(user);
-            request.setAttribute("tips", "<label style='color:green'>修改密码成功!</label>");
+
+        // 获取参数
+        String newPwd = request.getParameter("newPwd");
+        String success = request.getParameter("success");
+
+        // 从 session 获取通过验证的用户
+        User user = (User) request.getSession().getAttribute("resetUser");
+
+        // 如果是页面跳转请求（成功后第二次请求）
+        if ("true".equals(success)) {
+            // 清除 session
+            request.getSession().removeAttribute("resetUser");
+            request.getSession().removeAttribute("emailCode");
+            request.getSession().removeAttribute("emailCodeTimestamp");
+            // 设置跳转参数
+            request.setAttribute("tips", "<label style='color:green'>密码修改成功！</label>");
+            request.setAttribute("type", "forgetPwd");
+            request.setAttribute("address", "登录页面");
+            request.getRequestDispatcher("prompt.jsp").forward(request, response);
+            return;
         }
-        else {
-            request.setAttribute("tips", "<label style='color:red'>修改密码失败!</label>");
+
+        // 第一次请求：AJAX 验证
+        response.setContentType("application/json;charset=utf-8");
+
+        ResponseData responseData;
+        if (user == null) {
+            responseData = new ResponseData(false, "用户未验证，请重新开始！");
+        } else if (newPwd == null || newPwd.trim().isEmpty()) {
+            responseData = new ResponseData(false, "新密码不能为空！");
+        } else if (newPwd.length() < 6 || newPwd.length() > 20 || !isComplexEnough(newPwd)) {
+            responseData = new ResponseData(false, "密码需6-20个字符，且包含字母、数字、特殊符号中的至少两种！");
+        } else {
+            try {
+                // 加密新密码
+                String hashedPassword = BCrypt.hashpw(newPwd, BCrypt.gensalt());
+                user.setUserPwd(hashedPassword);
+                UserService userService = new UserService();
+                userService.modifyUserPwd(user);
+                responseData = new ResponseData(true, "密码修改成功！");
+            } catch (Exception e) {
+                e.printStackTrace();
+                responseData = new ResponseData(false, "密码修改失败！");
+            }
         }
-        String type = "forgetPwd";
-        String address = "登录页面";
-        request.setAttribute("type", type);
-        request.setAttribute("address", address);
-        request.getRequestDispatcher("prompt.jsp").forward(request, response);
+
+        PrintWriter out = response.getWriter();
+        out.println(new Gson().toJson(responseData));
+        out.flush();
+        out.close();
+    }
+
+    private boolean isComplexEnough(String pwd) {
+        int types = 0;
+        if (pwd.matches(".*[a-zA-Z].*")) types++;
+        if (pwd.matches(".*\\d.*")) types++;
+        if (pwd.matches(".*[@$!%*?&].*")) types++;
+        return types >= 2;
+    }
+
+    static class ResponseData {
+        boolean success;
+        String message;
+
+        ResponseData(boolean success, String message) {
+            this.success = success;
+            this.message = message;
+        }
     }
 }

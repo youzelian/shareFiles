@@ -502,7 +502,7 @@
         }
 
         console.log("Sending request to: " + contextPath + "/sendEmailServlet");
-        $.post(contextPath + "/sendEmailServlet", {email: email}, function (res) {
+        $.post(contextPath + "/sendEmailServlet", {email: email, action: "register"}, function (res) {
             console.log("Response: ", res);
             if (res.success) {
                 $("#emailVCodeTips").removeClass("success error show").text("验证码已发送!");

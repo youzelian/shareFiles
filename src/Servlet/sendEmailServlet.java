@@ -33,7 +33,8 @@ public class sendEmailServlet extends HttpServlet {
             System.out.println("Entering sendEmailServlet.doPost");
 
             String email = request.getParameter("email");
-            System.out.println("Received email: " + email);
+            String action = request.getParameter("action"); // 新增参数，用于区分场景
+            System.out.println("Received email: " + email + ", action: " + action);
 
             // 校验邮箱是否为空
             if (email == null || email.trim().isEmpty()) {
@@ -58,9 +59,26 @@ public class sendEmailServlet extends HttpServlet {
             UserService userService = new UserService();
             User user = userService.checkEmail(email);
             System.out.println("User check result: " + (user != null ? "User exists" : "User does not exist"));
-            if (user != null) {
-                sendJsonResponse(response, false, "邮箱已被注册");
-                return;
+
+            // 根据 action 参数区分逻辑
+            if ("register".equals(action)) {
+                // 注册场景：邮箱已存在则提示错误
+                if (user != null) {
+                    sendJsonResponse(response, false, "邮箱已被注册");
+                    return;
+                }
+            } else if ("resetPassword".equals(action)) {
+                // 找回密码场景：邮箱不存在则提示错误
+                if (user == null) {
+                    sendJsonResponse(response, false, "不存在该邮箱");
+                    return;
+                }
+            } else {
+                // 未指定 action，默认按注册处理
+                if (user != null) {
+                    sendJsonResponse(response, false, "邮箱已被注册");
+                    return;
+                }
             }
 
             String code = String.format("%06d", new Random().nextInt(999999));

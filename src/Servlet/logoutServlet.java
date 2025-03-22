@@ -25,6 +25,6 @@ public class logoutServlet extends HttpServlet {
                 response.addCookie(cookie);
             }
         }
-        response.sendRedirect("LoginRegistrationPage.jsp");
+        response.sendRedirect("loginRegistrationPage.jsp");
     }
 }
