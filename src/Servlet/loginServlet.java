@@ -16,25 +16,25 @@ public class loginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
-        String userName = request.getParameter("userName");
+        String userEmail = request.getParameter("userEmail");
         String userPwd = request.getParameter("userPwd");
         String auto_login = request.getParameter("auto_login");
         if (auto_login != null) {
-            //编码是为了在cookie中存储汉字
-            String usernameCode = URLEncoder.encode(userName, "UTF-8");
+            // 编码是为了在cookie中存储汉字
+            String usernameCode = URLEncoder.encode(userEmail, "UTF-8");
             Cookie cookie = new Cookie("cookieAuto", usernameCode + '-' + userPwd);
-            //设置持久化时间
+            // 设置持久化时间
             cookie.setMaxAge(60 * 60);
-            //发送cookie
+            // 发送cookie
             response.addCookie(cookie);
             request.setAttribute("cookieName", cookie.getName());
         }
         UserService userService = new UserService();
-        User user = userService.checkUser(userName);
+        User user = userService.checkEmail(userEmail);
         // 将user存入session中
         HttpSession session = request.getSession();
         // 设置null值为空值

@@ -17,9 +17,9 @@ public class UserDAO {
     public int insertUser(User user) {
         int i = 0;
         try {
-            String sql = "insert into users(user_name,user_pwd) values(?,?)";
+            String sql = "insert into users(user_name,user_pwd,user_email) values(?,?,?)";
             QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
-            i = queryRunner.update(sql, user.getUserName(), user.getUserPwd());
+            i = queryRunner.update(sql, user.getUserName(), user.getUserPwd(), user.getUserEmail());
         } catch (SQLException e) {
             e.printStackTrace();
         }

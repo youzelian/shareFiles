@@ -35,8 +35,23 @@ public class sendEmailServlet extends HttpServlet {
             String email = request.getParameter("email");
             System.out.println("Received email: " + email);
 
+            // 校验邮箱是否为空
             if (email == null || email.trim().isEmpty()) {
                 sendJsonResponse(response, false, "邮箱不能为空");
+                return;
+            }
+
+            // 校验邮箱格式
+            if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+                sendJsonResponse(response, false, "邮箱格式不正确，请输入类似 email@example.com 的格式");
+                return;
+            }
+
+            // 检查是否可以发送（60秒限制）
+            Long lastSentTime = (Long) request.getSession().getAttribute("lastEmailSentTime");
+            long currentTime = System.currentTimeMillis();
+            if (lastSentTime != null && (currentTime - lastSentTime) < 60000) {
+                sendJsonResponse(response, false, "发送过于频繁，请稍后再试");
                 return;
             }
 
@@ -50,6 +65,8 @@ public class sendEmailServlet extends HttpServlet {
 
             String code = String.format("%06d", new Random().nextInt(999999));
             request.getSession().setAttribute("emailCode", code);
+            request.getSession().setAttribute("emailCodeTimestamp", currentTime);
+            request.getSession().setAttribute("lastEmailSentTime", currentTime);
             System.out.println("Generated code: " + code);
 
             if (API_KEY == null || FROM_EMAIL == null) {
@@ -70,8 +87,8 @@ public class sendEmailServlet extends HttpServlet {
                 conn.setRequestProperty("Authorization", "Bearer " + API_KEY);
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setDoOutput(true);
-                conn.setConnectTimeout(10000); // 10秒连接超时
-                conn.setReadTimeout(10000); // 10秒读取超时
+                conn.setConnectTimeout(10000);
+                conn.setReadTimeout(10000);
 
                 // 发送请求体
                 try (OutputStream os = conn.getOutputStream()) {

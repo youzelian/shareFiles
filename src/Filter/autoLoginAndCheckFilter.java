@@ -2,6 +2,7 @@ package Filter;
 
 import DTO.User;
 import Service.UserService;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -18,7 +19,7 @@ public class autoLoginAndCheckFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
-    
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         // 1.判断前准备
@@ -32,10 +33,10 @@ public class autoLoginAndCheckFilter implements Filter {
         // 2.判断：如果请求路径是非受限资源则直接放行，如果是受限资源则需要验证用户是否登录
         // a.受限资源判断
         if ("".equals(requestPath) || "index.jsp".equals(requestPath)) {
-            //进入if代码，表示此请求是受限资源，需要验证用户是否登录
-            //3.判断session中是否有一次性登录标记，如果有则表示用户已经登录--放行，session没有再判断cookie，cookie有则放行并存入session
-            //如果都没有则表示用户未登录，发送到登录页面，提示请先登录
-            
+            // 进入if代码，表示此请求是受限资源，需要验证用户是否登录
+            // 3.判断session中是否有一次性登录标记，如果有则表示用户已经登录--放行，session没有再判断cookie，cookie有则放行并存入session
+            // 如果都没有则表示用户未登录，发送到登录页面，提示请先登录
+
             /*****获得session中的值和cookie中的值*****/
             // 获得session中存入的tempLogin值
             HttpSession session = request.getSession();
@@ -50,7 +51,7 @@ public class autoLoginAndCheckFilter implements Filter {
                 }
             }
             /*****获得session中的值和cookie中的值*****/
-            
+
             // 判断tempLogin中是否有信息,只允许一次登录，登录完销毁，再次访问主页需要填写账号密码
             if (tempLogin != null) {
                 // 销毁一次性登录标记tempLogin
@@ -60,27 +61,27 @@ public class autoLoginAndCheckFilter implements Filter {
             // 如果session中没有tempLogin信息，则判断cookie中有没有信息，有信息再判断在数据库是否有对应信息有则存入session并放行，没有则跳转到登录页面;cookie没有则直接跳转到登录页面
             else if (cookieAuto != null) {
                 String[] parts = cookieAuto.split("-");
-                String username = parts[0];
+                String userEmail = parts[0];
                 int count = 0;
-                // 对cookie中的userName值解码
-                username = URLDecoder.decode(username, "utf-8");
+                // 对cookie中的userEmail值解码
+                userEmail = URLDecoder.decode(userEmail, "utf-8");
                 String password = parts[1];
                 UserService userService = new UserService();
                 List<User> userList = userService.listUser();
                 for (User users : userList) {
                     // 如果cookie值在数据库有对应的值则放行并将sessionAuto存入session
-                    if (users.getUserName().equals(username) && users.getUserPwd().equals(password)) {
+                    // BCrypt解码
+                    if (users.getUserEmail().equals(userEmail) && BCrypt.checkpw(password, users.getUserPwd())) {
                         // 此处是为了写项目而写的，重新将user写入session（因为重新部署或重新启动session都会丢失)
                         // ？？？？？？？？？？
                         // 保存user值到session中
-                        User user = userService.checkUser(username);
+                        User user = userService.checkEmail(userEmail);
                         request.getSession().setAttribute("user", user);
                         // ？？？？？？？？？？
                         session.setAttribute("sessionAuto", "yes");
                         filterChain.doFilter(request, response);
                         break;
-                    }
-                    else {
+                    } else {
                         count++;
                     }
                 }
@@ -107,7 +108,7 @@ public class autoLoginAndCheckFilter implements Filter {
             filterChain.doFilter(request, response);
         }
     }
-    
+
     @Override
     public void destroy() {
     }

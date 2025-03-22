@@ -42,7 +42,7 @@ public class UserService {
         return userList;
     }
 
-    // 查询所有用户
+    // 根据邮箱查找用户
     public User checkEmail(String email) {
         User user = userDAO.checkEmail(email);
         return user;

@@ -1,0 +1,191 @@
+{
+  "id": "4838463",
+  "name": "sharedFiles",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13627837",
+      "name": "表情",
+      "font_class": "biaoqing",
+      "unicode": "e6bc",
+      "unicode_decimal": 59068
+    },
+    {
+      "icon_id": "15838561",
+      "name": "向左",
+      "font_class": "arrow-left-bold",
+      "unicode": "e685",
+      "unicode_decimal": 59013
+    },
+    {
+      "icon_id": "15838566",
+      "name": "向右",
+      "font_class": "arrow-right-bold",
+      "unicode": "e687",
+      "unicode_decimal": 59015
+    },
+    {
+      "icon_id": "15838582",
+      "name": "arrow-down-filling",
+      "font_class": "arrow-down-filling",
+      "unicode": "e689",
+      "unicode_decimal": 59017
+    },
+    {
+      "icon_id": "11954725",
+      "name": "右三角",
+      "font_class": "yousanjiao",
+      "unicode": "e714",
+      "unicode_decimal": 59156
+    },
+    {
+      "icon_id": "29923",
+      "name": "赞",
+      "font_class": "appreciate",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "1512526",
+      "name": "赞-蓝",
+      "font_class": "appreciate_fill_light",
+      "unicode": "e7e2",
+      "unicode_decimal": 59362
+    },
+    {
+      "icon_id": "25062459",
+      "name": "下载",
+      "font_class": "xiazai",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "5365342",
+      "name": "文件",
+      "font_class": "wenjian2",
+      "unicode": "e64d",
+      "unicode_decimal": 58957
+    },
+    {
+      "icon_id": "43513290",
+      "name": "踩-红",
+      "font_class": "cai-hong-3",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "747748",
+      "name": "record_light",
+      "font_class": "recordlight",
+      "unicode": "e7a5",
+      "unicode_decimal": 59301
+    },
+    {
+      "icon_id": "29930",
+      "name": "收藏-黄",
+      "font_class": "favorfill",
+      "unicode": "e64b",
+      "unicode_decimal": 58955
+    },
+    {
+      "icon_id": "29931",
+      "name": "收藏",
+      "font_class": "favor",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "747747",
+      "name": "record_fill",
+      "font_class": "recordfill",
+      "unicode": "e7a4",
+      "unicode_decimal": 59300
+    },
+    {
+      "icon_id": "43498707",
+      "name": "赞-蓝",
+      "font_class": "zan-lan",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "43498684",
+      "name": "踩",
+      "font_class": "cai",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "43498669",
+      "name": "赞",
+      "font_class": "zan",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "1766316",
+      "name": "操作-上传-upload",
+      "font_class": "shangchuan",
+      "unicode": "e688",
+      "unicode_decimal": 59016
+    },
+    {
+      "icon_id": "43453747",
+      "name": "搜索",
+      "font_class": "sousuo",
+      "unicode": "e7ff",
+      "unicode_decimal": 59391
+    },
+    {
+      "icon_id": "82756",
+      "name": "回到顶部",
+      "font_class": "huidaodingbu",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "965894",
+      "name": "返回首页_关闭",
+      "font_class": "fanhuishouyeguanbi",
+      "unicode": "e789",
+      "unicode_decimal": 59273
+    },
+    {
+      "icon_id": "1069116",
+      "name": "返回",
+      "font_class": "fanhui",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "8118635",
+      "name": "刷新",
+      "font_class": "undo",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "33178020",
+      "name": "返回首页",
+      "font_class": "fanhuishouye1",
+      "unicode": "e6fa",
+      "unicode_decimal": 59130
+    },
+    {
+      "icon_id": "34631564",
+      "name": "返回",
+      "font_class": "fanhui2",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "43200709",
+      "name": "返回首页_返回首页-01",
+      "font_class": "fanhuishouye_fanhuishouye-01",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    }
+  ]
+}

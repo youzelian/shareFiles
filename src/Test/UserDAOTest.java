@@ -12,7 +12,7 @@ public class UserDAOTest {
 
     @Test
     public void insertUser() {
-        User user = new User("张三", "123");
+        User user = new User("张三", "123", "1431850082@qq.com");
         int i = userDAO.insertUser(user);
         System.out.println(i);
     }

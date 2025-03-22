@@ -13,7 +13,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <%--    <link rel="stylesheet" href="css/style.css">--%>
     <script src="JS/jquery-3.7.1.js" charset="utf-8"></script>
     <style>
         * {
@@ -22,7 +21,6 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            /* background-image: linear-gradient(120deg, #3498db, #8e44ad); */
             background-color: #cbc0d3;
             display: flex;
             flex-direction: column;
@@ -36,13 +34,6 @@
             font-weight: bold;
             margin: 0;
         }
-
-        /* p {
-            font-size: 14px;
-            line-height: 20px;
-            letter-spacing: .5px;
-            margin: 20px 0 30px;
-        } */
 
         span {
             font-size: 12px;
@@ -64,7 +55,6 @@
             width: 768px;
             max-width: 100%;
             min-height: 480px;
-
         }
 
         .form-container form {
@@ -94,7 +84,6 @@
 
         .social-container a:hover {
             background-color: #eee;
-
         }
 
         .txtb {
@@ -158,6 +147,12 @@
             cursor: pointer;
         }
 
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
         button:active {
             transform: scale(.95);
         }
@@ -174,7 +169,6 @@
         }
 
         button.ghost:hover {
-            /* background-color: #efdbde; */
             transition: background-color 0.8s;
             background-color: #eac7cc;
         }
@@ -232,7 +226,6 @@
         }
 
         .overlay {
-            /* background-image: linear-gradient(120deg, #3498db, #8e44ad); */
             background-color: #f6f6f6;
             color: #fff;
             position: relative;
@@ -243,7 +236,6 @@
             transition: transform .6s ease-in-out;
         }
 
-        /* 修改3 */
         .overlay p {
             font-family: "Open Sans", sans-serif;
             font-size: .7em;
@@ -252,7 +244,6 @@
             text-align: center;
         }
 
-        /* 修改1 */
         .overlay .title {
             font-family: "Lora", serif;
             color: #8E9AAF;
@@ -282,12 +273,10 @@
             opacity: .7;
         }
 
-        /* 修改3 */
         .overlay span {
             color: #EAC7CC;
         }
 
-        /* 修改2 */
         .overlay .desc {
             margin-top: -8px;
         }
@@ -310,7 +299,6 @@
         .overlay-right {
             right: 0;
             transform: translateY(0);
-
         }
 
         .overlay-left {
@@ -321,7 +309,7 @@
             transform: translateY(100%);
         }
 
-        .container.container.right-panel-active .overlay-container {
+        .container.right-panel-active .overlay-container {
             transform: translateX(-100%);
         }
 
@@ -331,16 +319,65 @@
             z-index: 5;
         }
 
-        .container.container.right-panel-active .overlay {
+        .container.right-panel-active .overlay {
             transform: translateX(50%);
         }
 
-        .container.container.right-panel-active .overlay-left {
+        .container.right-panel-active .overlay-left {
             transform: translateY(0);
         }
 
-        .container.container.right-panel-active .overlay-right {
+        .container.right-panel-active .overlay-right {
             transform: translateY(20%);
+        }
+
+        /* 提示信息样式 */
+        .tips {
+            font-size: 12px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out; /* 淡入淡出动画 */
+        }
+
+        .tips.show {
+            opacity: 1;
+        }
+
+        .tips.success {
+            color: #28a745; /* 绿色 */
+        }
+
+        .tips.error {
+            color: #ff6f91; /* 淡粉色，与页面风格匹配 */
+        }
+
+        .tips::before {
+            content: '';
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin-right: 5px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .tips.success::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2328a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>');
+        }
+
+        .tips.error::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ff6f91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>');
+        }
+
+        /* 输入框边框颜色 */
+        input.valid {
+            border-color: #28a745 !important;
+        }
+
+        input.invalid {
+            border-color: #ff6f91 !important;
         }
     </style>
 </head>
@@ -354,26 +391,27 @@
             <div class="txtb" style="display: block">
                 <input type="text" name="userName" id="registerUserName">
                 <span data-placeholder="Username"></span>
-                <label id="registerNameTips"></label>
+                <div id="registerNameTips" class="tips"></div>
             </div>
             <div class="txtb">
                 <input type="email" name="userEmail" id="registerEmail">
                 <span data-placeholder="Email"></span>
-                <label id="registerEmailTips"></label>
+                <div id="registerEmailTips" class="tips"></div>
             </div>
             <div class="txtb">
                 <input type="password" id="registerPwd1">
                 <span data-placeholder="Password"></span>
+                <div id="registerPwdTips" class="tips"></div>
             </div>
             <div class="txtb">
                 <input type="password" id="registerPwd2" name="userPwd">
                 <span data-placeholder="Confirm Password"></span>
-                <label id="registerPwdTips"></label>
+                <div id="registerConfirmPwdTips" class="tips"></div>
             </div>
             <div class="txtb">
                 <input type="text" id="emailVCode" name="emailVCode">
-                <span data-placeholder="Email Verification Code"></span>
-                <label id="emailVCodeTips"></label>
+                <span data-placeholder="邮箱验证码"></span>
+                <div id="emailVCodeTips" class="tips"></div>
             </div>
             <button type="button" id="sendEmailCode">发送验证码</button>
             <button type="button" id="registerCheck">注册</button>
@@ -385,21 +423,20 @@
         <form action="loginServlet" id="form2" method="post">
             <h1>登录</h1>
             <div class="txtb">
-                <input type="text" id="loginUserName" name="userName">
-                <span data-placeholder="userName"></span>
-                <label id='loginNameTips'></label>
+                <input type="email" id="loginUserEmail" name="userEmail">
+                <span data-placeholder="Email"></span>
+                <div id="loginEmailTips" class="tips"></div>
             </div>
             <div class="txtb">
                 <input type="password" id="loginPwd" name="userPwd">
                 <span data-placeholder="Password"></span>
-                <label id='loginPwdTips'></label>
+                <div id="loginPwdTips" class="tips"></div>
             </div>
             <div class="txtb">
                 <input type="text" name="inputVCode" id="inputVCode">
                 <span data-placeholder="验证码"></span>
-                <label id='loginVCodeTips'></label>
+                <div id="loginVCodeTips" class="tips"></div>
             </div>
-            <%--验证码--%>
             <img src="createCode" id="codeImg"/>
             <input type="checkbox" name="auto_login">自动登录<br>
             <a href="forgetPwd.jsp">忘记密码？</a>
@@ -438,7 +475,6 @@
                 <button class="ghost" id="signUp">注册</button>
             </div>
         </div>
-
     </div>
 </div>
 </body>
@@ -446,32 +482,247 @@
     // 刷新验证码
     $("#codeImg").click(function () {
         $(this).attr('src', "createCode?m=" + Math.random());
-    })
+    });
 
     // 发送验证码
     var contextPath = "<%=request.getContextPath()%>";
     $("#sendEmailCode").click(function () {
         var email = $("#registerEmail").val();
-        console.log("Sending request to: " + contextPath + "/sendEmailServlet"); // 调试
+        var $btn = $(this);
+
+        if (!email || email.trim() === "") {
+            $("#emailVCodeTips").removeClass("success error show").text("邮箱不能为空!");
+            $("#emailVCodeTips").addClass("error show");
+            return;
+        }
+        if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+            $("#emailVCodeTips").removeClass("success error show").text("邮箱格式不正确!");
+            $("#emailVCodeTips").addClass("error show");
+            return;
+        }
+
+        console.log("Sending request to: " + contextPath + "/sendEmailServlet");
         $.post(contextPath + "/sendEmailServlet", {email: email}, function (res) {
-            console.log("Response: ", res); // 调试
+            console.log("Response: ", res);
             if (res.success) {
-                $("#emailVCodeTips").replaceWith("<label id='emailVCodeTips' style='color:green'>验证码已发送!</label>");
+                $("#emailVCodeTips").removeClass("success error show").text("验证码已发送!");
+                $("#emailVCodeTips").addClass("success show");
+                $btn.prop("disabled", true);
+                var countdown = 60;
+                $btn.text(countdown + "秒后重试");
+                var timer = setInterval(function () {
+                    countdown--;
+                    $btn.text(countdown + "秒后重试");
+                    if (countdown <= 0) {
+                        clearInterval(timer);
+                        $btn.text("发送验证码");
+                        $btn.prop("disabled", false);
+                    }
+                }, 1000);
             } else {
-                $("#emailVCodeTips").replaceWith("<label id='emailVCodeTips' style='color:red'>" + res.message + "</label>");
+                $("#emailVCodeTips").removeClass("success error show").text(res.message);
+                $("#emailVCodeTips").addClass("error show");
             }
         }, "json").fail(function (xhr, status, error) {
-            console.error("AJAX error: ", status, error); // 捕获失败信息
+            console.error("AJAX error: ", status, error);
+            $("#emailVCodeTips").removeClass("success error show").text("服务器错误，请稍后再试!");
+            $("#emailVCodeTips").addClass("error show");
         });
     });
 
-    // 注册验证
+    // 注册页面实时校验
+    // 用户名
+    $("#registerUserName").on("input", function () {
+        var userName = $(this).val();
+        var $input = $(this);
+        var $tips = $("#registerNameTips");
+
+        if (!userName || userName.trim() === "") {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("用户名不能为空!");
+            $tips.addClass("error show");
+        } else if (userName.length < 2 || userName.length > 20) {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("用户名长度需在2-20个字符之间!");
+            $tips.addClass("error show");
+        } else {
+            $input.removeClass("valid invalid").addClass("valid");
+            $tips.removeClass("success error show").text("用户名格式正确!");
+            $tips.addClass("success show");
+            // 3秒后淡出
+            setTimeout(function () {
+                $tips.removeClass("show");
+            }, 3000);
+        }
+    });
+
+    // 邮箱
+    $("#registerEmail").on("input", function () {
+        var email = $(this).val();
+        var $input = $(this);
+        var $tips = $("#registerEmailTips");
+
+        if (!email || email.trim() === "") {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("邮箱不能为空!");
+            $tips.addClass("error show");
+        } else if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("邮箱格式不正确!");
+            $tips.addClass("error show");
+        } else {
+            $input.removeClass("valid invalid").addClass("valid");
+            $tips.removeClass("success error show").text("邮箱格式正确!");
+            $tips.addClass("success show");
+            // 3秒后淡出
+            setTimeout(function () {
+                $tips.removeClass("show");
+            }, 3000);
+        }
+    });
+
+    // 密码
+    $("#registerPwd1").on("input", function () {
+        var pwd1 = $(this).val();
+        var hasLetter = /[a-zA-Z]/.test(pwd1);
+        var hasNumber = /\d/.test(pwd1);
+        var hasSpecial = /[@$!%*?&]/.test(pwd1);
+        var typeCount = (hasLetter ? 1 : 0) + (hasNumber ? 1 : 0) + (hasSpecial ? 1 : 0);
+        var $input = $(this);
+        var $tips = $("#registerPwdTips");
+
+        if (!pwd1 || pwd1.trim() === "") {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("密码不能为空!");
+            $tips.addClass("error show");
+        } else if (pwd1.length < 6) {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("密码长度需6-20个字符!");
+            $tips.addClass("error show");
+        } else if (pwd1.length > 20) {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("密码长度需6-20个字符!");
+            $tips.addClass("error show");
+        } else if (typeCount < 2) {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("密码需包含字母、数字、特殊符号中的至少两种!");
+            $tips.addClass("error show");
+        } else {
+            $input.removeClass("valid invalid").addClass("valid");
+            $tips.removeClass("success error show").text("密码格式正确!");
+            $tips.addClass("success show");
+            // 3秒后淡出
+            setTimeout(function () {
+                $tips.removeClass("show");
+            }, 3000);
+        }
+
+        // 同步校验确认密码
+        var pwd2 = $("#registerPwd2").val();
+        var $confirmTips = $("#registerConfirmPwdTips");
+        if (pwd2 && pwd1 !== pwd2) {
+            $("#registerPwd2").removeClass("valid invalid").addClass("invalid");
+            $confirmTips.removeClass("success error show").text("两次密码不一致!");
+            $confirmTips.addClass("error show");
+        } else if (pwd2) {
+            $("#registerPwd2").removeClass("valid invalid").addClass("valid");
+            $confirmTips.removeClass("success error show").text("密码一致!");
+            $confirmTips.addClass("success show");
+        }
+    });
+
+    // 确认密码
+    $("#registerPwd2").on("input", function () {
+        var pwd1 = $("#registerPwd1").val();
+        var pwd2 = $(this).val();
+        var $input = $(this);
+        var $tips = $("#registerConfirmPwdTips");
+
+        if (!pwd2 || pwd2.trim() === "") {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("确认密码不能为空!");
+            $tips.addClass("error show");
+        } else if (pwd1 !== pwd2) {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("两次密码不一致!");
+            $tips.addClass("error show");
+        } else {
+            $input.removeClass("valid invalid").addClass("valid");
+            $tips.removeClass("success error show").text("密码一致!");
+            $tips.addClass("success show");
+        }
+    });
+
+    // 邮箱验证码
+    $("#emailVCode").on("input", function () {
+        var vCode = $(this).val();
+        var $input = $(this);
+        var $tips = $("#emailVCodeTips");
+
+        if (!vCode || vCode.trim() === "") {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("验证码不能为空!");
+            $tips.addClass("error show");
+        }
+    });
+
+    // 注册提交表单前确认是否符合规范
     $("#registerCheck").click(function () {
         var userName = $("#registerUserName").val();
         var email = $("#registerEmail").val();
         var pwd1 = $("#registerPwd1").val();
         var pwd2 = $("#registerPwd2").val();
         var vCode = $("#emailVCode").val();
+
+        // 前端简单校验，减少无效请求
+        if (!userName || userName.trim() === "") {
+            $("#registerUserName").removeClass("valid invalid").addClass("invalid");
+            $("#registerNameTips").removeClass("success error show").text("用户名不能为空!");
+            $("#registerNameTips").addClass("error show");
+            return;
+        }
+        if (userName.length < 2 || userName.length > 20) {
+            $("#registerUserName").removeClass("valid invalid").addClass("invalid");
+            $("#registerNameTips").removeClass("success error show").text("用户名长度需在2-20个字符之间!");
+            $("#registerNameTips").addClass("error show");
+            return;
+        }
+        if (!email || email.trim() === "") {
+            $("#registerEmail").removeClass("valid invalid").addClass("invalid");
+            $("#registerEmailTips").removeClass("success error show").text("邮箱不能为空!");
+            $("#registerEmailTips").addClass("error show");
+            return;
+        }
+        if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+            $("#registerEmail").removeClass("valid invalid").addClass("invalid");
+            $("#registerEmailTips").removeClass("success error show").text("邮箱格式不正确!");
+            $("#registerEmailTips").addClass("error show");
+            return;
+        }
+        var hasLetter = /[a-zA-Z]/.test(pwd1);
+        var hasNumber = /\d/.test(pwd1);
+        var hasSpecial = /[@$!%*?&]/.test(pwd1);
+        var typeCount = (hasLetter ? 1 : 0) + (hasNumber ? 1 : 0) + (hasSpecial ? 1 : 0);
+        if (pwd1.length < 6 || pwd1.length > 20 || typeCount < 2) {
+            $("#registerPwd1").removeClass("valid invalid").addClass("invalid");
+            $("#registerPwdTips").removeClass("success error show").text("密码需6-20个字符，且包含字母、数字、特殊符号中的至少两种!");
+            $("#registerPwdTips").addClass("error show");
+            return;
+        }
+        if (pwd1 !== pwd2) {
+            $("#registerPwd2").removeClass("valid invalid").addClass("invalid");
+            $("#registerConfirmPwdTips").removeClass("success error show").text("两次密码不一致!");
+            $("#registerConfirmPwdTips").addClass("error show");
+            return;
+        }
+        if (!vCode || vCode.trim() === "") {
+            $("#emailVCode").removeClass("valid invalid").addClass("invalid");
+            $("#emailVCodeTips").removeClass("success error show").text("验证码不能为空!");
+            $("#emailVCodeTips").addClass("error show");
+            return;
+        }
+
+        // 发送 AJAX 请求
         $.post(contextPath + "/registerCheckServlet", {
             registerUserName: userName,
             registerEmail: email,
@@ -479,98 +730,186 @@
             registerPwd2: pwd2,
             emailVCode: vCode
         }, function (res) {
-            $("#registerNameTips").replaceWith("<label id='registerNameTips' style='color:" + (res.nameCode ? "green" : "red") + "'>" + (res.nameCode ? "用户名可用!" : "用户名不可用!") + "</label>");
-            $("#registerEmailTips").replaceWith("<label id='registerEmailTips' style='color:" + (res.emailCode ? "green" : "red") + "'>" + (res.emailCode ? "邮箱可用!" : "邮箱已被注册!") + "</label>");
-            $("#registerPwdTips").replaceWith("<label id='registerPwdTips' style='color:" + (res.pwdCode ? "green" : "red") + "'>" + (res.pwdCode ? "√" : "密码不一致") + "</label>");
-            $("#emailVCodeTips").replaceWith("<label id='emailVCodeTips' style='color:" + (res.vCode ? "green" : "red") + "'>" + (res.vCode ? "√" : "验证码错误") + "</label>");
+            // 用户名提示
+            $("#registerUserName").removeClass("valid invalid").addClass(res.nameCode ? "valid" : "invalid");
+            $("#registerNameTips").removeClass("success error show").text(
+                res.nameCode ? "用户名可用!" : (userName.length < 2 || userName.length > 20 ? "用户名长度需在2-20个字符之间!" : "用户名已被注册!")
+            );
+            $("#registerNameTips").addClass((res.nameCode ? "success" : "error") + " show");
+            if (res.nameCode) {
+                setTimeout(function () {
+                    $("#registerNameTips").removeClass("show");
+                }, 3000);
+            }
+
+            // 邮箱提示
+            $("#registerEmail").removeClass("valid invalid").addClass(res.emailCode ? "valid" : "invalid");
+            $("#registerEmailTips").removeClass("success error show").text(
+                res.emailCode ? "邮箱可用!" : (email && !email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/) ? "邮箱格式不正确!" : "邮箱已被注册!")
+            );
+            $("#registerEmailTips").addClass((res.emailCode ? "success" : "error") + " show");
+            if (res.emailCode) {
+                setTimeout(function () {
+                    $("#registerEmailTips").removeClass("show");
+                }, 3000);
+            }
+
+            // 验证码提示
+            $("#emailVCode").removeClass("valid invalid").addClass(res.vCode ? "valid" : "invalid");
+            $("#emailVCodeTips").removeClass("success error show").text(
+                res.vCode ? "验证码正确!" : "验证码错误或已过期!"
+            );
+            $("#emailVCodeTips").addClass((res.vCode ? "success" : "error") + " show");
+
+            // 所有验证通过后提交表单
             if (res.nameCode && res.emailCode && res.pwdCode && res.vCode) {
                 $("#form1").submit();
             }
-        }, "json");
+        }, "json").fail(function (xhr, status, error) {
+            console.error("AJAX error: ", status, error);
+            $("#emailVCodeTips").removeClass("success error show").text("服务器错误，请稍后再试!");
+            $("#emailVCodeTips").addClass("error show");
+        });
     });
 
-    // 注册提交表单前确认是否符合规范
-    $("#registerCheck").click(function () {
-        var userName = $("#registerUserName").val();
-        var pwd1 = $("#registerPwd1").val();
-        var pwd2 = $("#registerPwd2").val();
-        // 参数1:请求的urL
-        // 参数2:传递的参数
-        // 参数3:回调函数
-        // 参数4,服务器返回的数据的格式(json,html,text,xml)
-        $.post("registerCheckServlet", {
-            registerUserName: userName,
-            registerPwd1: pwd1,
-            registerPwd2: pwd2
-        }, function (res) {
-            if (res.nameCode == 1) {
-                $("#registerNameTips").replaceWith("<label id='registerNameTips' style='color:green'>用户名可用!</label>");
-            } else {
-                $("#registerNameTips").replaceWith("<label id='registerNameTips' style='color:red'>用户名不可用!</label>");
-            }
-            if (res.pwdCode == 1) {
-                $("#registerPwdTips").replaceWith("<label id='registerPwdTips' style='color:green'>√</label>");
-            } else {
-                $("#registerPwdTips").replaceWith("<label id='registerPwdTips' style='color:red'>密码不一致</label>");
-            }
-            if (res.nameCode == 1 && res.pwdCode == 1) {
-                $("#form1").submit();
-            }
-        }, "json")
-    })
+    // 登录页面实时校验
+    // 邮箱
+    $("#loginUserEmail").on("input", function () {
+        var userEmail = $(this).val();
+        var $input = $(this);
+        var $tips = $("#loginEmailTips");
+
+        if (!userEmail || userEmail.trim() === "") {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("邮箱不能为空!");
+            $tips.addClass("error show");
+        } else if (!userEmail.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("邮箱格式不正确!");
+            $tips.addClass("error show");
+        } else {
+            $input.removeClass("valid invalid").addClass("valid");
+            $tips.removeClass("success error show"); // 不显示成功提示
+        }
+    });
+
+    // 密码
+    $("#loginPwd").on("input", function () {
+        var pwd = $(this).val();
+        var $input = $(this);
+        var $tips = $("#loginPwdTips");
+
+        if (!pwd || pwd.trim() === "") {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("密码不能为空!");
+            $tips.addClass("error show");
+        } else {
+            $input.removeClass("valid invalid").addClass("valid");
+            $tips.removeClass("success error show"); // 不显示成功提示
+        }
+    });
+
+    // 验证码
+    $("#inputVCode").on("input", function () {
+        var vCode = $(this).val();
+        var $input = $(this);
+        var $tips = $("#loginVCodeTips");
+
+        if (!vCode || vCode.trim() === "") {
+            $input.removeClass("valid invalid").addClass("invalid");
+            $tips.removeClass("success error show").text("验证码不能为空!");
+            $tips.addClass("error show");
+        } else {
+            $input.removeClass("valid invalid").addClass("valid");
+            $tips.removeClass("success error show"); // 不显示成功提示
+        }
+    });
 
     // 登录提交表单前确认是否符合规范
     $("#loginCheck").click(function () {
-        var userName = $("#loginUserName").val();
+        var userEmail = $("#loginUserEmail").val();
         var pwd = $("#loginPwd").val();
         var vCode = $("#inputVCode").val();
-        // 参数1:请求的urL
-        // 参数2:传递的参数
-        // 参数3:回调函数
-        // 参数4,服务器返回的数据的格式(json,html,text,xml)
+
+        if (!userEmail || userEmail.trim() === "") {
+            $("#loginUserEmail").removeClass("valid invalid").addClass("invalid");
+            $("#loginEmailTips").removeClass("success error show").text("邮箱不能为空!");
+            $("#loginEmailTips").addClass("error show");
+            return;
+        }
+        if (!userEmail.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+            $("#loginUserEmail").removeClass("valid invalid").addClass("invalid");
+            $("#loginEmailTips").removeClass("success error show").text("邮箱格式不正确!");
+            $("#loginEmailTips").addClass("error show");
+            return;
+        }
+        if (!pwd || pwd.trim() === "") {
+            $("#loginPwd").removeClass("valid invalid").addClass("invalid");
+            $("#loginPwdTips").removeClass("success error show").text("密码不能为空!");
+            $("#loginPwdTips").addClass("error show");
+            return;
+        }
+        if (!vCode || vCode.trim() === "") {
+            $("#inputVCode").removeClass("valid invalid").addClass("invalid");
+            $("#loginVCodeTips").removeClass("success error show").text("验证码不能为空!");
+            $("#loginVCodeTips").addClass("error show");
+            return;
+        }
+
         $.post("loginCheckServlet", {
-            loginUserName: userName,
+            loginUserEmail: userEmail,
             loginPwd: pwd,
             inputVCode: vCode
         }, function (res) {
             console.log("xxx");
-            if (res.nameCode == 1) {
-                $("#loginNameTips").replaceWith("<label id='loginNameTips' style='color:green'>√</label>");
+            if (res.emailCode == 1) {
+                $("#loginUserEmail").removeClass("valid invalid").addClass("valid");
+                $("#loginEmailTips").removeClass("success error show"); // 不显示成功提示
             } else {
-                $("#loginNameTips").replaceWith("<label id='loginNameTips' style='color:red'>用户名不存在!</label>");
+                $("#loginUserEmail").removeClass("valid invalid").addClass("invalid");
+                $("#loginEmailTips").removeClass("success error show").text("邮箱不存在!");
+                $("#loginEmailTips").addClass("error show");
             }
             if (res.pwdCode == 1) {
-                $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:green'>√</label>");
-            } else if (res.nameCode == 1) {
-                $("#loginPwdTips").replaceWith("<label id='loginPwdTips' style='color:red'>密码错误!</label>");
+                $("#loginPwd").removeClass("valid invalid").addClass("valid");
+                $("#loginPwdTips").removeClass("success error show"); // 不显示成功提示
+            } else if (res.emailCode == 1) {
+                $("#loginPwd").removeClass("valid invalid").addClass("invalid");
+                $("#loginPwdTips").removeClass("success error show").text("密码错误!");
+                $("#loginPwdTips").addClass("error show");
             }
             if (res.vCode == 1) {
-                $("#loginVCodeTips").replaceWith("<label id='loginVCodeTips' style='color:green'>√</label>");
+                $("#inputVCode").removeClass("valid invalid").addClass("valid");
+                $("#loginVCodeTips").removeClass("success error show"); // 不显示成功提示
             } else {
-                $("#loginVCodeTips").replaceWith("<label id='loginVCodeTips' style='color:red'>验证码错误!</label>");
+                $("#inputVCode").removeClass("valid invalid").addClass("invalid");
+                $("#loginVCodeTips").removeClass("success error show").text("验证码错误!");
+                $("#loginVCodeTips").addClass("error show");
             }
-            if (res.nameCode == 1 && res.pwdCode == 1 && res.vCode == 1) {
+            if (res.emailCode == 1 && res.pwdCode == 1 && res.vCode == 1) {
                 $("#form2").submit();
             }
-        }, "json")
-    })
+        }, "json");
+    });
 
+    // 切换注册/登录面板
     $("#signUp").click(function () {
-        $("#login-box").addClass('right-panel-active')
-    })
+        $("#login-box").addClass('right-panel-active');
+    });
 
     $("#signIn").click(function () {
-        $("#login-box").removeClass('right-panel-active')
-    })
+        $("#login-box").removeClass('right-panel-active');
+    });
 
+    // 输入框焦点效果
     $(".txtb input").on("focus", function () {
-        $(this).addClass("focus")
-    })
+        $(this).addClass("focus");
+    });
 
     $(".txtb input").on("blur", function () {
         if ($(this).val() == '')
-            $(this).removeClass("focus")
-    })
+            $(this).removeClass("focus");
+    });
 </script>
 
 </html>
