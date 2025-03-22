@@ -12,7 +12,7 @@ import java.util.List;
 public class UserDAO {
     BeanProcessor bean = new GenerousBeanProcessor();
     RowProcessor processor = new BasicRowProcessor(bean);
-    
+
     // 增加用户信息
     public int insertUser(User user) {
         int i = 0;
@@ -25,7 +25,7 @@ public class UserDAO {
         }
         return i;
     }
-    
+
     // 删除用户信息
     // 根据用户名修改用户信息
     public int updateUser(User user) {
@@ -40,7 +40,7 @@ public class UserDAO {
         }
         return i;
     }
-    
+
     // 修改用户密码
     public int changeUserPwd(User user) {
         int i = 0;
@@ -53,7 +53,7 @@ public class UserDAO {
         }
         return i;
     }
-    
+
     // 根据用户名查找用户信息
     public User queryUserByUserName(String userName) {
         User user = null;
@@ -67,7 +67,7 @@ public class UserDAO {
         }
         return user;
     }
-    
+
     // 查询所有用户信息
     public List<User> listUser() {
         List<User> userList = null;
@@ -79,5 +79,18 @@ public class UserDAO {
             e.printStackTrace();
         }
         return userList;
+    }
+
+    // 查询所有用户信息
+    public User checkEmail(String email) {
+        User user = null;
+        try {
+            String sql = "select * from users where user_email=?";
+            QueryRunner queryRunner = new QueryRunner(DruidUtils.getDataSource());
+            user = queryRunner.query(sql, new BeanHandler<User>(User.class, processor), email);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }

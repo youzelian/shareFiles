@@ -21,6 +21,8 @@ public class User implements Serializable {
     private String personalSignature;
     private String pwdReq;
     private String pwdReqAnswer;
+    private int emailVerified;
+
 
     public User() {
     }
@@ -57,6 +59,7 @@ public class User implements Serializable {
                 ", personalSignature='" + personalSignature + '\'' +
                 ", pwdReq='" + pwdReq + '\'' +
                 ", pwdReqAnswer='" + pwdReqAnswer + '\'' +
+                ", emailVerified=" + emailVerified +
                 '}';
     }
 
@@ -146,5 +149,13 @@ public class User implements Serializable {
 
     public void setPwdReqAnswer(String pwdReqAnswer) {
         this.pwdReqAnswer = pwdReqAnswer;
+    }
+
+    public int getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(int emailVerified) {
+        this.emailVerified = emailVerified;
     }
 }

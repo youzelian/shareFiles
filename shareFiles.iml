@@ -23,5 +23,8 @@
     <orderEntry type="library" name="commons-dbutils-1.8.1" level="project" />
     <orderEntry type="library" name="jackson-annotations-2.15.2" level="project" />
     <orderEntry type="library" name="jackson-annotations-2.15.2" level="project" />
+    <orderEntry type="library" name="okio-2.10.0" level="project" />
+    <orderEntry type="library" name="okhttp-4.10.0" level="project" />
+    <orderEntry type="library" name="gson-2.10.1" level="project" />
   </component>
 </module>

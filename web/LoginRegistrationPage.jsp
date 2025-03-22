@@ -354,7 +354,12 @@
             <div class="txtb" style="display: block">
                 <input type="text" name="userName" id="registerUserName">
                 <span data-placeholder="Username"></span>
-                <label id='registerNameTips'></label>
+                <label id="registerNameTips"></label>
+            </div>
+            <div class="txtb">
+                <input type="email" name="userEmail" id="registerEmail">
+                <span data-placeholder="Email"></span>
+                <label id="registerEmailTips"></label>
             </div>
             <div class="txtb">
                 <input type="password" id="registerPwd1">
@@ -363,11 +368,18 @@
             <div class="txtb">
                 <input type="password" id="registerPwd2" name="userPwd">
                 <span data-placeholder="Confirm Password"></span>
-                <label id='registerPwdTips'></label>
+                <label id="registerPwdTips"></label>
             </div>
+            <div class="txtb">
+                <input type="text" id="emailVCode" name="emailVCode">
+                <span data-placeholder="Email Verification Code"></span>
+                <label id="emailVCodeTips"></label>
+            </div>
+            <button type="button" id="sendEmailCode">发送验证码</button>
             <button type="button" id="registerCheck">注册</button>
         </form>
     </div>
+
     <!-- 登录界面 -->
     <div class="form-container sign-in-container">
         <form action="loginServlet" id="form2" method="post">
@@ -435,6 +447,47 @@
     $("#codeImg").click(function () {
         $(this).attr('src', "createCode?m=" + Math.random());
     })
+
+    // 发送验证码
+    var contextPath = "<%=request.getContextPath()%>";
+    $("#sendEmailCode").click(function () {
+        var email = $("#registerEmail").val();
+        console.log("Sending request to: " + contextPath + "/sendEmailServlet"); // 调试
+        $.post(contextPath + "/sendEmailServlet", {email: email}, function (res) {
+            console.log("Response: ", res); // 调试
+            if (res.success) {
+                $("#emailVCodeTips").replaceWith("<label id='emailVCodeTips' style='color:green'>验证码已发送!</label>");
+            } else {
+                $("#emailVCodeTips").replaceWith("<label id='emailVCodeTips' style='color:red'>" + res.message + "</label>");
+            }
+        }, "json").fail(function (xhr, status, error) {
+            console.error("AJAX error: ", status, error); // 捕获失败信息
+        });
+    });
+
+    // 注册验证
+    $("#registerCheck").click(function () {
+        var userName = $("#registerUserName").val();
+        var email = $("#registerEmail").val();
+        var pwd1 = $("#registerPwd1").val();
+        var pwd2 = $("#registerPwd2").val();
+        var vCode = $("#emailVCode").val();
+        $.post(contextPath + "/registerCheckServlet", {
+            registerUserName: userName,
+            registerEmail: email,
+            registerPwd1: pwd1,
+            registerPwd2: pwd2,
+            emailVCode: vCode
+        }, function (res) {
+            $("#registerNameTips").replaceWith("<label id='registerNameTips' style='color:" + (res.nameCode ? "green" : "red") + "'>" + (res.nameCode ? "用户名可用!" : "用户名不可用!") + "</label>");
+            $("#registerEmailTips").replaceWith("<label id='registerEmailTips' style='color:" + (res.emailCode ? "green" : "red") + "'>" + (res.emailCode ? "邮箱可用!" : "邮箱已被注册!") + "</label>");
+            $("#registerPwdTips").replaceWith("<label id='registerPwdTips' style='color:" + (res.pwdCode ? "green" : "red") + "'>" + (res.pwdCode ? "√" : "密码不一致") + "</label>");
+            $("#emailVCodeTips").replaceWith("<label id='emailVCodeTips' style='color:" + (res.vCode ? "green" : "red") + "'>" + (res.vCode ? "√" : "验证码错误") + "</label>");
+            if (res.nameCode && res.emailCode && res.pwdCode && res.vCode) {
+                $("#form1").submit();
+            }
+        }, "json");
+    });
 
     // 注册提交表单前确认是否符合规范
     $("#registerCheck").click(function () {
@@ -518,7 +571,6 @@
         if ($(this).val() == '')
             $(this).removeClass("focus")
     })
-
 </script>
 
 </html>
