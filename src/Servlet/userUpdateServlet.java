@@ -7,7 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.UUID;
 
 @WebServlet(name = "userUpdateServlet", urlPatterns = "/userUpdateServlet")
@@ -30,41 +32,44 @@ public class userUpdateServlet extends HttpServlet {
         String pwdQuestion = request.getParameter("pwdQuestion");
         String pwdQuestionAnswer = request.getParameter("pwdQuestionAnswer");
         String personalSignature = request.getParameter("personalSignature");
-
-        // 2.接受并保存图书的封面图片
-        // 2.1重新赋名
-        // a.获取后缀名
+        Part userImg = request.getPart("userImg");
         UserService userService = new UserService();
         User user = userService.checkUser(userName);
-        // 获得原头像路径
-        String userImgPath = user.getUserImgPath();
-        if (userImgPath != null) {
-            userImgPath = userImgPath.substring(userImgPath.lastIndexOf("/") + 1);
+
+        // 2.接收并保存用户头像到文件中
+        String userImgName = userImg.getSubmittedFileName();
+        String ext = userImgName.substring(userImgName.lastIndexOf("."));
+        // 2.1使用随机数重新赋名
+        userImgName = UUID.randomUUID() + ext;
+        String dir = getServletContext().getRealPath("userImg");
+        // 2.2判断用户是否已经有了头像,如果已经有了则删除原来的头像(节省空间)
+        if (user.getUserImgPath() != null) {
+            String oldUserImgName = user.getUserImgPath().contains("/") ?
+                    user.getUserImgPath().substring(user.getUserImgPath().lastIndexOf("/") + 1) :
+                    user.getUserImgPath().substring(user.getUserImgPath().lastIndexOf("\\") + 1);
+            // 此处使用的是java.io.File
+            File file = new File(dir + "/" + oldUserImgName);
+            // file.deleteOnExit();  这个只有重启服务器才会删除
+            Files.deleteIfExists(file.toPath()); // 这个是立即删除
         }
-        // 如果更新照片则对照片进行重新赋名
-        Part userImg = request.getPart("userImg");
-        String FileName = userImg.getSubmittedFileName();
-        if (!FileName.equals("")) {
-            String ext = FileName.substring(FileName.lastIndexOf("."));
-            // b.使用随机数重新赋名
-            userImgPath = UUID.randomUUID().toString() + ext;
-            String dir = getServletContext().getRealPath("userImg");
-            // 2.2.1Windows中文件路径是以'\'隔开，在字符串中表达则写两个，即'\\'
-            // String savePath = dir + "\\" + userImgPath;
-            // 2.2.2Linux中文件路径是以'/'隔开，在字符串中表达只需写一个，即'/'
-            String savePath = dir + "/" + userImgPath;
-            // 2.3保存图片
-            userImg.write(savePath);
-        }
+        // Windows中文件路径是以'\'隔开，在字符串中表达则写两个，即'\\'
+        // String savePath = dir + "\\" + userImgPath;
+        // Linux中文件路径是以'/'隔开，在字符串中表达只需写一个，即'/'
+        String savePath = dir + "/" + userImgName;
+        // 2.3保存图片
+        userImg.write(savePath);
+
         // 3.传递数据到数据库中
         int userId = user.getUserId();
-        user = new User(userId, userName, userGender, userEmail, userTel, userAddress, "userImg/" + userImgPath, personalSignature, pwdQuestion, pwdQuestionAnswer);
+        user = new User(userId, userName, userGender, userEmail, userTel, userAddress, "userImg/" + userImgName, personalSignature, pwdQuestion, pwdQuestionAnswer);
         boolean b = userService.updateUser(user);
+
         // 4.每次更新user数据，重新更新session中的user值
         HttpSession session = request.getSession();
         // 利用checkUser重新获得user，因为上面传递数据到数据中的数据不完整，没有用户密码，所以需要重新抓取
         User user1 = userService.checkUser(userName);
         session.setAttribute("user", user1);
+
         // 5.跳转到提示页面然后跳转主页面，并显示提示信息
         String tips = b ? "<label style='color:green'>更新成功!</label>" : "<label style='color:red'>更新失败!</label>";
         String type = "userUpdate";
