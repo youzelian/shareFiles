@@ -46,6 +46,7 @@ public class fileSaveServlet extends HttpServlet {
         String fileType = null;
 
         switch (ext.toLowerCase()) {
+            // 图片
             case ".jpg":
             case ".png":
             case ".jpeg":
@@ -53,29 +54,48 @@ public class fileSaveServlet extends HttpServlet {
             case ".gif":
             case ".webp":
                 dir = getServletContext().getRealPath("/files/picture");
-                fileType = "图片";
+                fileType = "picture";
                 break;
+            // 视频
             case ".mp4":
             case ".avi":
             case ".rmvb":
             case ".flv":
             case ".mov":
                 dir = getServletContext().getRealPath("/files/video");
-                fileType = "视频";
+                fileType = "video";
                 break;
-            case ".pdf":
-                dir = getServletContext().getRealPath("/files/pdf");
-                fileType = "pdf";
-                break;
+            // 压缩包
             case ".zip":
             case ".rar":
             case ".7z":
             case ".tar":
                 dir = getServletContext().getRealPath("/files/packages");
-                fileType = "压缩包";
+                fileType = "packages";
                 break;
+            // 办公文档
+            case ".doc":
+            case ".docx":
+            case ".ppt":
+            case ".pptx":
+            case ".xls":
+            case ".xlsx":
+            case ".pdf":
+            case ".txt":
+                dir = getServletContext().getRealPath("/files/office");
+                fileType = "office";
+                break;
+            // 安装包
+            case ".apk":
+            case ".exe":
+                dir = getServletContext().getRealPath("/files/executable");
+                fileType = "executable";
+                break;
+            // 其他
             default:
-                throw new ServletException("不支持的文件类型: " + ext);
+                dir = getServletContext().getRealPath("/files/others");
+                fileType = "others";
+                break;
         }
 
         File savedFile = new File(fileTitle, fileIntroduction, fileName, fileLength, fileType, fileOfClub, user.getUserId());
@@ -108,7 +128,7 @@ public class fileSaveServlet extends HttpServlet {
                         fileService.deleteFile(fileId, getServletContext().getRealPath("")); // 回滚
                         throw new ServletException("图片移动失败: " + e.getMessage());
                     }
-                    String newUrl = "files/picture/" + fileId + "/desc_images/" + fileNameInUrl;
+                    String newUrl = "files/" + fileType + "/" + fileId + "/desc_images/" + fileNameInUrl;
                     updatedMediaUrls.add(newUrl);
                 } else {
                     updatedMediaUrls.add(tempUrl);

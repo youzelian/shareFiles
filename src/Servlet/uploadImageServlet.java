@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @WebServlet(name = "uploadImageServlet", urlPatterns = "/uploadImageServlet")
 @MultipartConfig
-public class UploadImageServlet extends HttpServlet {
+public class uploadImageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
