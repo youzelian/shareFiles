@@ -215,8 +215,7 @@
             overflow: hidden;
             width: 960px;
             height: 300px;
-            margin: 0 auto;
-            padding-top: 30px;
+            margin: 30px;
         }
 
         /* 底部 */
@@ -270,7 +269,8 @@
             <% if (hasImage) { %>
             <img src="<%=userImgPath%>" title="点击进入我的主页" class="headImg" id="headImg">
             <% } else { %>
-            <div class="initial-avatar" id="initialAvatar"><%=userName.charAt(0)%></div>
+            <div class="initial-avatar" id="initialAvatar"><%=userName.charAt(0)%>
+            </div>
             <% } %>
         </a>
         <span><%=userName%></span>
@@ -305,15 +305,24 @@
                             <td id="Pic1">
                                 <table>
                                     <tr>
-                                        <td><img src="images/1.jpg" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="height: 300px;"/></td>
-                                        <td><img src="images/2.jpg" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="height: 300px;"/></td>
-                                        <td><img src="images/3.jpg" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="height: 300px;"/></td>
-                                        <td><img src="images/4.jpg" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="height: 300px;"/></td>
-                                        <td><img src="images/5.jpg" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="height: 300px;"/></td>
-                                        <td><img src="images/6.jpg" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="height: 300px;"/></td>
-                                        <td><img src="images/7.jpg" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="height: 300px;"/></td>
-                                        <td><img src="images/8.jpg" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="height: 300px;"/></td>
-                                        <td><img src="images/9.jpg" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="height: 300px;"/></td>
+                                        <td><img src="images/1.jpg" onmouseover="mouseover(this)"
+                                                 onmouseout="mouseout(this)" style="height: 300px;"/></td>
+                                        <td><img src="images/2.jpg" onmouseover="mouseover(this)"
+                                                 onmouseout="mouseout(this)" style="height: 300px;"/></td>
+                                        <td><img src="images/3.jpg" onmouseover="mouseover(this)"
+                                                 onmouseout="mouseout(this)" style="height: 300px;"/></td>
+                                        <td><img src="images/4.jpg" onmouseover="mouseover(this)"
+                                                 onmouseout="mouseout(this)" style="height: 300px;"/></td>
+                                        <td><img src="images/5.jpg" onmouseover="mouseover(this)"
+                                                 onmouseout="mouseout(this)" style="height: 300px;"/></td>
+                                        <td><img src="images/6.jpg" onmouseover="mouseover(this)"
+                                                 onmouseout="mouseout(this)" style="height: 300px;"/></td>
+                                        <td><img src="images/7.jpg" onmouseover="mouseover(this)"
+                                                 onmouseout="mouseout(this)" style="height: 300px;"/></td>
+                                        <td><img src="images/8.jpg" onmouseover="mouseover(this)"
+                                                 onmouseout="mouseout(this)" style="height: 300px;"/></td>
+                                        <td><img src="images/9.jpg" onmouseover="mouseover(this)"
+                                                 onmouseout="mouseout(this)" style="height: 300px;"/></td>
                                     </tr>
                                 </table>
                             </td>
@@ -350,7 +359,7 @@
     }
 
     // 如果用户没有头像，设置首字母头像
-    $(document).ready(function() {
+    $(document).ready(function () {
         var $avatar = $("#initialAvatar");
         if ($avatar.length) {
             var initial = $avatar.text();
@@ -361,6 +370,7 @@
 
     // 图片滚动逻辑
     Pic2.innerHTML = Pic1.innerHTML;
+
     function scrolltoleft() {
         sm.scrollLeft++;
         if (sm.scrollLeft >= Pic1.scrollWidth) {

@@ -75,6 +75,7 @@ public class forgetPwdServlet extends HttpServlet {
         out.close();
     }
 
+    // 检查密码复杂度
     private boolean isComplexEnough(String pwd) {
         int types = 0;
         if (pwd.matches(".*[a-zA-Z].*")) types++;
@@ -83,6 +84,7 @@ public class forgetPwdServlet extends HttpServlet {
         return types >= 2;
     }
 
+    // 递归响应数据结构，返回状态信息
     static class ResponseData {
         boolean success;
         String message;
