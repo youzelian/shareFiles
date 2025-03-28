@@ -174,7 +174,6 @@
             line-height: 1;
             white-space: nowrap;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, background 0.3s ease;
         }
 
@@ -274,7 +273,7 @@
     <%-- 俱乐部信息 --%>
     <c:forEach items="${user_clubList}" var="club">
         <div class="club_message">
-            <img src="${club.clubImgPath}" alt="">
+            <a href="eachClubServlet?clubId=${club.cId}&type=2"><img src="${club.clubImgPath}" alt=""></a>
             <div class="club_details">
                 <h4>${club.clubName}</h4>
                 <p class="club-numbers" data-club-id="${club.cId}">${club.clubNumbers} 个粉丝</p>

@@ -250,7 +250,7 @@
                 <p class="members">${club.clubNumbers} ${club.clubMembership} 成员</p>
                 <div class="message">
                     <p>文件数: ${club.clubHasFiles}</p>
-                    <a href="eachClubServlet?clubId=${club.clubId}">点击进入</a>
+                    <a href="eachClubServlet?clubId=${club.clubId}&type=1">点击进入</a>
                 </div>
             </div>
         </c:forEach>
@@ -274,7 +274,7 @@
             list.style.minHeight = `${window.innerHeight - 100}px`; /* 调整最小高度 */
         }
     });
-    
+
     // 设置滑动距离
     window.addEventListener('scroll', function () {
         const clubCards = document.querySelectorAll('.club-card.hidden');

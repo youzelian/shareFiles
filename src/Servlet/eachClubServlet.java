@@ -29,6 +29,7 @@ public class eachClubServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
         int clubId = Integer.parseInt(request.getParameter("clubId"));
+        int type = Integer.parseInt(request.getParameter("type"));
         String searchContent = request.getParameter("searchContent");
         ClubService clubService = new ClubService();
         // 得到该俱乐部的所有文件
@@ -69,6 +70,7 @@ public class eachClubServlet extends HttpServlet {
             }
             file_ClubPageHelper.setPageCount(pageCount);
         }
+        request.setAttribute("type", type);
         request.setAttribute("file_ClubPageHelper", file_ClubPageHelper);
         request.setAttribute("club", club);
         request.setAttribute("operation", operation);

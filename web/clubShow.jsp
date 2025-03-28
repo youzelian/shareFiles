@@ -408,7 +408,12 @@
     <%--标头--%>
     <div class="header">
         <div class="back">
-            <a href="clubListServlet?web=club.jsp" class="iconfont" title="返回俱乐部广场">&#xe63b;</a>
+            <c:if test="${type == 1}">
+                <a href="clubListServlet?web=club.jsp" class="iconfont" title="返回俱乐部广场">&#xe63b;</a>
+            </c:if>
+            <c:if test="${type == 2}">
+                <a href="myClubsListServlet" class="iconfont" title="返回我的俱乐部">&#xe63b;</a>
+            </c:if>
         </div>
         <div class="search-box">
             <form action="eachClubServlet?clubId=${club.clubId}" method="post" style="display: flex; width: 100%;">
