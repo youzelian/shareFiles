@@ -210,6 +210,7 @@
             width: 100%;
             height: 300px;
             overflow: hidden; /*防止图片溢出*/
+            margin: 15px 0 15px 0;
         }
 
         #sm {

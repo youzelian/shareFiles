@@ -156,7 +156,8 @@
         <tbody>
         <c:forEach items="${user_FilePageHelper.list}" var="User_File">
             <tr>
-                <td><a href="transferServlet?fileId=${User_File.fId}" class="file-link">${User_File.fId}</a></td>
+                <td><a href="transferServlet?fileId=${User_File.fId}&pageNum=${user_FilePageHelper.pageNum}&type=3"
+                       class="file-link">${User_File.fId}</a></td>
                 <td>${User_File.fileName}</td>
                 <td>${User_File.fileType}</td>
                 <td>

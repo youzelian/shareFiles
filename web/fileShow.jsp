@@ -712,6 +712,10 @@
                 <a href="eachClubServlet?clubId=${file_club.cId}&type=1" class="iconfont"
                    title="返回俱乐部"></a>
             </c:if>
+            <c:if test="${type == 3}">
+                <a href="myFilesListServlet" class="iconfont"
+                   title="返回我的文件夹"></a>
+            </c:if>
         </div>
         <%--文件所属俱乐部--%>
         <div class="fileOfClub">
