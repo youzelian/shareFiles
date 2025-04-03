@@ -10,6 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>个人信息修改</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* 添加这一行 */
+        }
+
         body {
             font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
             background: #f5f7fa;
@@ -17,7 +23,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0;
+        }
+
+        button, a {
+            border: none;
+            outline: none;
+            appearance: none; /* 移除浏览器默认外观 */
         }
 
         .main {
@@ -146,6 +157,7 @@
         }
 
         .btn {
+            display: block;
             padding: 0.75rem;
             border-radius: 5px;
             border: none;
@@ -157,7 +169,7 @@
         .btn-primary {
             background: #40c4ff;
             color: white;
-            width: 103%;
+            width: 100%;
         }
 
         .btn-primary:hover {

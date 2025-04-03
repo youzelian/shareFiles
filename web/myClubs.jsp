@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%--<meta name="viewport" content="width=device-width, initial-scale=1.0">--%>
     <script src="JS/jquery-3.7.1.js" charset="utf-8"></script>
     <title>我的俱乐部</title>
     <link rel="stylesheet" href="fonts/iconfont.css">

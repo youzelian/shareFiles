@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%--<meta name="viewport" content="width=device-width, initial-scale=1.0">--%>
     <script src="JS/jquery-3.7.1.js" charset="utf-8"></script>
     <title>共享界面</title>
     <!-- 引入 Font Awesome 图标库 -->
@@ -117,7 +117,7 @@
 
         /* 侧边栏 */
         .side {
-            flex: 20%;
+            width: 30%;
             background-color: #ecf0f1;
             padding: 20px;
             border-right: 1px solid #ddd;
@@ -170,7 +170,7 @@
 
         /* 主要内容区域 */
         .main {
-            flex: 70%;
+            width: 70%;
             background-color: white;
             padding: 20px;
         }
@@ -209,6 +209,7 @@
         #bg {
             width: 100%;
             height: 300px;
+            overflow: hidden; /*防止图片溢出*/
         }
 
         #sm {

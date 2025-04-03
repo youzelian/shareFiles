@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%--<meta name="viewport" content="width=device-width, initial-scale=1.0">--%>
     <script type="text/javascript" src="JS/jquery-3.7.1.js"></script>
     <title>文件详情</title>
     <link rel="stylesheet" href="fonts/iconfont.css">
@@ -670,7 +670,7 @@
 
         /* 表情选择器样式 */
         .emoji-panel {
-            display: none;
+            display: none; /* 默认隐藏 */
             position: absolute;
             background: #fff;
             border: 1px solid #ccc;
@@ -680,8 +680,7 @@
             max-height: 200px;
             overflow-y: auto;
             z-index: 1000;
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(6, 1fr); /* 只需要定义网格布局，不需要重复设置 display */
             gap: 5px;
         }
 
@@ -710,14 +709,14 @@
                 <a href="communityListServlet?pageNum=${pageNum}" class="iconfont" title="返回动态广场"></a>
             </c:if>
             <c:if test="${type == 2}">
-                <a href="eachClubServlet?pageNum=${pageNum}&clubId=${file_club.cId}" class="iconfont"
-                   title="返回俱乐部广场"></a>
+                <a href="eachClubServlet?clubId=${file_club.cId}&type=1" class="iconfont"
+                   title="返回俱乐部"></a>
             </c:if>
         </div>
         <%--文件所属俱乐部--%>
         <div class="fileOfClub">
             <img src="${file_club.clubImgPath}" alt="">
-            <a href="eachClubServlet?clubId=${file_club.cId}">${file_club.clubName}</a>
+            <a href="eachClubServlet?clubId=${file_club.cId}&type=1">${file_club.clubName}</a>
         </div>
     </div>
 
